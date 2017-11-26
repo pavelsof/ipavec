@@ -1,0 +1,8 @@
+# use this for own files
+/meta/*
+
+# python temps
+*.py[cod]
+
+# vim temps
+*.swp
