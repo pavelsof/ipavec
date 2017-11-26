@@ -6,3 +6,6 @@
 
 # vim temps
 *.swp
+
+# hypothesis cache
+/.hypothesis/*

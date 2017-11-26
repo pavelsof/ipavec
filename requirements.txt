@@ -1,0 +1,5 @@
+attrs==17.3.0
+coverage==4.4.2
+hypothesis==3.38.5
+ipalint==0.0.0
+ipatok==0.1.1
