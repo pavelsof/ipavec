@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from code.align import Alignment, simple_align
+from code.align import Alignment, simple_align, merge_align
 
 
 
@@ -25,3 +25,8 @@ class AlignTestCase(TestCase):
 		self.assertTrue(Alignment(0, (
 			('G', 'G'), ('C', None), ('A', 'A'), ('T', 'T'), (None, 'T'), ('G', 'A'), ('C', 'C'), ('U', 'A')
 			)) in res)
+
+	def test_merge_align(self):
+		res = merge_align(['з', 'а', 'м', 'б'], ['з', 'ъ', 'б'], lambda a, b: 0 if a == b else 1)
+		self.assertEqual(len(res), 1)
+		self.assertTrue(Alignment(1, (('з', 'з'), (('а', 'м'), 'ъ'), ('б', 'б'))) in res)
