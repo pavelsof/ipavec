@@ -82,9 +82,16 @@ class Dataset:
 
 	def get_langs(self):
 		"""
-		Return the set of languages found in the dataset.
+		Return the sorted list of languages found in the dataset.
 		"""
-		return set([word.lang for word in self.words])
+		return sorted(set([word.lang for word in self.words]))
+
+
+	def get_concepts(self):
+		"""
+		Return the sorted list of concepts found in the dataset.
+		"""
+		return sorted(set([word.concept for word in self.words]))
 
 
 	def get_lang(self, lang):
