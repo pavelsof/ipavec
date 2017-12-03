@@ -1,7 +1,7 @@
 import collections
 import itertools
 
-from code.align import align
+from code.align import simple_align
 from code.phon import get_inventory, DeltaCalc
 
 
@@ -29,4 +29,4 @@ def main(dataset):
 		concepts = set(dict_a.keys()) & set(dict_b.keys())
 		for concept in concepts:
 			for word_a, word_b in itertools.product(dict_a[concept], dict_b[concept]):
-				align(word_a, word_b)
+				simple_align(word_a, word_b)
