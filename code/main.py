@@ -2,7 +2,7 @@ import collections
 import itertools
 
 from code.align import simple_align
-from code.phon import get_inventory, DeltaCalc
+from code.phon.base import get_inventory, DeltaCalc
 
 
 
