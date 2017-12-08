@@ -20,12 +20,12 @@ def words(draw):
 	langs = draw(sets(text(max_size=5), min_size=1))
 	concepts = draw(sets(text(max_size=5), min_size=1))
 
-	num_words = len(langs) * len(concepts)
-	trans = draw(lists(text(max_size=5), min_size=num_words, max_size=num_words))
-
 	assume(all(['\0' not in s for s in langs]))
 	assume(all(['\0' not in s for s in concepts]))
-	assume(all(['\0' not in s for s in trans]))
+
+	num_words = len(langs) * len(concepts)
+	trans = draw(lists(text(alphabet=string.ascii_lowercase, max_size=5),
+					min_size=num_words, max_size=num_words))
 
 	counter = itertools.count()
 	cogs = itertools.cycle(string.digits)

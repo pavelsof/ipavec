@@ -56,6 +56,17 @@ class Dataset:
 		self.words = [word for word in self._read_words()]
 
 
+	def clean_ipa(self, string):
+		"""
+		Return (hopefully valid) IPA string out of a transcription field. If
+		the latter contains multiple comma-separated entries, only the first
+		one is kept. Some common non-IPA symbols are also removed.
+		"""
+		string = string.strip().split(',')[0].strip()
+		string = string.replace('_', ' ')
+		return ''.join([char for char in string if char not in '-'])
+
+
 	def _read_words(self):
 		"""
 		Generate the [] of Word entries in the dataset. Raise a DatasetError if
@@ -70,7 +81,10 @@ class Dataset:
 					if col not in header:
 						raise DatasetError('Could not find column: {}'.format(col))
 
+				trans_col = header[self.columns[2]]
+
 				for line in reader:
+					line[trans_col] = self.clean_ipa(line[trans_col])
 					yield Word._make([line[header[x]] for x in self.columns])
 
 		except OSError as err:

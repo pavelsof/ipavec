@@ -1,5 +1,6 @@
 import collections
 import csv
+import itertools
 import operator
 import os.path
 
@@ -44,6 +45,8 @@ def load(path):
 		for line in reader:
 			SEGMENTS[line[0]] = Vector._make([d.get(elem, 1) for elem in line[1:]])
 
+	SEGMENTS[None] = Vector._make(itertools.repeat(0, len(Vector._fields)))
+
 
 
 def calc_delta(phon_a, phon_b):
@@ -51,7 +54,10 @@ def calc_delta(phon_a, phon_b):
 	Calculate the delta between two phonemes, i.e. the dot product of their
 	PHOIBLE feature vectors.
 	"""
-	return sum(map(operator.mul, SEGMENTS[phon_a], SEGMENTS[phon_b]))
+	vec_a = SEGMENTS.get(phon_a, SEGMENTS[None])
+	vec_b = SEGMENTS.get(phon_b, SEGMENTS[None])
+
+	return sum(map(operator.mul, vec_a, vec_b))
 
 
 
