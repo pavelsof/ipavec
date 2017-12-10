@@ -3,7 +3,7 @@ import csv
 
 
 
-Word = collections.namedtuple('Word', 'lang, concept, trans, cog_class')
+Word = collections.namedtuple('Word', 'lang, concept, ipa, cog_class')
 
 
 
@@ -15,7 +15,7 @@ class DatasetError(ValueError):
 
 
 
-class Dataset:
+class WordsDataset:
 	"""
 	Handles dataset reading. It is assumed that the dataset would be a csv/tsv
 	file that contains at least the columns needed to generate Word tuples.
@@ -34,21 +34,11 @@ class Dataset:
 	DEFAULT_COLUMNS = ('language', 'gloss', 'transcription', 'cognate_class',)
 
 
-	def __init__(self, path, dialect=None, columns=DEFAULT_COLUMNS):
+	def __init__(self, path, dialect='excel-tab', columns=DEFAULT_COLUMNS):
 		"""
 		Init the instance's props, including self.words which comprises the
 		relevant data. Raise a DatasetError if the data cannot be loaded.
-
-		The dialect arg should be either a string identifying one of the csv
-		dialects or None, in which case the dialect is inferred based on the
-		file extension. If the arg is set but not recognised as a valid csv
-		dialect, a ValueError is raised.
 		"""
-		if dialect is None:
-			dialect = 'excel-tab' if path.endswith('.tsv') else 'excel'
-		elif dialect not in csv.list_dialects():
-			raise ValueError('Unrecognised csv dialect: {!s}'.format(dialect))
-
 		self.path = path
 		self.dialect = dialect
 		self.columns = columns
@@ -81,10 +71,10 @@ class Dataset:
 					if col not in header:
 						raise DatasetError('Could not find column: {}'.format(col))
 
-				trans_col = header[self.columns[2]]
+				ipa_col = header[self.columns[2]]
 
 				for line in reader:
-					line[trans_col] = self.clean_ipa(line[trans_col])
+					line[ipa_col] = self.clean_ipa(line[ipa_col])
 					yield Word._make([line[header[x]] for x in self.columns])
 
 		except OSError as err:
@@ -117,7 +107,7 @@ class Dataset:
 
 
 
-def write_words(words, path, dialect='excel-tab', header=Dataset.DEFAULT_COLUMNS):
+def write_words(words, path, dialect='excel-tab', header=WordsDataset.DEFAULT_COLUMNS):
 	"""
 	Write the words (Word tuples) to a csv file with the given dialect. The
 	header arg should be a list that contains the headings for the language,
@@ -129,3 +119,19 @@ def write_words(words, path, dialect='excel-tab', header=Dataset.DEFAULT_COLUMNS
 
 		for word in words:
 			writer.writerow(word)
+
+
+
+class AlignmentsDataset:
+	"""
+	"""
+
+	def __init__(self):
+		pass
+
+
+
+def write_alignments(alignments, path):
+	"""
+	"""
+	pass

@@ -29,4 +29,4 @@ def main(dataset):
 		concepts = set(dict_a.keys()) & set(dict_b.keys())
 		for concept in concepts:
 			for word_a, word_b in itertools.product(dict_a[concept], dict_b[concept]):
-				simple_align(word_a.trans, word_b.trans, calc_delta)
+				simple_align(word_a.ipa, word_b.ipa, calc_delta)

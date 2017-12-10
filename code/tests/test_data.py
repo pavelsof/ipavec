@@ -9,7 +9,7 @@ from unittest import TestCase
 from hypothesis.strategies import composite, lists, sets, text
 from hypothesis import assume, given
 
-from code.data import Word, Dataset, DatasetError, write_words
+from code.data import Word, WordsDataset, DatasetError, write_words
 
 
 
@@ -44,7 +44,7 @@ class DatasetTestCase(TestCase):
 
 	def test_with_bad_path(self):
 		with self.assertRaises(DatasetError) as cm:
-			Dataset('')
+			WordsDataset('')
 
 		self.assertTrue(str(cm.exception).startswith('Could not open file'))
 
@@ -52,7 +52,7 @@ class DatasetTestCase(TestCase):
 		path = os.path.abspath(__file__)
 
 		with self.assertRaises(DatasetError) as cm:
-			Dataset(path)
+			WordsDataset(path)
 
 		self.assertTrue(str(cm.exception).startswith('Could not find column'))
 
@@ -65,5 +65,5 @@ class DatasetTestCase(TestCase):
 				write_words(words, path, dialect)
 				self.assertTrue(os.path.exists(path))
 
-				dataset = Dataset(path, dialect)
+				dataset = WordsDataset(path, dialect)
 				self.assertEqual(dataset.words, words)

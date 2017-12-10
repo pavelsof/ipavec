@@ -7,7 +7,7 @@ def get_inventory(words):
 	Return the phoneme inventory of, i.e. the set of phonemes found in, the
 	given collection of words (data.Word tuples).
 	"""
-	return set([token for word in words for token in tokenise(word.trans, replace=True)])
+	return set([token for word in words for token in tokenise(word.ipa, replace=True)])
 
 
 

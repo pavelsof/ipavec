@@ -1,7 +1,7 @@
 import argparse
 import csv
 
-from code.data import DatasetError, Dataset
+from code.data import DatasetError, WordsDataset, AlignmentsDataset
 from code.main import main
 
 
@@ -15,10 +15,29 @@ def validate_columns(string):
 	"""
 	columns = string.split(',')
 
-	if len(columns) != len(Dataset.DEFAULT_COLUMNS):
+	if len(columns) != len(WordsDataset.DEFAULT_COLUMNS):
 		raise argparse.ArgumentTypeError('{!s} cannot be a valid columns argument')
 
 	return columns
+
+
+def init_dataset(path, file_format=None, columns=None):
+	"""
+	Init and return a XyzDataset instance to read the dataset specified by the
+	path. Raise a DatasetError or a ValueError otherwise.
+
+	Helper for Cli's run method.
+	"""
+	if file_format is None:
+		if path[-4:] not in ['.csv', '.psa', '.tsv']:
+			raise ValueError('Could not infer file format: {!s}'.format(path))
+		file_format = path[-3:]
+
+	if file_format == 'psa':
+		return AlignmentsDataset(path)
+	else:
+		dialect = csv.excel_tab if file_format == 'tsv' else csv.excel
+		return WordsDataset(path, dialect, columns)
 
 
 
@@ -42,20 +61,25 @@ class Cli:
 
 		io_args = self.parser.add_argument_group('optional arguments - input/output')
 		io_args.add_argument(
-			'--dialect',
-			choices=csv.list_dialects(),
+			'--format',
+			choices=['csv', 'psa', 'tsv'],
 			help=(
-				'the csv dialect to use for reading the dataset; '
-				'the default is to look at the file extension '
-				'and use excel for .csv and excel-tab for .tsv'))
+				'the file format to use for reading the dataset; '
+				'the default is to use the file extension'))
 		io_args.add_argument(
 			'--columns',
-			default=','.join(Dataset.DEFAULT_COLUMNS),
+			default=','.join(WordsDataset.DEFAULT_COLUMNS),
 			type=validate_columns,
 			help=(
 				'comma-separated list comprising the column headings for '
 				'the language, concept, transcription, and cognate class '
-				'columns, respectively'))
+				'columns, respectively; '
+				'only relevant if the format is csv or tsv'))
+		io_args.add_argument(
+			'--output',
+			help=(
+				'path where to write the output, in psa format; '
+				'the default is to write to stdout'))
 
 		other_args = self.parser.add_argument_group('optional arguments - other')
 		other_args.add_argument(
@@ -72,8 +96,8 @@ class Cli:
 		args = self.parser.parse_args(raw_args)
 
 		try:
-			dataset = Dataset(args.dataset, args.dialect, args.columns)
-		except DatasetError as err:
+			dataset = init_dataset(args.dataset, args.format, args.columns)
+		except (DatasetError, ValueError) as err:
 			self.parser.error(str(err))
 
 		main(dataset)
