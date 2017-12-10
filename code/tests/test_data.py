@@ -28,19 +28,16 @@ def words(draw):
 					min_size=num_words, max_size=num_words))
 
 	counter = itertools.count()
-	cogs = itertools.cycle(string.digits)
 
 	for lang in langs:
 		for concept in concepts:
-			words.append(Word._make([
-				lang, concept,
-				trans[next(counter)], next(cogs) ]))
+			words.append(Word._make([lang, concept, trans[next(counter)]]))
 
 	return words
 
 
 
-class DatasetTestCase(TestCase):
+class WordsDatasetTestCase(TestCase):
 
 	def test_with_bad_path(self):
 		with self.assertRaises(DatasetError) as cm:

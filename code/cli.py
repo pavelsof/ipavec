@@ -72,9 +72,8 @@ class Cli:
 			type=validate_columns,
 			help=(
 				'comma-separated list comprising the column headings for '
-				'the language, concept, transcription, and cognate class '
-				'columns, respectively; '
-				'only relevant if the format is csv or tsv'))
+				'the language, concept and transcription columns, respectively; '
+				'only relevant if the format is csv/tsv'))
 		io_args.add_argument(
 			'--output',
 			help=(
