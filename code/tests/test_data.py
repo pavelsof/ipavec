@@ -9,7 +9,9 @@ from unittest import TestCase
 from hypothesis.strategies import composite, lists, sets, text
 from hypothesis import assume, given
 
-from code.data import Word, WordsDataset, DatasetError, write_words
+from code.data import (
+		Word, DatasetError, WordsDataset, AlignmentsDataset,
+		write_words, write_alignments)
 
 
 
@@ -64,3 +66,21 @@ class WordsDatasetTestCase(TestCase):
 
 				dataset = WordsDataset(path, dialect)
 				self.assertEqual(dataset.words, words)
+
+
+
+class AlignmentsDatasetTestCase(TestCase):
+
+	def test_with_bad_path(self):
+		with self.assertRaises(DatasetError) as cm:
+			AlignmentsDataset('')
+
+		self.assertTrue(str(cm.exception).startswith('Could not open file'))
+
+	def test_with_bad_file(self):
+		path = os.path.abspath(__file__)
+
+		with self.assertRaises(DatasetError) as cm:
+			AlignmentsDataset(path)
+
+		self.assertTrue(str(cm.exception).startswith('Could not read file'))

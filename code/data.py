@@ -186,11 +186,14 @@ class AlignmentsDataset(Dataset):
 
 		Helper for the _read_pairs method.
 		"""
-		lang_a, align_a = lines[1].split(maxsplit=1)
-		lang_b, align_b = lines[2].split(maxsplit=1)
+		line_a = lines[1].split()
+		line_b = lines[2].split()
 
-		align_a = [token if token != '-' else '' for token in align_a.split()]
-		align_b = [token if token != '-' else '' for token in align_b.split()]
+		lang_a = line_a[0].strip('.')
+		lang_b = line_b[0].strip('.')
+
+		align_a = [token if token != '-' else '' for token in line_a[1:]]
+		align_b = [token if token != '-' else '' for token in line_b[1:]]
 
 		ipa_a = self.clean_ipa(''.join(align_a))
 		ipa_b = self.clean_ipa(''.join(align_b))
@@ -223,6 +226,9 @@ class AlignmentsDataset(Dataset):
 
 		except OSError as err:
 			raise DatasetError('Could not open file: {}'.format(self.path))
+
+		except IndexError as err:
+			raise DatasetError('Could not read file: {}'.format(self.path))
 
 
 	def get_langs(self):
@@ -258,7 +264,23 @@ class AlignmentsDataset(Dataset):
 
 
 
-def write_alignments(alignments, path):
+def write_alignments(alignments, path, header=''):
 	"""
+	Write a list of (Word, Word, Alignment) tuples to a psa file.
 	"""
-	pass
+	lines = [header]
+
+	for word_a, word_b, alignment in alignments:
+		lang_a = '{:.<16}'.format(word_a.lang)[:16]
+		lang_b = '{:.<16}'.format(word_b.lang)[:16]
+
+		align_a = [token if token != '' else '-' for token, _ in alignment.corr]
+		align_b = [token if token != '' else '-' for _, token in alignment.corr]
+
+		line_a = '\t'.join([lang_a] + align_a)
+		line_b = '\t'.join([lang_b] + align_b)
+
+		lines.extend([alignment.id, line_a, line_b, ''])
+
+	with open(path, 'w', encoding='utf-8') as f:
+		f.write('\n'.join(lines))
