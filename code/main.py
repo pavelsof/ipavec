@@ -1,4 +1,3 @@
-import collections
 import itertools
 
 from code.align import simple_align
@@ -9,24 +8,8 @@ from code.phon.phoible import calc_delta
 def main(dataset):
 	"""
 	"""
-	all_langs = dataset.get_langs()
-	all_concepts = dataset.get_concepts()
+	for lang_a, lang_b in itertools.combinations(dataset.get_langs(), 2):
+		word_pairs = dataset.get_word_pairs(lang_a, lang_b)
 
-	for lang_a, lang_b in itertools.combinations(all_langs, 2):
-		words_a = dataset.get_lang(lang_a)
-		words_b = dataset.get_lang(lang_b)
-
-		# delta_calc = DeltaCalc(get_inventory(words_a), get_inventory(words_b))
-
-		dict_a = collections.defaultdict(set)
-		for word in words_a:
-			dict_a[word.concept].add(word)
-
-		dict_b = collections.defaultdict(set)
-		for word in words_b:
-			dict_b[word.concept].add(word)
-
-		concepts = set(dict_a.keys()) & set(dict_b.keys())
-		for concept in concepts:
-			for word_a, word_b in itertools.product(dict_a[concept], dict_b[concept]):
-				simple_align(word_a.ipa, word_b.ipa, calc_delta)
+		for word_a, word_b in word_pairs:
+			simple_align(word_a.ipa, word_b.ipa, calc_delta)

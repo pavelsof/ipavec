@@ -1,5 +1,6 @@
 import collections
 import csv
+import itertools
 
 
 
@@ -42,8 +43,8 @@ class Dataset:
 
 	def get_word_pairs(self, lang_a, lang_b):
 		"""
-		Return the sorted list of same-concept Word pairs of two languages.
-		Children classes should implement this method.
+		Return the list of same-concept Word pairs of two languages. Children
+		classes should implement this method.
 		"""
 		raise NotImplementedError
 
@@ -114,19 +115,28 @@ class WordsDataset(Dataset):
 		return sorted(set([word.lang for word in self.words]))
 
 
-	def get_concepts(self):
+	def get_word_pairs(self, lang_a, lang_b):
 		"""
-		Return the sorted list of concepts found in the dataset.
+		Return the list of same-concept Word pairs of two languages.
 		"""
-		return sorted(set([word.concept for word in self.words]))
+		pairs = []
 
+		words_a = [word for word in self.words if word.lang == lang_a]
+		words_b = [word for word in self.words if word.lang == lang_b]
 
-	def get_lang(self, lang):
-		"""
-		Return the list of words (Word named tuples) that belong to the given
-		language.
-		"""
-		return [word for word in self.words if word.lang == lang]
+		dict_a = collections.defaultdict(set)
+		for word in words_a:
+			dict_a[word.concept].add(word)
+
+		dict_b = collections.defaultdict(set)
+		for word in words_b:
+			dict_b[word.concept].add(word)
+
+		concepts = set(dict_a.keys()) & set(dict_b.keys())
+		for concept in concepts:
+			pairs.extend(list(itertools.product(dict_a[concept], dict_b[concept])))
+
+		return pairs
 
 
 
@@ -172,7 +182,7 @@ class AlignmentsDataset(Dataset):
 		relevant data. Raise a DatasetError if the data cannot be loaded.
 		"""
 		self.path = path
-		self.data = {}
+		self.data = collections.OrderedDict()
 
 		for word_a, word_b, alignment in self._read_pairs():
 			key = (word_a, word_b) if word_a < word_b else (word_b, word_a)
@@ -246,7 +256,7 @@ class AlignmentsDataset(Dataset):
 
 	def get_word_pairs(self, lang_a, lang_b):
 		"""
-		Return the sorted list of aligned Word pairs of two languages.
+		Return the list of aligned Word pairs of two languages.
 		"""
 		if lang_b < lang_a:
 			reverse_langs = True

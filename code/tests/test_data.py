@@ -56,7 +56,7 @@ class WordsDatasetTestCase(TestCase):
 		self.assertTrue(str(cm.exception).startswith('Could not find column'))
 
 	@given(words())
-	def test_write_and_get_words(self, words):
+	def test_write_and_load_words(self, words):
 		with tempfile.TemporaryDirectory() as temp_dir:
 			path = os.path.join(temp_dir, 'dataset.tsv')
 
