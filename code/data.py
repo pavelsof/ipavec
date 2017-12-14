@@ -4,7 +4,18 @@ import itertools
 
 
 
+"""
+Named tuple for representing a word, i.e. the IPA transcription of a word for a
+given concept in a given language.
+"""
 Word = collections.namedtuple('Word', 'lang concept ipa')
+
+
+"""
+Named tuple for representing an alignment between two IPA transcriptions, i.e.
+a tuple of corresponding phoneme pair tuples and a comment.
+"""
+Alignment = collections.namedtuple('Alignment', 'corr comment')
 
 
 
@@ -173,9 +184,6 @@ class AlignmentsDataset(Dataset):
 	[1]: http://alignments.lingpy.org/faq.php#formats
 	"""
 
-	Alignment = collections.namedtuple('Alignment', 'id corr')
-
-
 	def __init__(self, path):
 		"""
 		Init the instance's props, including self.data which comprises the
@@ -213,7 +221,7 @@ class AlignmentsDataset(Dataset):
 		word_a = Word(lang_a, None, ipa_a)
 		word_b = Word(lang_b, None, ipa_b)
 
-		return word_a, word_b, self.Alignment(lines[0], corr)
+		return word_a, word_b, Alignment(corr, lines[0])
 
 
 	def _read_pairs(self):
@@ -274,9 +282,11 @@ class AlignmentsDataset(Dataset):
 
 
 
-def write_alignments(alignments, path, header=''):
+def write_alignments(alignments, path, header='OUTPUT'):
 	"""
-	Write a list of (Word, Word, Alignment) tuples to a psa file.
+	Write a list of (Word, Word, Alignment) tuples to a psa file. The last
+	element of each tuple should be an Alignment named tuple from either this
+	or the align module.
 	"""
 	lines = [header]
 
@@ -284,13 +294,18 @@ def write_alignments(alignments, path, header=''):
 		lang_a = '{:.<16}'.format(word_a.lang)[:16]
 		lang_b = '{:.<16}'.format(word_b.lang)[:16]
 
-		align_a = [token if token != '' else '-' for token, _ in alignment.corr]
-		align_b = [token if token != '' else '-' for _, token in alignment.corr]
+		align_a = [token if token else '-' for token, _ in alignment.corr]
+		align_b = [token if token else '-' for _, token in alignment.corr]
 
 		line_a = '\t'.join([lang_a] + align_a)
 		line_b = '\t'.join([lang_b] + align_b)
 
-		lines.extend([alignment.id, line_a, line_b, ''])
+		if hasattr(alignment, 'comment'):
+			comment = alignment.comment
+		else:
+			comment = str(word_a.concept)
+
+		lines.extend([comment, line_a, line_b, ''])
 
 	with open(path, 'w', encoding='utf-8') as f:
 		f.write('\n'.join(lines))

@@ -57,7 +57,7 @@ def calc_delta(phon_a, phon_b):
 	vec_a = SEGMENTS.get(phon_a, SEGMENTS[None])
 	vec_b = SEGMENTS.get(phon_b, SEGMENTS[None])
 
-	return sum(map(operator.mul, vec_a, vec_b))
+	return - sum(map(operator.mul, vec_a, vec_b))
 
 
 

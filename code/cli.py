@@ -1,7 +1,8 @@
 import argparse
 import csv
 
-from code.data import DatasetError, WordsDataset, AlignmentsDataset
+from code.data import (
+		DatasetError, WordsDataset, AlignmentsDataset, write_alignments)
 from code.main import main
 
 
@@ -99,4 +100,4 @@ class Cli:
 		except (DatasetError, ValueError) as err:
 			self.parser.error(str(err))
 
-		main(dataset)
+		write_alignments(main(dataset), args.output)
