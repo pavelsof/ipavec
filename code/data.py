@@ -281,6 +281,27 @@ class AlignmentsDataset(Dataset):
 		return pairs
 
 
+	def get_alignments(self, lang_a, lang_b):
+		"""
+		Return the {(Word, Word): Alignment} dict comprising the dataset's
+		alignments for two languages.
+		"""
+		if lang_b < lang_a:
+			reverse_langs = True
+			lang_a, lang_b = lang_b, lang_a
+		else:
+			reverse_langs = False
+
+		res = {(word_a, word_b): value
+				for (word_a, word_b), value in self.data.items()
+				if word_a.lang == lang_a and word_b.lang == lang_b}
+
+		if reverse_langs:
+			res = {(b, a): value for (a, b), value in res.items()}
+
+		return res
+
+
 
 def write_alignments(alignments, path, header='OUTPUT'):
 	"""

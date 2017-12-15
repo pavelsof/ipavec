@@ -1,5 +1,5 @@
-from code.cli import Cli
+from code.cli import RunCli
 
 
 if __name__ == '__main__':
-	Cli().run()
+	RunCli().run()
