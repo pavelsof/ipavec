@@ -2,18 +2,25 @@ import collections
 import csv
 import itertools
 
+import ipatok
+
 
 
 """
-Named tuple for representing a word, i.e. the IPA transcription of a word for a
-given concept in a given language.
+Named tuple for representing a word, i.e. the tokenised IPA transcription of a
+word for a given concept in a given language.
+
+AlignmentsDataset instances expect IPA transcriptions to be already tokenised,
+while WordsDataset instances leverage ipatok.
 """
 Word = collections.namedtuple('Word', 'lang concept ipa')
 
 
 """
 Named tuple for representing an alignment between two IPA transcriptions, i.e.
-a tuple of corresponding phoneme pair tuples and a comment.
+a tuple of corresponding phoneme (IPA token) pair tuples and a comment.
+
+For indels the empty string is used (e.g. ('ɛ', '')).
 """
 Alignment = collections.namedtuple('Alignment', 'corr comment')
 
@@ -29,20 +36,8 @@ class DatasetError(ValueError):
 
 class Dataset:
 	"""
-	Base class that defines the get_* methods used by other modules as well as
-	a helper method used by inherited classes.
+	Base class that defines the get_* methods used by other modules.
 	"""
-
-	def clean_ipa(self, string):
-		"""
-		Return (hopefully valid) IPA string out of a transcription field. If
-		the latter contains multiple comma-separated entries, only the first
-		one is kept. Some common non-IPA symbols are also removed.
-		"""
-		string = string.strip().split(',')[0].strip()
-		string = string.replace('_', ' ')
-		return ''.join([char for char in string if char not in '-'])
-
 
 	def get_langs(self):
 		"""
@@ -80,16 +75,38 @@ class WordsDataset(Dataset):
 	DEFAULT_COLUMNS = ('language', 'gloss', 'transcription',)
 
 
-	def __init__(self, path, dialect='excel-tab', columns=DEFAULT_COLUMNS):
+	def __init__(self, path, dialect='excel-tab',
+					columns=DEFAULT_COLUMNS, is_tokenised=False):
 		"""
-		Init the instance's props, including self.words which comprises the
-		relevant data. Raise a DatasetError if the data cannot be loaded.
+		Init the instance's props, including self.words, a list of Word tuples
+		comprising the relevant data.
+
+		Raise a DatasetError if the data cannot be loaded.
 		"""
 		self.path = path
 		self.dialect = dialect
 		self.columns = columns
+		self.is_tokenised = is_tokenised
 
 		self.words = [word for word in self._read_words()]
+
+
+	def _read_ipa(self, string):
+		"""
+		Process a raw transcription value into a (hopefully valid) tuple of IPA
+		tokens. If the former contains multiple comma-separated entries, only
+		the first one is kept. Some common non-IPA symbols are also removed.
+
+		If the dataset is advertised as having its IPA data already tokenised,
+		then just split the string.
+		"""
+		if self.is_tokenised:
+			return tuple(string.split())
+
+		string = string.strip().split(',')[0].strip()
+		string = string.replace('_', ' ').replace('-', '')
+
+		return tuple(ipatok.tokenise(string))
 
 
 	def _read_words(self):
@@ -109,7 +126,7 @@ class WordsDataset(Dataset):
 				ipa_col = header[self.columns[2]]
 
 				for line in reader:
-					line[ipa_col] = self.clean_ipa(line[ipa_col])
+					line[ipa_col] = self._read_ipa(line[ipa_col])
 					yield Word._make([line[header[x]] for x in self.columns])
 
 		except OSError as err:
@@ -151,18 +168,24 @@ class WordsDataset(Dataset):
 
 
 
-def write_words(words, path, dialect='excel-tab', header=WordsDataset.DEFAULT_COLUMNS):
+def write_words(words, path, dialect='excel-tab',
+				header=WordsDataset.DEFAULT_COLUMNS, tokenised=False):
 	"""
-	Write the words (Word tuples) to a csv file with the given dialect. The
-	header arg should be a list that contains the headings for the language,
-	concept, transcription, and cognate class columns, respectively.
+	Write the words ([] of Word tuples) to a csv file using the given dialect.
+
+	The header arg should be a list of the headings for the language, concept,
+	and transcription columns, respectively.
+
+	If tokenised is set to True, separate the IPA tokens with spaces.
 	"""
+	joiner = ' ' if tokenised else ''
+
 	with open(path, 'w', encoding='utf-8', newline='') as f:
 		writer = csv.writer(f, dialect=dialect)
 		writer.writerow(header)
 
 		for word in words:
-			writer.writerow(word)
+			writer.writerow([word.lang, word.concept, joiner.join(word.ipa)])
 
 
 
@@ -186,8 +209,10 @@ class AlignmentsDataset(Dataset):
 
 	def __init__(self, path):
 		"""
-		Init the instance's props, including self.data which comprises the
-		relevant data. Raise a DatasetError if the data cannot be loaded.
+		Init the instance's props, including self.data, a dict mapping Word
+		pairs to their respective Alignment.
+
+		Raise a DatasetError if the data cannot be loaded.
 		"""
 		self.path = path
 		self.data = collections.OrderedDict()
@@ -213,15 +238,14 @@ class AlignmentsDataset(Dataset):
 		align_a = [token if token != '-' else '' for token in line_a[1:]]
 		align_b = [token if token != '-' else '' for token in line_b[1:]]
 
-		ipa_a = self.clean_ipa(''.join(align_a))
-		ipa_b = self.clean_ipa(''.join(align_b))
+		ipa_a = tuple([token for token in align_a if token])
+		ipa_b = tuple([token for token in align_b if token])
 
 		corr = tuple(zip(align_a, align_b))
 
-		word_a = Word(lang_a, None, ipa_a)
-		word_b = Word(lang_b, None, ipa_b)
-
-		return word_a, word_b, Alignment(corr, lines[0])
+		return (
+			Word(lang_a, None, ipa_a), Word(lang_b, None, ipa_b),
+			Alignment(corr, lines[0]))
 
 
 	def _read_pairs(self):

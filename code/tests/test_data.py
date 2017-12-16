@@ -26,14 +26,14 @@ def words(draw):
 	assume(all(['\0' not in s for s in concepts]))
 
 	num_words = len(langs) * len(concepts)
-	trans = draw(lists(text(alphabet=string.ascii_lowercase, max_size=5),
+	ipa = draw(lists(text(alphabet=string.ascii_lowercase, max_size=5),
 					min_size=num_words, max_size=num_words))
 
 	counter = itertools.count()
 
 	for lang in langs:
 		for concept in concepts:
-			words.append(Word._make([lang, concept, trans[next(counter)]]))
+			words.append(Word._make([lang, concept, tuple(ipa[next(counter)])]))
 
 	return words
 
@@ -61,10 +61,10 @@ class WordsDatasetTestCase(TestCase):
 			path = os.path.join(temp_dir, 'dataset.tsv')
 
 			for dialect in csv.list_dialects():
-				write_words(words, path, dialect)
+				write_words(words, path, dialect, tokenised=True)
 				self.assertTrue(os.path.exists(path))
 
-				dataset = WordsDataset(path, dialect)
+				dataset = WordsDataset(path, dialect, is_tokenised=True)
 				self.assertEqual(dataset.words, words)
 
 
