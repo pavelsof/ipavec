@@ -10,8 +10,13 @@ from hypothesis.strategies import composite, lists, sets, text
 from hypothesis import assume, given
 
 from code.data import (
-		Word, DatasetError, WordsDataset, AlignmentsDataset,
-		write_words, write_alignments)
+		Word, Alignment, DatasetError,
+		WordsDataset, AlignmentsDataset, write_words)
+
+
+
+BASE_DIR = os.path.join(os.path.dirname(__file__), '../..')
+COVINGTON_DATASET_PATH = os.path.join(BASE_DIR, 'data/bdpa/covington.psa')
 
 
 
@@ -84,3 +89,26 @@ class AlignmentsDatasetTestCase(TestCase):
 			AlignmentsDataset(path)
 
 		self.assertTrue(str(cm.exception).startswith('Could not read file'))
+
+	def test_with_covington(self):
+		dataset = AlignmentsDataset(COVINGTON_DATASET_PATH)
+		self.assertEqual(dataset.get_langs(), [
+			'English', 'Fox', 'French', 'German', 'Iranian', 'Latin',
+			'Menomini', 'Old_Greek', 'Sanskrit', 'Spanish'])
+
+		kentum = Word('Latin', None, ('k', 'e', 'n', 't', 'u', 'm'))
+		satəm = Word('Iranian', None, ('s', 'a', 't', 'ə', 'm'))
+
+		self.assertEqual(dataset.get_word_pairs('Latin', 'Iranian'), [
+			(kentum, satəm)])
+		self.assertEqual(dataset.get_alignments('Latin', 'Iranian'), {
+			(kentum, satəm): Alignment(
+				(('k', 's'), ('e', 'a'), ('n', ''), ('t', 't'), ('u', 'ə'), ('m', 'm')),
+				'centum/satəm')})
+
+		self.assertEqual(dataset.get_word_pairs('Iranian', 'Latin'), [
+			(satəm, kentum)])
+		self.assertEqual(dataset.get_alignments('Iranian', 'Latin'), {
+			(satəm, kentum): Alignment(
+				(('s', 'k'), ('a', 'e'), ('', 'n'), ('t', 't'), ('ə', 'u'), ('m', 'm')),
+				'centum/satəm')})

@@ -219,8 +219,23 @@ class AlignmentsDataset(Dataset):
 		self.data = collections.OrderedDict()
 
 		for word_a, word_b, alignment in self._read_pairs():
-			key = (word_a, word_b) if word_a < word_b else (word_b, word_a)
-			self.data[key] = alignment
+			if word_a < word_b:
+				self.data[(word_a, word_b)] = alignment
+			else:
+				self.data[(word_b, word_a)] = self._reverse_alignment(alignment)
+
+
+	def _reverse_alignment(self, alignment):
+		"""
+		Produce an Alignment tuple comprising the same alignment but with the
+		correspondence pairs reversed; i.e. convert an alignment between langs
+		A and B into an alignment between langs B and A.
+
+		Helper for the __init__ and get_alignments methods.
+		"""
+		return Alignment(
+				tuple([tuple(reversed(corr)) for corr in alignment.corr]),
+				alignment.comment)
 
 
 	def _parse_pair(self, lines):
@@ -325,7 +340,8 @@ class AlignmentsDataset(Dataset):
 				if word_a.lang == lang_a and word_b.lang == lang_b}
 
 		if reverse_langs:
-			res = {(b, a): value for (a, b), value in res.items()}
+			res = {(b, a): self._reverse_alignment(value)
+						for (a, b), value in res.items()}
 
 		return res
 
