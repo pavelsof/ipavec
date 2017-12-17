@@ -2,7 +2,8 @@ import collections
 import csv
 import itertools
 
-import ipatok
+from ipatok.ipa import replace_substitutes
+from ipatok import tokenise
 
 
 
@@ -106,7 +107,7 @@ class WordsDataset(Dataset):
 		string = string.strip().split(',')[0].strip()
 		string = string.replace('_', ' ').replace('-', '')
 
-		return tuple(ipatok.tokenise(string))
+		return tuple(tokenise(string, replace=True, diphtongs=True))
 
 
 	def _read_words(self):
@@ -229,14 +230,17 @@ class AlignmentsDataset(Dataset):
 
 		Helper for the _read_pairs method.
 		"""
-		line_a = lines[1].split()
-		line_b = lines[2].split()
+		lang_a, align_a = lines[1].split(maxsplit=1)
+		lang_b, align_b = lines[2].split(maxsplit=1)
 
-		lang_a = line_a[0].strip('.')
-		lang_b = line_b[0].strip('.')
+		lang_a = lang_a.strip('.')
+		lang_b = lang_b.strip('.')
 
-		align_a = [token if token != '-' else '' for token in line_a[1:]]
-		align_b = [token if token != '-' else '' for token in line_b[1:]]
+		align_a = replace_substitutes(align_a)
+		align_b = replace_substitutes(align_b)
+
+		align_a = [token if token != '-' else '' for token in align_a.split()]
+		align_b = [token if token != '-' else '' for token in align_b.split()]
 
 		ipa_a = tuple([token for token in align_a if token])
 		ipa_b = tuple([token for token in align_b if token])

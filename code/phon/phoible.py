@@ -26,6 +26,16 @@ Vector = None
 
 
 
+def canonise(segment):
+	"""
+	Return the canonical IPA form of a segment. Some PHOIBLE segments do not
+	conform strictly to the IPA spec.
+	"""
+	phoible_to_ipa = {'ts': 't͡s', 'dʑ': 'd͡ʑ'}
+	return phoible_to_ipa.get(segment, segment)
+
+
+
 def load(path):
 	"""
 	Define the Vector named tuple and populate the SEGMENTS dict. The specified
@@ -43,9 +53,10 @@ def load(path):
 		Vector = collections.namedtuple('Vector', header[1:])
 
 		for line in reader:
-			SEGMENTS[line[0]] = Vector._make([d.get(elem, 1) for elem in line[1:]])
+			SEGMENTS[canonise(line[0])] = \
+					Vector._make([d.get(elem, 1) for elem in line[1:]])
 
-	SEGMENTS[None] = Vector._make(itertools.repeat(0, len(Vector._fields)))
+	SEGMENTS[''] = Vector._make(itertools.repeat(0, len(Vector._fields)))
 
 
 
@@ -54,8 +65,8 @@ def calc_delta(phon_a, phon_b):
 	Calculate the delta between two phonemes, i.e. the dot product of their
 	PHOIBLE feature vectors.
 	"""
-	vec_a = SEGMENTS.get(phon_a, SEGMENTS[None])
-	vec_b = SEGMENTS.get(phon_b, SEGMENTS[None])
+	vec_a = SEGMENTS.get(phon_a, SEGMENTS[''])
+	vec_b = SEGMENTS.get(phon_b, SEGMENTS[''])
 
 	return - sum(map(operator.mul, vec_a, vec_b))
 
