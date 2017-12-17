@@ -95,6 +95,7 @@ class AlignmentsDatasetTestCase(TestCase):
 		self.assertEqual(dataset.get_langs(), [
 			'English', 'Fox', 'French', 'German', 'Iranian', 'Latin',
 			'Menomini', 'Old_Greek', 'Sanskrit', 'Spanish'])
+		self.assertEqual(len(dataset.data), 82)
 
 		kentum = Word('Latin', None, ('k', 'e', 'n', 't', 'u', 'm'))
 		satəm = Word('Iranian', None, ('s', 'a', 't', 'ə', 'm'))

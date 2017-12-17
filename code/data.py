@@ -245,8 +245,8 @@ class AlignmentsDataset(Dataset):
 
 		Helper for the _read_pairs method.
 		"""
-		lang_a, align_a = lines[1].split(maxsplit=1)
-		lang_b, align_b = lines[2].split(maxsplit=1)
+		lang_a, align_a = lines[1].split('\t', maxsplit=1)
+		lang_b, align_b = lines[2].split('\t', maxsplit=1)
 
 		lang_a = lang_a.strip('.')
 		lang_b = lang_b.strip('.')
@@ -254,8 +254,8 @@ class AlignmentsDataset(Dataset):
 		align_a = replace_substitutes(align_a)
 		align_b = replace_substitutes(align_b)
 
-		align_a = [token if token != '-' else '' for token in align_a.split()]
-		align_b = [token if token != '-' else '' for token in align_b.split()]
+		align_a = [token if token != '-' else '' for token in align_a.split('\t')]
+		align_b = [token if token != '-' else '' for token in align_b.split('\t')]
 
 		ipa_a = tuple([token for token in align_a if token])
 		ipa_b = tuple([token for token in align_b if token])
@@ -285,10 +285,13 @@ class AlignmentsDataset(Dataset):
 						yield self._parse_pair(triplet)
 						triplet = []
 
+				if triplet:  # if the file does not end with a blank line
+					yield self._parse_pair(triplet)
+
 		except OSError as err:
 			raise DatasetError('Could not open file: {}'.format(self.path))
 
-		except IndexError as err:
+		except (IndexError, ValueError) as err:
 			raise DatasetError('Could not read file: {}'.format(self.path))
 
 
