@@ -61,7 +61,11 @@ class RunCli:
 		Setup the argparse parser.
 		"""
 		self.parser = argparse.ArgumentParser(add_help=False)
-		self.parser.add_argument('dataset', help='path to the dataset file')
+		self.parser.add_argument(
+			'dataset',
+			help=(
+				'path to the dataset file; '
+				'if set to - (a hyphen), read from stdin'))
 
 		algo_args = self.parser.add_argument_group('optional arguments - algorithm')
 		algo_args.add_argument(
@@ -96,7 +100,7 @@ class RunCli:
 			'--output',
 			help=(
 				'path where to write the output, in psa format; '
-				'the default is to write to stdout'))
+				'if omitted or set to - (a hyphen), write to stdout'))
 
 		other_args = self.parser.add_argument_group('optional arguments - other')
 		other_args.add_argument(
@@ -142,17 +146,24 @@ class EvalCli:
 		"""
 		self.parser = argparse.ArgumentParser(add_help=False)
 
-		self.parser.add_argument('dataset_true', help=(
-			'path to the dataset with gold-standard alignments'))
-		self.parser.add_argument('dataset_pred', help=(
-			'path to the dataset with predicted alignments'))
+		self.parser.add_argument(
+			'dataset_true',
+			help=(
+				'path to the dataset with gold-standard alignments; '
+				'if set to - (a hyphen), read from stdin'))
+		self.parser.add_argument(
+			'dataset_pred',
+			help=(
+				'path to the dataset with predicted alignments; '
+				'if set to - (a hyphen), read from stdin; '
+				'setting both dataset args to read from stdin does not work'))
 
 		io_args = self.parser.add_argument_group('optional arguments - input/output')
 		io_args.add_argument(
 			'--output',
 			help=(
 				'path where to write the output, in psa format; '
-				'the default is to write to stdout'))
+				'if omitted or set to - (a hyphen), write to stdout'))
 
 		other_args = self.parser.add_argument_group('optional arguments - other')
 		other_args.add_argument(

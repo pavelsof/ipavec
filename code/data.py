@@ -5,6 +5,8 @@ import itertools
 from ipatok.ipa import replace_substitutes
 from ipatok import tokenise
 
+from code.utils import open_for_reading, open_for_writing
+
 
 
 """
@@ -116,7 +118,7 @@ class WordsDataset(Dataset):
 		there is a problem reading the file.
 		"""
 		try:
-			with open(self.path, encoding='utf-8', newline='') as f:
+			with open_for_reading(self.path, newline='') as f:
 				reader = csv.reader(f, dialect=self.dialect)
 
 				header = {value: key for key, value in enumerate(next(reader))}
@@ -169,10 +171,11 @@ class WordsDataset(Dataset):
 
 
 
-def write_words(words, path, dialect='excel-tab',
+def write_words(words, path=None, dialect='excel-tab',
 				header=WordsDataset.DEFAULT_COLUMNS, tokenised=False):
 	"""
 	Write the words ([] of Word tuples) to a csv file using the given dialect.
+	If path is None or '-', use stdout.
 
 	The header arg should be a list of the headings for the language, concept,
 	and transcription columns, respectively.
@@ -181,7 +184,7 @@ def write_words(words, path, dialect='excel-tab',
 	"""
 	joiner = ' ' if tokenised else ''
 
-	with open(path, 'w', encoding='utf-8', newline='') as f:
+	with open_for_writing(path, newline='') as f:
 		writer = csv.writer(f, dialect=dialect)
 		writer.writerow(header)
 
@@ -273,7 +276,7 @@ class AlignmentsDataset(Dataset):
 		Helper for the __init__ method.
 		"""
 		try:
-			with open(self.path, encoding='utf-8') as f:
+			with open_for_reading(self.path) as f:
 				next(f)  # the first line is a dataset identifier
 
 				triplet = []
@@ -350,11 +353,13 @@ class AlignmentsDataset(Dataset):
 
 
 
-def write_alignments(alignments, path, header='OUTPUT'):
+def write_alignments(alignments, path=None, header='OUTPUT'):
 	"""
 	Write a list of (Word, Word, Alignment) tuples to a psa file. The last
 	element of each tuple should be an Alignment named tuple from either this
 	or the align module.
+
+	If path is None or '-', use stdout.
 	"""
 	lines = [header]
 
@@ -375,5 +380,5 @@ def write_alignments(alignments, path, header='OUTPUT'):
 
 		lines.extend([comment, line_a, line_b, ''])
 
-	with open(path, 'w', encoding='utf-8') as f:
+	with open_for_writing(path) as f:
 		f.write('\n'.join(lines))
