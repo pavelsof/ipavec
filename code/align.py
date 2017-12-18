@@ -130,3 +130,16 @@ def merge_align(seq_a, seq_b, cost_func):
 
 	return frozenset([
 		Alignment(cost, corr) for corr in backtrack(seq_a, seq_b, matrix) ])
+
+
+
+ALGORITHMS = {
+	'standard': simple_align }
+
+
+def list_algorithms():
+	return sorted(ALGORITHMS.keys())
+
+
+def get_align_func(algo_name):
+	return ALGORITHMS[algo_name]

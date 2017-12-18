@@ -1,10 +1,12 @@
 import argparse
 import csv
 
+from code.align import list_algorithms, get_align_func
 from code.data import (
 		DatasetError, WordsDataset, AlignmentsDataset, write_alignments)
 from code.eval import evaluate
 from code.main import main
+from code.phon import list_providers, get_delta_func
 
 
 
@@ -61,6 +63,20 @@ class RunCli:
 		self.parser = argparse.ArgumentParser(add_help=False)
 		self.parser.add_argument('dataset', help='path to the dataset file')
 
+		algo_args = self.parser.add_argument_group('optional arguments - algorithm')
+		algo_args.add_argument(
+			'--align',
+			choices=list_algorithms(), default='standard',
+			help=(
+				'which alignment algorithm to use; '
+				'the default is the standard Needleman-Wunsch'))
+		algo_args.add_argument(
+			'--vectors',
+			choices=list_providers(), default='phoible',
+			help=(
+				'which IPA vector representations to use; '
+				'the default is PHOIBLE\'s feature vectors'))
+
 		io_args = self.parser.add_argument_group('optional arguments - input/output')
 		io_args.add_argument(
 			'--format',
@@ -101,7 +117,11 @@ class RunCli:
 		except (DatasetError, ValueError) as err:
 			self.parser.error(str(err))
 
-		write_alignments(main(dataset), args.output)
+		align_func = get_align_func(args.align)
+		delta_func = get_delta_func(args.vectors)
+
+		alignments = main(dataset, align_func, delta_func)
+		write_alignments(alignments, args.output)
 
 
 
