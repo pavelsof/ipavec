@@ -28,9 +28,12 @@ python -m unittest discover code
 # activate the virtual env if it is not already
 source meta/venv/bin/activate
 
-# use run.py to invoke the commands
+# use run.py to run the algorithm on a dataset
 python run.py --help
 
-# run the code on a dataset
-python run.py data/ielex.tsv
+# use eval.py to evaluate the output if you have the gold-standard alignments
+python eval.py --help
+
+# use the fish script to directly evaluate with several option combinations
+./run+eval.fish data/bdpa/covington.psa
 ```
