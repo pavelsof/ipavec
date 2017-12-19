@@ -219,6 +219,8 @@ class AlignmentsDataset(Dataset):
 		Raise a DatasetError if the data cannot be loaded.
 		"""
 		self.path = path
+
+		self.header = ''
 		self.data = collections.OrderedDict()
 
 		for word_a, word_b, alignment in self._read_pairs():
@@ -272,12 +274,14 @@ class AlignmentsDataset(Dataset):
 
 	def _read_pairs(self):
 		"""
-		Generate the list of Word, Word, Alignment tuples found in the dataset.
+		Generate the list of Word, Word, Alignment tuples found in the dataset
+		and set self.header. Raise a DatasetError otherwise.
+
 		Helper for the __init__ method.
 		"""
 		try:
 			with open_for_reading(self.path) as f:
-				next(f)  # the first line is a dataset identifier
+				self.header = next(f).strip()  # the dataset identifier
 
 				triplet = []
 				for line in map(lambda x: x.strip(), f):

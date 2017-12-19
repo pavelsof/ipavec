@@ -1,22 +1,30 @@
+import collections
 import itertools
 
 from code.data import Alignment
 
 
 
+"""
+Named tuple for representing evaluation results; includes (1) the incorrect
+alignments together with their correct counterparts in the form expected by
+data.write_alignments, (2) the number of correct predictions, and (3) of all
+predictions.
+"""
+Evaluation = collections.namedtuple('Evaluation', 'mistakes num_correct num_all')
+
+
+
 def evaluate(dataset_true, dataset_pred):
 	"""
 	Evaluate predicted alignments (dataset_pred) against their gold-standard
-	counterparts (dataset_true).
+	counterparts (dataset_true). Return an Evaluation tuple.
 
 	The latter is expected to contain all word pairs of the former; otherwise,
 	a KeyError is raised.
-
-	For the time being this means returning the alignments that differ to be
-	written in a new dataset, as well as printing the number of those.
 	"""
 	total_pred = 0
-	output = []  # [(Word, Word, Alignment), (Word, Word, Alignment), ..]
+	mistakes = []
 
 	for lang_a, lang_b in itertools.combinations(dataset_pred.get_langs(), 2):
 		d_pred = dataset_pred.get_alignments(lang_a, lang_b)
@@ -25,14 +33,12 @@ def evaluate(dataset_true, dataset_pred):
 		for (word_a, word_b), al_pred in d_pred.items():
 			al_true = d_true[(word_a, word_b)]
 			if al_pred.corr != al_true.corr:
-				output.extend([
+				mistakes.extend([
 					(word_a, word_b, Alignment(al_pred.corr, 'predicted')),
 					(word_a, word_b, Alignment(al_true.corr, 'correct'))])
 
 		total_pred += len(d_pred)
 
-	good_ones = total_pred - int(len(output) / 2)
-	print('accuracy: {:.2f} ({} out of {})'.format(
-			good_ones / total_pred, good_ones, total_pred))
+	correct_pred = total_pred - int(len(mistakes) / 2)
 
-	return output
+	return Evaluation(mistakes, correct_pred, total_pred)

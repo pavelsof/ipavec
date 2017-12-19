@@ -48,7 +48,7 @@ class WordsDatasetTestCase(TestCase):
 
 	def test_with_bad_path(self):
 		with self.assertRaises(DatasetError) as cm:
-			WordsDataset('')
+			WordsDataset('here_be_dragons')
 
 		self.assertTrue(str(cm.exception).startswith('Could not open file'))
 
@@ -78,7 +78,7 @@ class AlignmentsDatasetTestCase(TestCase):
 
 	def test_with_bad_path(self):
 		with self.assertRaises(DatasetError) as cm:
-			AlignmentsDataset('')
+			AlignmentsDataset('here_be_dragons')
 
 		self.assertTrue(str(cm.exception).startswith('Could not open file'))
 

@@ -125,7 +125,9 @@ class RunCli:
 		delta_func = get_delta_func(args.vectors)
 
 		alignments = main(dataset, align_func, delta_func)
-		write_alignments(alignments, args.output)
+		header = '{} alignment, {} vectors'.format(args.align, args.vectors)
+
+		write_alignments(alignments, args.output, header)
 
 
 
@@ -185,4 +187,11 @@ class EvalCli:
 		except (DatasetError, ValueError) as err:
 			self.parser.error(str(err))
 
-		write_alignments(evaluate(dataset_true, dataset_pred), args.output)
+		evaluation = evaluate(dataset_true, dataset_pred)
+		print('{} → {:.2f}% ({} out of {})'.format(
+				dataset_pred.header,
+				evaluation.num_correct / evaluation.num_all * 100,
+				evaluation.num_correct, evaluation.num_all))
+
+		header = 'evaluation: {}'.format(dataset_pred.header)
+		write_alignments(evaluation.mistakes, args.output, header)
