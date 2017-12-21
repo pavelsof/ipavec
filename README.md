@@ -37,3 +37,10 @@ python eval.py --help
 # use the fish script to directly evaluate with several option combinations
 ./run+eval.fish data/bdpa/covington.psa
 ```
+
+
+## results
+
+|           | one-hot | phoible |
+|-----------|---------|---------|
+| covington |  63,41% |  82,93% |
