@@ -3,6 +3,7 @@ import csv
 import itertools
 import operator
 import os.path
+import warnings
 
 
 
@@ -65,8 +66,17 @@ def calc_delta(phon_a, phon_b):
 	Calculate the delta between two phonemes, i.e. the dot product of their
 	PHOIBLE feature vectors.
 	"""
-	vec_a = SEGMENTS.get(phon_a, SEGMENTS[''])
-	vec_b = SEGMENTS.get(phon_b, SEGMENTS[''])
+	if phon_a in SEGMENTS:
+		vec_a = SEGMENTS[phon_a]
+	else:
+		warnings.warn('PHOIBLE: cannot recognise {}'.format(phon_a))
+		vec_a = SEGMENTS['']
+
+	if phon_b in SEGMENTS:
+		vec_b = SEGMENTS[phon_b]
+	else:
+		warnings.warn('PHOIBLE: cannot recognise {}'.format(phon_b))
+		vec_b = SEGMENTS['']
 
 	return - sum(map(operator.mul, vec_a, vec_b))
 

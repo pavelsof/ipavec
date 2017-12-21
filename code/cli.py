@@ -1,5 +1,7 @@
 import argparse
 import csv
+import sys
+import warnings
 
 from code.align import list_algorithms, get_align_func
 from code.data import (
@@ -42,6 +44,18 @@ def init_dataset(path, file_format=None, columns=None):
 	else:
 		dialect = csv.excel_tab if file_format == 'tsv' else csv.excel
 		return WordsDataset(path, dialect, columns)
+
+
+def print_to_stderr(message, *args, **kwargs):
+	"""
+	Custom implementation of the default warnings.showwarning func that simply
+	prints the warning message to stderr. The default implementation also
+	prints meta info (e.g. line number) which is unnecessary for our purposes.
+
+	Relevant docs:
+	https://docs.python.org/3/library/warnings.html#warnings.showwarning
+	"""
+	print(message, file=sys.stderr)
 
 
 
@@ -195,3 +209,10 @@ class EvalCli:
 
 		header = 'evaluation: {}'.format(dataset_pred.header)
 		write_alignments(evaluation.mistakes, args.output, header)
+
+
+
+"""
+Setup the warnings module.
+"""
+warnings.showwarning = print_to_stderr
