@@ -30,9 +30,6 @@ begin
 	set -l output_dir "output/"(basename $dataset | cut -d '.' -f 1)
 	mkdir -p $output_dir
 
-	# ensure reproducibility
-	set -x PYTHONHASHSEED 42
-
 	# run and eval
 	for align_arg in $align_choices
 		for vectors_arg in $vectors_choices
@@ -42,7 +39,4 @@ begin
 			| python eval.py $dataset - --output $output
 		end
 	end
-
-	# unset environment variables
-	set -u PYTHONHASHSEED 42
 end

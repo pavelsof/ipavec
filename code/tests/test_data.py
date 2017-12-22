@@ -103,13 +103,13 @@ class AlignmentsDatasetTestCase(TestCase):
 		self.assertEqual(dataset.get_word_pairs('Latin', 'Iranian'), [
 			(kentum, satəm)])
 		self.assertEqual(dataset.get_alignments('Latin', 'Iranian'), {
-			(kentum, satəm): Alignment(
+			(kentum, satəm): set([Alignment(
 				(('k', 's'), ('e', 'a'), ('n', ''), ('t', 't'), ('u', 'ə'), ('m', 'm')),
-				'centum/satəm')})
+				'centum/satəm')])})
 
 		self.assertEqual(dataset.get_word_pairs('Iranian', 'Latin'), [
 			(satəm, kentum)])
 		self.assertEqual(dataset.get_alignments('Iranian', 'Latin'), {
-			(satəm, kentum): Alignment(
+			(satəm, kentum): set([Alignment(
 				(('s', 'k'), ('a', 'e'), ('', 'n'), ('t', 't'), ('ə', 'u'), ('m', 'm')),
-				'centum/satəm')})
+				'centum/satəm')])})

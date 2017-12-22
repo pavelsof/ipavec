@@ -43,4 +43,4 @@ python eval.py --help
 
 |           | one-hot | phoible |
 |-----------|---------|---------|
-| covington |  63,41% |  82,93% |
+| covington |  60,61% |  82,42% |

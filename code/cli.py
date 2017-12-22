@@ -202,12 +202,12 @@ class EvalCli:
 			self.parser.error(str(err))
 
 		evaluation = evaluate(dataset_true, dataset_pred)
-		print('{} → {:.2f}% ({} out of {})'.format(
-				dataset_pred.header,
-				evaluation.num_correct / evaluation.num_all * 100,
-				evaluation.num_correct, evaluation.num_all))
+		header = '{} → {} pairs, {} full matches, score {:.2f} ({:.2f}%)'.format(
+				dataset_pred.header, evaluation.num_total,
+				evaluation.num_correct, evaluation.score,
+				evaluation.score / evaluation.num_total * 100)
 
-		header = 'evaluation: {}'.format(dataset_pred.header)
+		print(header)
 		write_alignments(evaluation.mistakes, args.output, header)
 
 

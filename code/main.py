@@ -12,6 +12,6 @@ def main(dataset, align_func, delta_func):
 
 		for word_a, word_b in word_pairs:
 			alignments = align_func(word_a.ipa, word_b.ipa, delta_func)
-			output.append((word_a, word_b, next(iter(alignments))))
+			output.extend([(word_a, word_b, x) for x in alignments])
 
 	return output

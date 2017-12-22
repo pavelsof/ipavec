@@ -213,21 +213,22 @@ class AlignmentsDataset(Dataset):
 
 	def __init__(self, path):
 		"""
-		Init the instance's props, including self.data, a dict mapping Word
-		pairs to their respective Alignment.
+		Init the instance's props, including self.data, a [] of (Word, Word,
+		Alignment) tuples (where the first Word is always < the second one).
 
 		Raise a DatasetError if the data cannot be loaded.
 		"""
 		self.path = path
 
 		self.header = ''
-		self.data = collections.OrderedDict()
+		self.data = []
 
 		for word_a, word_b, alignment in self._read_pairs():
 			if word_a < word_b:
-				self.data[(word_a, word_b)] = alignment
+				self.data.append((word_a, word_b, alignment))
 			else:
-				self.data[(word_b, word_a)] = self._reverse_alignment(alignment)
+				self.data.append((
+					word_b, word_a, self._reverse_alignment(alignment)))
 
 
 	def _reverse_alignment(self, alignment):
@@ -308,7 +309,7 @@ class AlignmentsDataset(Dataset):
 		"""
 		langs = set()
 
-		for word_a, word_b in self.data.keys():
+		for word_a, word_b, _ in self.data:
 			langs.add(word_a.lang)
 			langs.add(word_b.lang)
 
@@ -325,7 +326,7 @@ class AlignmentsDataset(Dataset):
 		else:
 			reverse_langs = False
 
-		pairs = [(word_a, word_b) for word_a, word_b in self.data.keys()
+		pairs = [(word_a, word_b) for word_a, word_b, _ in self.data
 					if word_a.lang == lang_a and word_b.lang == lang_b]
 
 		if reverse_langs:
@@ -336,8 +337,8 @@ class AlignmentsDataset(Dataset):
 
 	def get_alignments(self, lang_a, lang_b):
 		"""
-		Return the {(Word, Word): Alignment} dict comprising the dataset's
-		alignments for two languages.
+		Return the {(Word, Word): set of Alignment tuples} dict comprising the
+		dataset's alignments for two languages.
 		"""
 		if lang_b < lang_a:
 			reverse_langs = True
@@ -345,13 +346,17 @@ class AlignmentsDataset(Dataset):
 		else:
 			reverse_langs = False
 
-		res = {(word_a, word_b): value
-				for (word_a, word_b), value in self.data.items()
-				if word_a.lang == lang_a and word_b.lang == lang_b}
+		res = collections.defaultdict(set)
+
+		for word_a, word_b, alignment in self.data:
+			if word_a.lang == lang_a and word_b.lang == lang_b:
+				res[(word_a, word_b)].add(alignment)
 
 		if reverse_langs:
-			res = {(b, a): self._reverse_alignment(value)
+			res = {(b, a): set([self._reverse_alignment(x) for x in value])
 						for (a, b), value in res.items()}
+		else:
+			res = dict(res)
 
 		return res
 
