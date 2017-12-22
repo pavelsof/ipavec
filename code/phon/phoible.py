@@ -16,7 +16,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), 'phoible.tsv')
 """
 Dict mapping IPA segments to PHOIBLE feature vectors; populated in load().
 """
-SEGMENTS = {}
+SEGMENTS = collections.OrderedDict()
 
 
 """

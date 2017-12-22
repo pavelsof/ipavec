@@ -13,7 +13,7 @@ begin
 	# parse args
 	set -l dataset $argv[1]
 	set -l align_choices {standard}
-	set -l vectors_choices {one-hot,phoible}
+	set -l vectors_choices {one-hot,phoible,phoible-pc}
 
 	if test (count $argv) -eq 2
 		if contains $argv[2] $align_choices

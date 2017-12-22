@@ -2,7 +2,7 @@ import importlib
 
 
 
-MODULES = ['one-hot', 'phoible']
+MODULES = ['one-hot', 'phoible', 'phoible-pc']
 
 
 
