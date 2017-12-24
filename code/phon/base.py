@@ -1,28 +1,35 @@
-from ipatok import tokenise
+import importlib
 
 
 
-def get_inventory(words):
+class Phon:
 	"""
-	Return the phoneme inventory of, i.e. the set of phonemes found in, the
-	given collection of words (data.Word tuples).
+	Object handling IPA representations. Usage:
+
+		tokens_spa = set([token for word in words['spa'] for token in word.ipa])
+		tokens_fra = set([token for word in words['fra'] for token in word.ipa])
+
+		phon = Phon('phoible')
+		cost_func = phon.get_cost_func(tokens_spa, tokens_fra)
+		print(cost_func('j', 'ʒ'))
 	"""
-	return set([token for word in words for token in tokenise(word.ipa, replace=True)])
+
+	MODULES = ['one-hot', 'phoible', 'phoible-pc']
 
 
-
-class DeltaCalc:
-	"""
-	"""
-
-	def __init__(self, inventory_a, inventory_b):
+	def __init__(self, module_id, lang_pair_mode=False):
 		"""
+		Load the necessary code.phon sub-module and init the instance's props.
 		"""
-		pass
+		module_id = module_id.replace('-', '_')
+		module = importlib.import_module('code.phon.{}'.format(module_id))
+
+		self.cost_func = module.calc_delta
 
 
-	def calc_delta(self, phon_a, phon_b):
+	def get_cost_func(self, inventory_a, inventory_b):
 		"""
-		Return the delta between two phonemes.
+		Return a function that takes two phonemes (or tuples of phonemes) as
+		input and returns the respective cost/delta.
 		"""
-		pass
+		return self.cost_func

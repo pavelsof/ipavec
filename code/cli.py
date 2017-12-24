@@ -8,7 +8,7 @@ from code.data import (
 		DatasetError, WordsDataset, AlignmentsDataset, write_alignments)
 from code.eval import evaluate
 from code.main import main
-from code.phon import list_providers, get_delta_func
+from code.phon.base import Phon
 
 
 
@@ -90,7 +90,7 @@ class RunCli:
 				'the default is the standard Needleman-Wunsch'))
 		algo_args.add_argument(
 			'--vectors',
-			choices=list_providers(), default='phoible',
+			choices=Phon.MODULES, default='phoible',
 			help=(
 				'which IPA vector representations to use; '
 				'the default is PHOIBLE\'s feature vectors'))
@@ -136,9 +136,9 @@ class RunCli:
 			self.parser.error(str(err))
 
 		align_func = get_align_func(args.align)
-		delta_func = get_delta_func(args.vectors)
+		phon = Phon(args.vectors)
 
-		alignments = main(dataset, align_func, delta_func)
+		alignments = main(dataset, align_func, phon)
 		header = '{} alignment, {} vectors'.format(args.align, args.vectors)
 
 		write_alignments(alignments, args.output, header)
