@@ -50,6 +50,14 @@ class Dataset:
 		raise NotImplementedError
 
 
+	def get_words(self, lang):
+		"""
+		Return the list of Word tuples of a language. Children classes should
+		implement this method.
+		"""
+		raise NotImplementedError
+
+
 	def get_word_pairs(self, lang_a, lang_b):
 		"""
 		Return the list of same-concept Word pairs of two languages. Children
@@ -144,6 +152,13 @@ class WordsDataset(Dataset):
 		Return the sorted list of languages found in the dataset.
 		"""
 		return sorted(set([word.lang for word in self.words]))
+
+
+	def get_words(self, lang):
+		"""
+		Return the list of Word tuples of a language.
+		"""
+		return [word for word in self.words if word.lang == lang]
 
 
 	def get_word_pairs(self, lang_a, lang_b):
@@ -314,6 +329,19 @@ class AlignmentsDataset(Dataset):
 			langs.add(word_b.lang)
 
 		return sorted(langs)
+
+
+	def get_words(self, lang):
+		"""
+		Return the list of Word tuples of a language.
+		"""
+		words = []
+
+		for word_a, word_b, _ in self.data:
+			if word_a.lang == lang: words.append(word_a)
+			if word_b.lang == lang: words.append(word_b)
+
+		return words
 
 
 	def get_word_pairs(self, lang_a, lang_b):
