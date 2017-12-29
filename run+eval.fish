@@ -1,7 +1,22 @@
 #!/usr/bin/fish
 
 begin
+	# helper that parses run.py's help info to extract arg choices
+	function get_choices
+		set -l IFS ','
+		set -l output_arr
+		python run.py --help \
+			| grep "^  --$argv[1]" \
+			| grep -o '{.*}' \
+			| tr -d '{}' \
+			| read -a output_arr
+		echo $output_arr
+	end
+
+	# set $usage, $align_choices, and $vectors_choices
 	set -l usage "usage: run+eval.fish dataset [align] [vectors]"
+	get_choices 'align' | read -al align_choices
+	get_choices 'vectors' | read -al vectors_choices
 
 	# ensure the right number of args
 	if test (count $argv) -eq 0
@@ -12,8 +27,6 @@ begin
 
 	# parse args
 	set -l dataset $argv[1]
-	set -l align_choices {standard}
-	set -l vectors_choices {one-hot,phoible,phoible-pc}
 
 	if test (count $argv) -eq 2
 		if contains $argv[2] $align_choices
