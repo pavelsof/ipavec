@@ -14,17 +14,15 @@ class Phon:
 		print(cost_func('j', 'ʒ'))
 	"""
 
-	MODULES = ['one-hot', 'phoible', 'phoible-pc']
+	MODULES = ['one-hot', 'phoible', 'phoible-pc', 'phoible-sub']
 
 
 	def __init__(self, module_id, lang_pair_mode=False):
 		"""
 		Load the necessary code.phon sub-module and init the instance's props.
 		"""
-		module_id = module_id.replace('-', '_')
-		module = importlib.import_module('code.phon.{}'.format(module_id))
-
-		self.cost_func = module.calc_delta
+		self.module_id = module_id.replace('-', '_')
+		self.module = importlib.import_module('code.phon.{}'.format(self.module_id))
 
 
 	def get_cost_func(self, inventory_a, inventory_b):
@@ -32,4 +30,8 @@ class Phon:
 		Return a function that takes two phonemes (or tuples of phonemes) as
 		input and returns the respective cost/delta.
 		"""
-		return self.cost_func
+		if self.module_id == 'phoible_sub':
+			pair = self.module.LangPair(inventory_a, inventory_b)
+			return pair.calc_delta
+		else:
+			return self.module.calc_delta

@@ -23,12 +23,12 @@ def main(dataset, align_func, phon):
 	"""
 	output = []  # [(Word, Word, Alignment), ..]
 
-	# phon_inv = collect_inventories(dataset)
+	phon_inv = collect_inventories(dataset)
 
 	for lang_a, lang_b in itertools.combinations(dataset.get_langs(), 2):
 		word_pairs = dataset.get_word_pairs(lang_a, lang_b)
 
-		cost_func = phon.get_cost_func(set(), set())
+		cost_func = phon.get_cost_func(phon_inv[lang_a], phon_inv[lang_b])
 
 		for word_a, word_b in word_pairs:
 			alignments = align_func(word_a.ipa, word_b.ipa, cost_func)
