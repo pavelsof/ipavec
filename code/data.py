@@ -2,8 +2,9 @@ import collections
 import csv
 import itertools
 
+from ipatok.ipa import is_letter, is_tie_bar, is_diacritic, is_length
 from ipatok.ipa import replace_substitutes
-from ipatok import tokenise
+from ipatok.tokens import normalise, tokenise
 
 from code.utils import open_for_reading, open_for_writing
 
@@ -39,8 +40,30 @@ class DatasetError(ValueError):
 
 class Dataset:
 	"""
-	Base class that defines the get_* methods used by other modules.
+	Base class that defines the get_* methods used by other modules, as well as
+	helper method(s) used in children classes.
 	"""
+
+	@staticmethod
+	def sanitise_token(token):
+		"""
+		Sanitise a string by (1) ensuring its chars' normal form comply to the
+		IPA spec; (2) replacing common substitutes with their IPA equivalents;
+		(3) excluding chars that are not IPA letters, diacritics, tie bars, or
+		length markers.
+
+		This method leverages ipatok functions that are not in the package's
+		public API.
+		"""
+		token = replace_substitutes(normalise(token))
+
+		return ''.join([
+				char for char in token
+				if is_letter(char, strict=False) \
+					or is_tie_bar(char) \
+					or is_diacritic(char, strict=False) \
+					or is_length(char) ])
+
 
 	def get_langs(self):
 		"""
@@ -109,10 +132,11 @@ class WordsDataset(Dataset):
 		the first one is kept. Some common non-IPA symbols are also removed.
 
 		If the dataset is advertised as having its IPA data already tokenised,
-		then just split the string.
+		then split the string and sanitise the resulting tokens.
 		"""
 		if self.is_tokenised:
-			return tuple(string.split())
+			return tuple([
+				self.sanitise_token(token) for token in string.split()])
 
 		string = string.strip().split(',')[0].strip()
 		string = string.replace('_', ' ').replace('-', '')
@@ -259,6 +283,23 @@ class AlignmentsDataset(Dataset):
 				alignment.comment)
 
 
+	def _parse_word(self, line):
+		"""
+		Parse a .psa line comprising a word, i.e. the second or third line of a
+		triplet. Helper for the _parse_pair method.
+		"""
+		lang, align = line.split('\t', maxsplit=1)
+		lang = lang.strip('.')
+
+		align = tuple([
+			self.sanitise_token(token) if token != '' else ''
+			for token in align.split('\t')])
+
+		ipa = tuple([token for token in align if token])
+
+		return Word(lang, None, ipa), align
+
+
 	def _parse_pair(self, lines):
 		"""
 		Given a triplet of lines describing an alignment as per the psa spec,
@@ -266,26 +307,12 @@ class AlignmentsDataset(Dataset):
 
 		Helper for the _read_pairs method.
 		"""
-		lang_a, align_a = lines[1].split('\t', maxsplit=1)
-		lang_b, align_b = lines[2].split('\t', maxsplit=1)
-
-		lang_a = lang_a.strip('.')
-		lang_b = lang_b.strip('.')
-
-		align_a = replace_substitutes(align_a)
-		align_b = replace_substitutes(align_b)
-
-		align_a = [token if token != '-' else '' for token in align_a.split('\t')]
-		align_b = [token if token != '-' else '' for token in align_b.split('\t')]
-
-		ipa_a = tuple([token for token in align_a if token])
-		ipa_b = tuple([token for token in align_b if token])
+		word_a, align_a = self._parse_word(lines[1])
+		word_b, align_b = self._parse_word(lines[2])
 
 		corr = tuple(zip(align_a, align_b))
 
-		return (
-			Word(lang_a, None, ipa_a), Word(lang_b, None, ipa_b),
-			Alignment(corr, lines[0]))
+		return word_a, word_b, Alignment(corr, lines[0])
 
 
 	def _read_pairs(self):
