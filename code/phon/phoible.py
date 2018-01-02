@@ -32,8 +32,15 @@ def canonise(segment):
 	Return the canonical IPA form of a segment. Some PHOIBLE segments do not
 	conform strictly to the IPA spec.
 	"""
-	phoible_to_ipa = {'ts': 't͡s', 'dʑ': 'd͡ʑ'}
-	return phoible_to_ipa.get(segment, segment)
+	phoible_to_ipa = {
+		'ts': 't͡s', 'tʃ': 't͡ʃ',
+		'dz': 'd͡z', 'dʒ': 'd͡ʒ', 'dʑ': 'd͡ʑ',
+		'ç': 'ç'}
+
+	for key, value in phoible_to_ipa.items():
+		segment = segment.replace(key, value)
+
+	return segment
 
 
 

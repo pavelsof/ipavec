@@ -50,7 +50,11 @@ class LangPair:
 		Make a self.Vector tuple for the given phoneme out of the respective
 		phoible.SEGMENTS tuple.
 		"""
+		if phon not in phoible.SEGMENTS:
+			phon = ''
+
 		dict_all = phoible.SEGMENTS[phon]._asdict()
+
 		dict_relevant = {key: value
 				for key, value in dict_all.items() if key in self.features}
 
