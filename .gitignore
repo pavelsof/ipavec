@@ -1,6 +1,7 @@
 # use this for own files
 /meta/*
 /output/*
+/papers/*
 
 # python temps
 *.py[cod]
