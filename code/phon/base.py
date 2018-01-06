@@ -14,7 +14,7 @@ class Phon:
 		print(cost_func('j', 'ʒ'))
 	"""
 
-	MODULES = ['one-hot', 'phoible', 'phoible-pc', 'phoible-sub']
+	MODULES = ['one-hot', 'phoible', 'phoible-pc', 'phoible-sub', 'skipgrams']
 
 
 	def __init__(self, module_id, lang_pair_mode=False):
