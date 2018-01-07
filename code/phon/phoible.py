@@ -76,13 +76,13 @@ def calc_delta(phon_a, phon_b):
 	if phon_a in SEGMENTS:
 		vec_a = SEGMENTS[phon_a]
 	else:
-		warnings.warn('PHOIBLE: cannot recognise {}'.format(phon_a))
+		warnings.warn('phoible: cannot recognise {}'.format(phon_a))
 		vec_a = SEGMENTS['']
 
 	if phon_b in SEGMENTS:
 		vec_b = SEGMENTS[phon_b]
 	else:
-		warnings.warn('PHOIBLE: cannot recognise {}'.format(phon_b))
+		warnings.warn('phoible: cannot recognise {}'.format(phon_b))
 		vec_b = SEGMENTS['']
 
 	return - sum(map(operator.mul, vec_a, vec_b))

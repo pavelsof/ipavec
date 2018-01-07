@@ -14,15 +14,22 @@ class Phon:
 		print(cost_func('j', 'ʒ'))
 	"""
 
-	MODULES = ['one-hot', 'phoible', 'phoible-pc']
+	MODULES = ['one-hot', 'phoible', 'phoible-pc', 'phoible-sub']
 
 
-	def __init__(self, module_id, lang_pair_mode=False):
+	def __init__(self, module_id, extra_args={}):
 		"""
-		Load the necessary code.phon sub-module and init the instance's props.
+		Import the code.phon module identified by module_id and, if necessary,
+		invoke its load() func with the given extra_args.
 		"""
 		self.module_id = module_id.replace('-', '_')
 		self.module = importlib.import_module('code.phon.{}'.format(self.module_id))
+
+		if self.module_id == 'phoible_pc':
+			try:
+				self.module.load(**extra_args)
+			except TypeError:
+				raise ValueError('unrecognised extra arguments')
 
 
 	def get_cost_func(self, inventory_a, inventory_b):

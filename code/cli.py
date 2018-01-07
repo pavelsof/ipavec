@@ -22,9 +22,32 @@ def validate_columns(string):
 	columns = string.split(',')
 
 	if len(columns) != len(WordsDataset.DEFAULT_COLUMNS):
-		raise argparse.ArgumentTypeError('{!s} cannot be a valid columns argument')
+		raise argparse.ArgumentTypeError(
+				'{!s} should comprise a list of length {!s}'.format(
+					string, len(WordsDataset.DEFAULT_COLUMNS)))
 
 	return columns
+
+
+def validate_extra(string):
+	"""
+	Raise an ArgumentTypeError if the argument is not a comma-separated list of
+	key-value pairs of the form key=value. Otherwise, return these as a dict.
+
+	Helper for RunCli's ArgumentParser instance.
+	"""
+	pairs = {}
+
+	for pair in filter(lambda x: x, string.split(',')):
+		pair = pair.split('=')
+
+		if len(pair) != 2 or not pair[0] or not pair[1]:
+			raise argparse.ArgumentTypeError(
+				'{!s} should comprise a list of key=value pairs'.format(string))
+
+		pairs[pair[0]] = pair[1]
+
+	return pairs
 
 
 def init_dataset(path, file_format=None, columns=None):
@@ -94,6 +117,12 @@ class RunCli:
 			help=(
 				'which IPA vector representations to use; '
 				'the default is PHOIBLE\'s feature vectors'))
+		algo_args.add_argument(
+			'--extra',
+			type=validate_extra, default='',
+			help=(
+				'extra parameters in the form key=value[,key2=value2] '
+				'passed on to the respective vectors backend'))
 
 		io_args = self.parser.add_argument_group('optional arguments - input/output')
 		io_args.add_argument(
@@ -132,11 +161,11 @@ class RunCli:
 
 		try:
 			dataset = init_dataset(args.dataset, args.format, args.columns)
+			phon = Phon(args.vectors, args.extra)
 		except (DatasetError, ValueError) as err:
 			self.parser.error(str(err))
 
 		align_func = get_align_func(args.align)
-		phon = Phon(args.vectors)
 
 		alignments = main(dataset, align_func, phon)
 		header = '{} alignment, {} vectors'.format(args.align, args.vectors)
