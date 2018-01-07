@@ -1,6 +1,8 @@
 #!/usr/bin/fish
 
 begin
+	set -x PYTHONHASHSEED 42
+
 	# helper that parses run.py's help info to extract arg choices
 	function get_choices
 		set -l IFS ','

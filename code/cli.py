@@ -165,10 +165,13 @@ class RunCli:
 		except (DatasetError, ValueError) as err:
 			self.parser.error(str(err))
 
-		align_func = get_align_func(args.align)
+		alignments = main(dataset, get_align_func(args.align), phon)
 
-		alignments = main(dataset, align_func, phon)
 		header = '{} alignment, {} vectors'.format(args.align, args.vectors)
+		if args.extra:
+			header += ' ({})'.format(','.join([
+				'{}={}'.format(key, value)
+				for key, value in sorted(args.extra.items())]))
 
 		write_alignments(alignments, args.output, header)
 

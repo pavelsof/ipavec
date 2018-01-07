@@ -14,7 +14,7 @@ SEGMENTS = {}
 
 
 
-def load(n_components=18, random_state=42):
+def load(n_components=29, random_state=42):
 	"""
 	Populate the SEGMENTS dict by applying PCA onto phoible.SEGMENTS. Pass the
 	args onto the PCA constructor unless.
