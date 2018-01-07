@@ -41,7 +41,7 @@ python eval.py --help
 
 ## results
 
-|           | one-hot | phoible | skipgrams |
-|-----------|---------|---------|-----------|
-| covington |  60,61% |  82,42% |    57,02% |
-| bulgarian |  60,54% |  80,54% |    60,64% |
+|           | one-hot | phoible | phoible-pc | skipgrams |
+|-----------|---------|---------|------------|-----------|
+| covington |  60,61% |  82,42% |     83,54% |    57,02% |
+| bulgarian |  60,54% |  80,54% |     77,75% |    60,64% |

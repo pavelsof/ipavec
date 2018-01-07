@@ -18,7 +18,7 @@ def load():
 	"""
 	Populate the SEGMENTS dict by applying PCA onto phoible.SEGMENTS.
 	"""
-	pca = PCA(n_components=18)
+	pca = PCA(n_components=18, random_state=42)
 	vectors = pca.fit_transform(list(phoible.SEGMENTS.values()))
 
 	for index, key in enumerate(phoible.SEGMENTS.keys()):
