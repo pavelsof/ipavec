@@ -244,6 +244,69 @@ class EvalCli:
 
 
 
+class TrainCli:
+	"""
+	Handles the user input, invokes the necessary functions, and takes care of
+	exiting the script for training the models needed by some of the alignment
+	algorithms.
+
+	Usage:
+		if __name__ == '__main__':
+			cli = TrainCli()
+			cli.run()
+	"""
+
+	def __init__(self):
+		"""
+		Setup the argparse parser.
+		"""
+		self.parser = argparse.ArgumentParser(add_help=False)
+
+		self.parser.add_argument(
+			'model',
+			choices=Phon.TRAIN_MODULES, default='phon2vec',
+			help='type of model to train')
+		self.parser.add_argument(
+			'dataset',
+			help='path to the dataset to train the model on')
+
+		algo_args = self.parser.add_argument_group('optional arguments - algorithm')
+		algo_args.add_argument(
+			'--extra',
+			type=validate_extra, default='',
+			help=(
+				'extra parameters in the form key=value[,key2=value2] '
+				'passed on to the respective model trainer'))
+
+		io_args = self.parser.add_argument_group('optional arguments - input/output')
+		io_args.add_argument(
+			'--output',
+			help=(
+				'path where to store the trained model to; '
+				'by default this is data/models/$MODEL'))
+
+		other_args = self.parser.add_argument_group('optional arguments - other')
+		other_args.add_argument(
+			'-h', '--help',
+			action='help',
+			help='show this help message and exit')
+
+
+	def run(self, raw_args=None):
+		"""
+		Parse the given args (if these are None, default to parsing sys.argv,
+		which is what you would want unless you are unit testing).
+		"""
+		args = self.parser.parse_args(raw_args)
+
+		try:
+			phon = Phon(args.model)
+			phon.train(args.dataset, args.output, args.extra)
+		except ValueError as err:
+			self.parser.error(str(err))
+
+
+
 """
 Setup the warnings module.
 """

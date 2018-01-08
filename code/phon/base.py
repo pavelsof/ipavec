@@ -4,7 +4,9 @@ import importlib
 
 class Phon:
 	"""
-	Object handling IPA representations. Usage:
+	Object that provides a common interface for handling IPA representations.
+
+	Basic usage:
 
 		tokens_spa = set([token for word in words['spa'] for token in word.ipa])
 		tokens_fra = set([token for word in words['fra'] for token in word.ipa])
@@ -14,7 +16,10 @@ class Phon:
 		print(cost_func('j', 'ʒ'))
 	"""
 
-	MODULES = ['one-hot', 'phoible', 'phoible-pc', 'phoible-sub']
+	NON_TRAIN_MODULES = ['one-hot', 'phoible', 'phoible-pc', 'phoible-sub']
+	TRAIN_MODULES = ['phon2vec']
+
+	MODULES = NON_TRAIN_MODULES + TRAIN_MODULES
 
 
 	def __init__(self, module_id, extra_args={}):
@@ -25,7 +30,7 @@ class Phon:
 		self.module_id = module_id.replace('-', '_')
 		self.module = importlib.import_module('code.phon.{}'.format(self.module_id))
 
-		if self.module_id == 'phoible_pc':
+		if self.module_id in ['phoible_pc', 'phon2vec']:
 			try:
 				self.module.load(**extra_args)
 			except TypeError:
@@ -42,3 +47,17 @@ class Phon:
 			return pair.calc_delta
 		else:
 			return self.module.calc_delta
+
+
+	def train(self, dataset_path, output_path=None, extra_args={}):
+		"""
+		Invoke the imported module's train func with the given args. Raise a
+		ValueError if these are not as expected.
+		"""
+		if output_path is None:
+			output_path = self.module.DEFAULT_MODEL_PATH
+
+		try:
+			self.module.train(dataset_path, output_path, **extra_args)
+		except TypeError:
+			raise ValueError('unrecognised extra arguments')
