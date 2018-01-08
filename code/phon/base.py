@@ -12,6 +12,8 @@ class Phon:
 		tokens_fra = set([token for word in words['fra'] for token in word.ipa])
 
 		phon = Phon('phoible')
+		phon.load()
+
 		cost_func = phon.get_cost_func(tokens_spa, tokens_fra)
 		print(cost_func('j', 'ʒ'))
 	"""
@@ -22,15 +24,20 @@ class Phon:
 	MODULES = NON_TRAIN_MODULES + TRAIN_MODULES
 
 
-	def __init__(self, module_id, extra_args={}):
+	def __init__(self, module_id):
 		"""
-		Import the code.phon module identified by module_id and, if necessary,
-		invoke its load() func with the given extra_args.
+		Import the code.phon module identified by module_id.
 		"""
 		self.module_id = module_id.replace('-', '_')
 		self.module = importlib.import_module('code.phon.{}'.format(self.module_id))
 
-		if self.module_id in ['phoible_pc', 'phon2vec']:
+
+	def load(self, extra_args={}):
+		"""
+		Invoke the module's load() func (if it exists) with the given args.
+		Most modules must be loaded before their calc_delta func can be used.
+		"""
+		if hasattr(self.module, 'load'):
 			try:
 				self.module.load(**extra_args)
 			except TypeError:

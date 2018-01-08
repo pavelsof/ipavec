@@ -78,3 +78,11 @@ class LangPair:
 			vec_b = self.SEGMENTS['']
 
 		return - sum(map(operator.mul, vec_a, vec_b))
+
+
+
+def load(path=phoible.DATA_PATH):
+	"""
+	Make sure that phoible.SEGMENTS is available.
+	"""
+	phoible.load(path)

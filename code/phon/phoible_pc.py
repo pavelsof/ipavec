@@ -14,14 +14,13 @@ SEGMENTS = {}
 
 
 
-def load(n_components=29, random_state=42):
+def load(path=phoible.DATA_PATH, n_components=29, random_state=42):
 	"""
 	Populate the SEGMENTS dict by applying PCA onto phoible.SEGMENTS. Pass the
 	args onto the PCA constructor unless.
-
-	Unlike its phoible.load counterpart, this function is not invoked
-	automatically when importing the module.
 	"""
+	phoible.load(path)
+
 	try:
 		n_components = int(n_components)
 		assert n_components > 0

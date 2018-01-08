@@ -44,7 +44,7 @@ def canonise(segment):
 
 
 
-def load(path):
+def load(path=DATA_PATH):
 	"""
 	Define the Vector named tuple and populate the SEGMENTS dict. The specified
 	file should be like the raw-data/FEATURES/phoible-segments-features.tsv
@@ -86,10 +86,3 @@ def calc_delta(phon_a, phon_b):
 		vec_b = SEGMENTS['']
 
 	return - sum(map(operator.mul, vec_a, vec_b))
-
-
-
-"""
-Load the data
-"""
-load(DATA_PATH)

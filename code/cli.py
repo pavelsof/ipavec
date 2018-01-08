@@ -161,7 +161,8 @@ class RunCli:
 
 		try:
 			dataset = init_dataset(args.dataset, args.format, args.columns)
-			phon = Phon(args.vectors, args.extra)
+			phon = Phon(args.vectors)
+			phon.load(args.extra)
 		except (DatasetError, ValueError) as err:
 			self.parser.error(str(err))
 
