@@ -35,7 +35,7 @@ python run.py --help
 python eval.py --help
 
 # use this fish script to directly evaluate with several option combinations
-bin/run+eval.fish data/bdpa/covington.psa
+scripts/run+eval.fish data/bdpa/covington.psa
 ```
 
 
