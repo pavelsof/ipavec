@@ -45,6 +45,9 @@ def validate_extra(string):
 			raise argparse.ArgumentTypeError(
 				'{!s} should comprise a list of key=value pairs'.format(string))
 
+		if pair[1].isdigit():
+			pair[1] = int(pair[1])
+
 		pairs[pair[0]] = pair[1]
 
 	return pairs

@@ -61,10 +61,10 @@ class Phon:
 		Invoke the imported module's train func with the given args. Raise a
 		ValueError if these are not as expected.
 		"""
-		if output_path is None:
-			output_path = self.module.DEFAULT_MODEL_PATH
+		if output_path is not None:
+			extra_args['output_path'] = output_path
 
 		try:
-			self.module.train(dataset_path, output_path, **extra_args)
+			self.module.train(dataset_path, **extra_args)
 		except TypeError:
 			raise ValueError('unrecognised extra arguments')
