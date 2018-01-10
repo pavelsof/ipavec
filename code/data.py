@@ -428,8 +428,9 @@ def write_alignments(alignments, path=None, header='OUTPUT'):
 	lines = [header]
 
 	for word_a, word_b, alignment in alignments:
-		lang_a = '{:.<40}'.format(word_a.lang)[:40]
-		lang_b = '{:.<40}'.format(word_b.lang)[:40]
+		field_size = str(max(len(word_a.lang), len(word_b.lang)))
+		lang_a = ('{:.<'+ field_size +'}').format(word_a.lang)
+		lang_b = ('{:.<'+ field_size +'}').format(word_b.lang)
 
 		align_a = [token if token else '-' for token, _ in alignment.corr]
 		align_b = [token if token else '-' for _, token in alignment.corr]
