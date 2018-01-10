@@ -360,7 +360,7 @@ class AlignmentsDataset(Dataset):
 
 	def get_words(self, lang):
 		"""
-		Return the list of Word tuples of a language.
+		Return the sorted list of Word tuples of a language.
 		"""
 		words = []
 
@@ -368,7 +368,7 @@ class AlignmentsDataset(Dataset):
 			if word_a.lang == lang: words.append(word_a)
 			if word_b.lang == lang: words.append(word_b)
 
-		return words
+		return sorted(set(words))
 
 
 	def get_word_pairs(self, lang_a, lang_b):
@@ -428,8 +428,8 @@ def write_alignments(alignments, path=None, header='OUTPUT'):
 	lines = [header]
 
 	for word_a, word_b, alignment in alignments:
-		lang_a = '{:.<16}'.format(word_a.lang)[:16]
-		lang_b = '{:.<16}'.format(word_b.lang)[:16]
+		lang_a = '{:.<40}'.format(word_a.lang)[:40]
+		lang_b = '{:.<40}'.format(word_b.lang)[:40]
 
 		align_a = [token if token else '-' for token, _ in alignment.corr]
 		align_b = [token if token else '-' for _, token in alignment.corr]
