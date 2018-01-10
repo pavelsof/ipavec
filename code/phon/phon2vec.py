@@ -19,7 +19,7 @@ model = None
 
 
 def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
-				size=30, window=1, sg=0, negative=1):
+				size=15, window=1, seed=42, sg=0, negative=1):
 	"""
 	Train phoneme embeddings using word2vec (with tokenised IPA string being
 	the "sentences") on a dataset and store the trained model.
@@ -31,6 +31,8 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
 				sentences=ipa_data,
 				size=size,  # the length of the output vectors
 				window=window,  # that many to the left and that many to the right
+				seed=seed,  # random seed
+				workers=1,  # needed for reproducibility
 				min_count=5,  # ignore tokens occurring less often than that
 				sg=sg,  # 0 for cbow, 1 for skip-gram
 				negative=negative,  # number of negative samples (per positive one?)

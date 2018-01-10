@@ -43,5 +43,5 @@ scripts/run+eval.fish data/bdpa/covington.psa
 
 |           | one-hot | phoible | phoible-pc | phon2vec |
 |-----------|---------|---------|------------|----------|
-| covington |  60,61% |  82,42% |     85,37% |   78,88% |
-| bulgarian |  60,54% |  80,54% |     78,79% |   77,05% |
+| covington |  60,61% |  82,42% |     85,37% |   77,24% |
+| bulgarian |  60,54% |  80,54% |     78,79% |   78,10% |
