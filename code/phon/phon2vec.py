@@ -7,7 +7,7 @@ from gensim.models import Word2Vec
 """
 Default path to store the trained embeddings model to.
 """
-DEFAULT_MODEL_PATH = 'data/models/phon2vec'
+DEFAULT_MODEL_PATH = 'models/phon2vec'
 
 
 """

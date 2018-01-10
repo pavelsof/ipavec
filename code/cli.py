@@ -287,7 +287,7 @@ class TrainCli:
 			'--output',
 			help=(
 				'path where to store the trained model to; '
-				'by default this is data/models/$MODEL'))
+				'by default this is models/$MODEL'))
 
 		other_args = self.parser.add_argument_group('optional arguments - other')
 		other_args.add_argument(

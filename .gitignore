@@ -1,5 +1,6 @@
 # use this for own files
 /meta/*
+/models/*
 /output/*
 /papers/*
 
