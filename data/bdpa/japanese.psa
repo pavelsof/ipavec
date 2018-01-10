@@ -1,0 +1,876 @@
+PairwiseGoldStandard: Japanese
+"tongue",(phonalign_480.msa/Japanese)
+Shuri....	ʃ	i	-	-	b	a
+Kagoshima	s	i	t	a	-	-
+
+"tongue",(phonalign_480.msa/Japanese)
+Amami	s	ɨ	-	-	b	a
+Tokyo	s	i	t	a	-	-
+
+"tongue",(phonalign_480.msa/Japanese)
+Oki..	-	-	b	e	r	o
+Shuri	ʃ	i	b	a	-	-
+
+"tongue",(phonalign_480.msa/Japanese)
+Oki..	-	-	b	e	r	o
+Amami	s	ɨ	b	a	-	-
+
+"tongue",(phonalign_480.msa/Japanese)
+Sado.	s	i	t	a	b	e	r	a
+Amami	s	ɨ	-	-	b	a	-	-
+
+"tongue",(phonalign_480.msa/Japanese)
+Sado.	s	i	t	a	b	e	r	a
+Shuri	ʃ	i	-	-	b	a	-	-
+
+"tongue",(phonalign_480.msa/Japanese)
+Amami.	s	ɨ	-	-	b	a
+Miyako	s	ɨ	t	a	-	-
+
+"tongue",(phonalign_480.msa/Japanese)
+Oki.	-	-	-	-	b	e	r	o
+Sado	s	i	t	a	b	e	r	a
+
+"tongue",(phonalign_480.msa/Japanese)
+Sado..	s	i	t	a	b	e	r	a
+Miyako	s	ɨ	t	a	-	-	-	-
+
+"tongue",(phonalign_480.msa/Japanese)
+Sado.	s	i	t	a	b	e	r	a
+Kyoto	s	i	t	a	-	-	-	-
+
+"claw",(phonalign_481.msa/Japanese)
+Shuri....	ɕ	i	m	i
+Kagoshima	ʦ	ui	m	e
+
+"claw",(phonalign_481.msa/Japanese)
+Shuri	ɕ	i	m	i
+Kōchi	t	u	m	e
+
+"claw",(phonalign_481.msa/Japanese)
+Kōchi	t	u	m	e
+Amami	ʦ	ɨ	m	ɨ
+
+"claw",(phonalign_481.msa/Japanese)
+Shuri	ɕ	i	m	i
+Tokyo	ʦ	u	m	e
+
+"claw",(phonalign_481.msa/Japanese)
+Kōchi.	t	u	m	e
+Miyako	ʦ	ɨ	m	i
+
+"claw",(phonalign_481.msa/Japanese)
+Shuri	ɕ	i	m	i
+Amami	ʦ	ɨ	m	ɨ
+
+"claw",(phonalign_481.msa/Japanese)
+Oki...	ʦ	u	m	e
+Miyako	ʦ	ɨ	m	i
+
+"claw",(phonalign_481.msa/Japanese)
+Kyoto	ʦ	u	m	e
+Amami	ʦ	ɨ	m	ɨ
+
+"claw",(phonalign_481.msa/Japanese)
+Kagoshima	ʦ	ui	m	e
+Miyako...	ʦ	ɨ	m	i
+
+"claw",(phonalign_481.msa/Japanese)
+Shuri.	ɕ	i	m	i
+Miyako	ʦ	ɨ	m	i
+
+"knee",(phonalign_482.msa/Japanese)
+Oki....	ɸ	u	z	a	-	-	-	-	-	-
+Hachijō	h	i	ʥ	a	k	a	b	u	r	a
+
+"knee",(phonalign_482.msa/Japanese)
+Kagoshima	h	iː	z	a	-	-	-	-	-	-
+Hachijō..	h	i	ʥ	a	k	a	b	u	r	a
+
+"knee",(phonalign_482.msa/Japanese)
+Kyoto..	h	i	z	a	-	-	-	-	-	-
+Hachijō	h	i	ʥ	a	k	a	b	u	r	a
+
+"knee",(phonalign_482.msa/Japanese)
+Kagoshima	h	iː	z	a
+Oki......	ɸ	u	z	a
+
+"knee",(phonalign_482.msa/Japanese)
+Kyoto	h	i	z	a
+Oki..	ɸ	u	z	a
+
+"knee",(phonalign_482.msa/Japanese)
+Kyoto....	h	i	z	a
+Kagoshima	h	iː	z	a
+
+"knee",(phonalign_482.msa/Japanese)
+Tokyo	h	i	z	a
+Kyoto	h	i	z	a
+
+"heart",(phonalign_483.msa/Japanese)
+Amami....	s	i	ɴ	-	d	o
+Kagoshima	s	i	ɴ	i	z	oː
+
+"heart",(phonalign_483.msa/Japanese)
+Kyoto	s	i	ɴ	z	oː
+Amami	s	i	ɴ	d	o
+
+"heart",(phonalign_483.msa/Japanese)
+Kyoto....	s	i	ɴ	-	z	oː
+Kagoshima	s	i	ɴ	i	z	oː
+
+"heart",(phonalign_483.msa/Japanese)
+Oki.	s	i	ɴ	z	oː
+Sado	s	i	ɴ	z	oː
+
+"liver",(phonalign_484.msa/Japanese)
+Kyoto.	k	i	m	o
+Miyako	ʦ	ɨ	m	u
+
+"liver",(phonalign_484.msa/Japanese)
+Amami	k	i	m	o
+Shuri	ʨ	i	m	u
+
+"liver",(phonalign_484.msa/Japanese)
+Shuri.	ʨ	i	m	u
+Miyako	ʦ	ɨ	m	u
+
+"liver",(phonalign_484.msa/Japanese)
+Sado.	k	i	m	o
+Kyoto	k	i	m	o
+
+"drink",(phonalign_485.msa/Japanese)
+Kagoshima	n	o	ɴ	-	-	-
+Amami....	n	u	m	u	r	i
+
+"drink",(phonalign_485.msa/Japanese)
+Shuri....	n	u	n	u	ɴ
+Kagoshima	n	o	ɴ	-	-
+
+"drink",(phonalign_485.msa/Japanese)
+Kagoshima	n	o	ɴ
+Miyako...	n	u	m
+
+"drink",(phonalign_485.msa/Japanese)
+Oki..	n	o	m	u	-
+Shuri	n	u	n	u	ɴ
+
+"drink",(phonalign_485.msa/Japanese)
+Shuri.	n	u	n	u	ɴ
+Miyako	n	u	m	-	-
+
+"drink",(phonalign_485.msa/Japanese)
+Kyoto.	n	o	m	u
+Miyako	n	u	m	-
+
+"drink",(phonalign_485.msa/Japanese)
+Kōchi....	n	o	m	u
+Kagoshima	n	o	ɴ	-
+
+"drink",(phonalign_485.msa/Japanese)
+Kōchi	n	o	m	u	-	-
+Amami	n	u	m	u	r	i
+
+"drink",(phonalign_485.msa/Japanese)
+Shuri	n	u	n	u	ɴ	-
+Amami	n	u	m	u	r	i
+
+"drink",(phonalign_485.msa/Japanese)
+Miyako	n	u	m	-	-	-
+Amami.	n	u	m	u	r	i
+
+"bite",(phonalign_486.msa/Japanese)
+Shuri	k	uː	j	u	ɴ	-	-	-	-	-
+Amami	k	ui	ʦ	ɨ	k	ɨ	r	u	r	i
+
+"bite",(phonalign_486.msa/Japanese)
+Kōchi	k	ui	t	u	k	u	-	-	-	-
+Amami	k	ui	ʦ	ɨ	k	ɨ	r	u	r	i
+
+"bite",(phonalign_486.msa/Japanese)
+Kōchi	k	ui	t	u	k	u
+Shuri	k	uː	j	u	ɴ	-
+
+"bite",(phonalign_486.msa/Japanese)
+Shuri..	k	uː	j	u	ɴ	-
+Hachijō	k	ui	ʦ	u	k	u
+
+"bite",(phonalign_486.msa/Japanese)
+Hachijō	k	ui	ʦ	u	k	u	-	-	-	-
+Amami..	k	ui	ʦ	ɨ	k	ɨ	r	u	r	i
+
+"bite",(phonalign_486.msa/Japanese)
+Kōchi..	k	ui	t	u	k	u
+Hachijō	k	ui	ʦ	u	k	u
+
+"bite",(phonalign_487.msa/Japanese)
+Oki.	k	a	m	-	-	u	-	-
+Sado	k	a	m	i	ʦ	u	k	u
+
+"bite",(phonalign_487.msa/Japanese)
+Kagoshima	k	a	ɴ	-	ʦ	u	-	-
+Sado.....	k	a	m	i	ʦ	u	k	u
+
+"bite",(phonalign_487.msa/Japanese)
+Kagoshima	k	a	ɴ	ʦ	u
+Oki......	k	a	m	-	u
+
+"bite",(phonalign_487.msa/Japanese)
+Tokyo	k	a	m	i	ʦ	u	k	u
+Kyoto	k	a	m	i	ʦ	u	k	u
+
+"hear",(phonalign_488.msa/Japanese)
+Shuri....	ʨ	i	ʦ	u	ɴ
+Kagoshima	k	iː	-	-	-
+
+"hear",(phonalign_488.msa/Japanese)
+Kagoshima	k	iː	-	-	-	-
+Amami....	k	i	kʲ	u	r	i
+
+"hear",(phonalign_488.msa/Japanese)
+Miyako	ʦ	ɨ	f	u	-	-
+Amami.	k	i	kʲ	u	r	i
+
+"hear",(phonalign_488.msa/Japanese)
+Shuri.	ʨ	i	ʦ	u	ɴ
+Miyako	ʦ	ɨ	f	u	-
+
+"hear",(phonalign_488.msa/Japanese)
+Kagoshima	k	iː	-	-
+Tokyo....	k	i	k	u
+
+"hear",(phonalign_488.msa/Japanese)
+Oki...	k	i	k	u
+Miyako	ʦ	ɨ	f	u
+
+"hear",(phonalign_488.msa/Japanese)
+Shuri	ʨ	i	ʦ	u	ɴ	-
+Amami	k	i	kʲ	u	r	i
+
+"hear",(phonalign_488.msa/Japanese)
+Shuri	ʨ	i	ʦ	u	ɴ
+Kōchi	k	i	k	u	-
+
+"hear",(phonalign_488.msa/Japanese)
+Kyoto	k	i	k	u	-	-
+Amami	k	i	kʲ	u	r	i
+
+"hear",(phonalign_488.msa/Japanese)
+Hachijō	k	i	k	u
+Sado...	k	i	k	u
+
+"know",(phonalign_489.msa/Japanese)
+Sado..	s	i	tː	o	r	u
+Miyako	s	ɨː	-	-	-	-
+
+"know",(phonalign_489.msa/Japanese)
+Miyako	s	ɨː	-	-	-	-
+Tokyo.	s	i	tː	e	r	u
+
+"know",(phonalign_489.msa/Japanese)
+Kagoshima	s	iːː	ʨ	o	-	-
+Kyoto....	s	i	tː	e	r	u
+
+"know",(phonalign_489.msa/Japanese)
+Oki...	s	i	ʨː	o	r	u
+Miyako	s	ɨː	-	-	-	-
+
+"know",(phonalign_489.msa/Japanese)
+Amami.	s	i	ʨ	u	r	i
+Miyako	s	ɨː	-	-	-	-
+
+"know",(phonalign_489.msa/Japanese)
+Kōchi.	s	i	tː	j	uː
+Miyako	s	ɨː	-	-	-
+
+"know",(phonalign_489.msa/Japanese)
+Shuri....	s	i	ʦː	oː	ɴ
+Kagoshima	s	iːː	ʨ	o	-
+
+"know",(phonalign_489.msa/Japanese)
+Kagoshima	s	iːː	ʨ	-	o
+Kōchi....	s	i	tː	j	uː
+
+"know",(phonalign_489.msa/Japanese)
+Shuri.	s	i	ʦː	oː	ɴ
+Miyako	s	ɨː	-	-	-
+
+"know",(phonalign_489.msa/Japanese)
+Kagoshima	s	iːː	ʨ	o
+Miyako...	s	ɨː	-	-
+
+"kill",(phonalign_490.msa/Japanese)
+Amami....	-	x	u	-	-	sː	u	r	i
+Kagoshima	u	kː	o	r	o	s	-	-	-
+
+"kill",(phonalign_490.msa/Japanese)
+Amami	x	u	-	-	sː	u	r	i
+Oki..	k	o	r	o	s	u	-	-
+
+"kill",(phonalign_490.msa/Japanese)
+Amami.	x	u	-	-	sː	u	r	i
+Miyako	k	u	r	u	s	ɨ	-	-
+
+"kill",(phonalign_490.msa/Japanese)
+Kagoshima	u	kː	o	r	o	s	-	-
+Shuri....	-	k	u	r	u	ɕ	u	ɴ
+
+"kill",(phonalign_490.msa/Japanese)
+Amami	x	u	-	-	sː	u	r	i
+Shuri	k	u	r	u	ɕ	u	ɴ	-
+
+"kill",(phonalign_490.msa/Japanese)
+Kagoshima	u	kː	o	r	o	s	-
+Miyako...	-	k	u	r	u	s	ɨ
+
+"kill",(phonalign_490.msa/Japanese)
+Oki..	k	o	r	o	s	u	-
+Shuri	k	u	r	u	ɕ	u	ɴ
+
+"kill",(phonalign_490.msa/Japanese)
+Kyoto.	k	o	r	o	s	u
+Miyako	k	u	r	u	s	ɨ
+
+"kill",(phonalign_490.msa/Japanese)
+Kōchi....	-	k	o	r	o	s	u
+Kagoshima	u	kː	o	r	o	s	-
+
+"kill",(phonalign_490.msa/Japanese)
+Miyako	k	u	r	u	s	ɨ	-
+Shuri.	k	u	r	u	ɕ	u	ɴ
+
+"that",(phonalign_491.msa/Japanese)
+Kagoshima	-	a	-	iː
+Shuri....	ʔ	a	r	i
+
+"that",(phonalign_491.msa/Japanese)
+Kagoshima	-	a	-	iː
+Amami....	ʔ	a	r	ɨ
+
+"that",(phonalign_491.msa/Japanese)
+Kagoshima	a	-	iː
+Sado.....	a	r	e
+
+"that",(phonalign_491.msa/Japanese)
+Kōchi	-	a	r	e
+Shuri	ʔ	a	r	i
+
+"that",(phonalign_491.msa/Japanese)
+Kyoto	-	a	r	e
+Amami	ʔ	a	r	ɨ
+
+"that",(phonalign_491.msa/Japanese)
+Shuri	ʔ	a	r	i
+Amami	ʔ	a	r	ɨ
+
+"that",(phonalign_491.msa/Japanese)
+Sado.	a	r	e
+Kōchi	a	r	e
+
+"who",(phonalign_492.msa/Japanese)
+Shuri....	t	aː	-
+Kagoshima	d	a	iː
+
+"who",(phonalign_492.msa/Japanese)
+Shuri	t	aː	-	-
+Kōchi	d	a	r	e
+
+"who",(phonalign_492.msa/Japanese)
+Shuri	t	aː	-	-
+Amami	θ	a	r	u
+
+"who",(phonalign_492.msa/Japanese)
+Amami....	θ	a	r	u
+Kagoshima	d	a	-	iː
+
+"who",(phonalign_492.msa/Japanese)
+Miyako	t	a	r	u
+Shuri.	t	aː	-	-
+
+"who",(phonalign_492.msa/Japanese)
+Miyako...	t	a	r	u
+Kagoshima	d	a	-	iː
+
+"who",(phonalign_492.msa/Japanese)
+Kyoto	d	a	r	e
+Amami	θ	a	r	u
+
+"who",(phonalign_492.msa/Japanese)
+Miyako	t	a	r	u
+Sado..	d	a	r	e
+
+"who",(phonalign_492.msa/Japanese)
+Oki......	d	a	r	e
+Kagoshima	d	a	-	iː
+
+"who",(phonalign_492.msa/Japanese)
+Miyako	t	a	r	u
+Amami.	θ	a	r	u
+
+"all",(phonalign_493.msa/Japanese)
+Oki....	-	-	ɴː	n	a
+Hachijō	m	i	ɴ	n	a
+
+"all",(phonalign_493.msa/Japanese)
+Kōchi.	m	i	ɴ	n	a
+Miyako	mː	-	-	n	a
+
+"all",(phonalign_493.msa/Japanese)
+Oki...	-	ɴː	n	a
+Miyako	mː	-	n	a
+
+"all",(phonalign_493.msa/Japanese)
+Miyako	mː	-	n	a
+Shuri.	-	ɴ	n	a
+
+"all",(phonalign_493.msa/Japanese)
+Tokyo	m	i	ɴ	n	a
+Shuri	-	-	ɴ	n	a
+
+"all",(phonalign_493.msa/Japanese)
+Oki..	ɴː	n	a
+Shuri	ɴ	n	a
+
+"all",(phonalign_493.msa/Japanese)
+Hachijō	m	i	ɴ	n	a
+Kyoto..	m	i	ɴ	n	a
+
+"one",(phonalign_494.msa/Japanese)
+Oki...	ɸ	u	t	o	ʦ	u
+Miyako	p	ɨ	t	iː	s	ɨ
+
+"one",(phonalign_494.msa/Japanese)
+Miyako	p	ɨ	t	iː	s	ɨ
+Sado..	h	i	t	o	ʦ	u
+
+"one",(phonalign_494.msa/Japanese)
+Kagoshima	h	i	t	o	-	i
+Hachijō..	-	-	t	eː	ʦ	u
+
+"one",(phonalign_494.msa/Japanese)
+Shuri	-	-	t	iː	ɕ	i
+Tokyo	h	i	t	o	ʦ	u
+
+"one",(phonalign_494.msa/Japanese)
+Oki..	ɸ	u	t	o	ʦ	u
+Shuri	-	-	t	iː	ɕ	i
+
+"one",(phonalign_494.msa/Japanese)
+Kagoshima	h	i	t	o	-	i
+Miyako...	p	ɨ	t	iː	s	ɨ
+
+"one",(phonalign_494.msa/Japanese)
+Miyako.	p	ɨ	t	iː	s	ɨ
+Hachijō	-	-	t	eː	ʦ	u
+
+"one",(phonalign_494.msa/Japanese)
+Amami	-	-	t	ɨː	ʦ	ɨ
+Kōchi	h	i	t	o	t	u
+
+"one",(phonalign_494.msa/Japanese)
+Kōchi	h	i	t	o	t	u
+Shuri	-	-	t	iː	ɕ	i
+
+"one",(phonalign_494.msa/Japanese)
+Kagoshima	h	i	t	o	-	i
+Amami....	-	-	t	ɨː	ʦ	ɨ
+
+"two",(phonalign_495.msa/Japanese)
+Tokyo	h	u	t	a	ʦː	u
+Amami	-	-	t	aː	ʦ	ɨ
+
+"two",(phonalign_495.msa/Japanese)
+Tokyo	h	u	t	a	ʦː	u
+Shuri	-	-	t	aː	ɕ	i
+
+"two",(phonalign_495.msa/Japanese)
+Shuri..	-	-	t	aː	ɕ	i
+Hachijō	h	u	t	a	ʦ	u
+
+"two",(phonalign_495.msa/Japanese)
+Kagoshima	h	u	t	a	-	i
+Amami....	-	-	t	aː	ʦ	ɨ
+
+"two",(phonalign_495.msa/Japanese)
+Shuri....	-	-	t	aː	ɕ	i
+Kagoshima	h	u	t	a	-	i
+
+"two",(phonalign_495.msa/Japanese)
+Kagoshima	h	u	t	a	-	i
+Oki......	ɸ	u	t	aː	ʦ	u
+
+"two",(phonalign_495.msa/Japanese)
+Kōchi	h	u	t	aː	t	u
+Amami	-	-	t	aː	ʦ	ɨ
+
+"two",(phonalign_495.msa/Japanese)
+Shuri	-	-	t	aː	ɕ	i
+Oki..	ɸ	u	t	aː	ʦ	u
+
+"two",(phonalign_495.msa/Japanese)
+Miyako	f	u	t	aː	ʦ	ɨ
+Tokyo.	h	u	t	a	ʦː	u
+
+"two",(phonalign_495.msa/Japanese)
+Miyako	f	u	t	aː	ʦ	ɨ
+Shuri.	-	-	t	aː	ɕ	i
+
+"small",(phonalign_496.msa/Japanese)
+Kagoshima	ʨ	i	ɴ	k	e	-
+Sado.....	ʨ	iː	-	s	a	i
+
+"small",(phonalign_496.msa/Japanese)
+Tokyo....	ʨ	i	-	ʨː	a	i
+Kagoshima	ʨ	i	ɴ	k	e	-
+
+"small",(phonalign_496.msa/Japanese)
+Tokyo	ʨ	i	ʨː	a	i
+Kyoto	ʨ	iː	s	a	i
+
+"small",(phonalign_496.msa/Japanese)
+Kyoto	ʨ	iː	s	a	i
+Sado.	ʨ	iː	s	a	i
+
+"long",(phonalign_497.msa/Japanese)
+Amami	n	a	g	a	s	a	r	i
+Oki..	n	a	ŋ	eː	-	-	-	-
+
+"long",(phonalign_497.msa/Japanese)
+Oki..	n	a	ŋ	eː	-	-	-
+Shuri	n	a	g	a	s	a	ɴ
+
+"long",(phonalign_497.msa/Japanese)
+Hachijō	n	a	g	a	kʲ	a
+Oki....	n	a	ŋ	eː	-	-
+
+"long",(phonalign_497.msa/Japanese)
+Amami....	n	a	g	a	s	a	r	i
+Kagoshima	n	a	g	e	-	-	-	-
+
+"long",(phonalign_497.msa/Japanese)
+Tokyo	n	a	ŋ	a	-	-	-	i
+Shuri	n	a	g	a	s	a	ɴ	-
+
+"long",(phonalign_497.msa/Japanese)
+Oki..	n	a	ŋ	eː	-
+Kōchi	n	a	g	a	i
+
+"long",(phonalign_497.msa/Japanese)
+Tokyo....	n	a	ŋ	a	i
+Kagoshima	n	a	g	e	-
+
+"long",(phonalign_497.msa/Japanese)
+Shuri....	n	a	g	a	s	a	ɴ
+Kagoshima	n	a	g	e	-	-	-
+
+"long",(phonalign_497.msa/Japanese)
+Hachijō	n	a	g	a	kʲ	a	-
+Tokyo..	n	a	ŋ	a	-	-	i
+
+"long",(phonalign_497.msa/Japanese)
+Oki...	n	a	ŋ	eː
+Miyako	n	a	g	a
+
+"woman",(phonalign_498.msa/Japanese)
+Shuri	w	i	n	-	a	g	u
+Sado.	-	o	ɴ	n	-	-	a
+
+"woman",(phonalign_498.msa/Japanese)
+Kyoto	o	n	-	a	ŋ	o
+Sado.	o	ɴ	n	-	-	a
+
+"woman",(phonalign_498.msa/Japanese)
+Sado.....	o	ɴ	n	-	-	a
+Kagoshima	o	n	-	a	g	o
+
+"woman",(phonalign_498.msa/Japanese)
+Amami	o	n	-	a	g	u
+Tokyo	o	ɴ	n	-	-	a
+
+"woman",(phonalign_498.msa/Japanese)
+Shuri..	w	i	n	-	a	g	u
+Hachijō	-	o	ɴ	n	a	g	o
+
+"woman",(phonalign_498.msa/Japanese)
+Kyoto	-	o	n	a	ŋ	o
+Shuri	w	i	n	a	g	u
+
+"woman",(phonalign_498.msa/Japanese)
+Shuri....	w	i	n	a	g	u
+Kagoshima	-	o	n	a	g	o
+
+"woman",(phonalign_498.msa/Japanese)
+Hachijō	o	ɴ	n	a	g	o
+Sado...	o	ɴ	n	-	-	a
+
+"woman",(phonalign_498.msa/Japanese)
+Amami..	o	n	-	a	g	u
+Hachijō	o	ɴ	n	a	g	o
+
+"woman",(phonalign_498.msa/Japanese)
+Kyoto..	o	n	-	a	ŋ	o
+Hachijō	o	ɴ	n	a	g	o
+
+"person",(phonalign_499.msa/Japanese)
+Shuri	-	-	ʦː	u
+Oki..	ɸ	u	t	o
+
+"person",(phonalign_499.msa/Japanese)
+Kyoto	h	i	t	o
+Amami	-	-	ʨ	u
+
+"person",(phonalign_499.msa/Japanese)
+Amami	-	-	ʨ	u
+Oki..	ɸ	u	t	o
+
+"person",(phonalign_499.msa/Japanese)
+Hachijō	h	i	t	o
+Shuri..	-	-	ʦː	u
+
+"person",(phonalign_499.msa/Japanese)
+Kagoshima	h	iː	t	o
+Shuri....	-	-	ʦː	u
+
+"person",(phonalign_499.msa/Japanese)
+Kagoshima	h	iː	t	o
+Amami....	-	-	ʨ	u
+
+"person",(phonalign_499.msa/Japanese)
+Miyako	p	ɨ	t	u
+Shuri.	-	-	ʦː	u
+
+"person",(phonalign_499.msa/Japanese)
+Miyako	p	ɨ	t	u
+Oki...	ɸ	u	t	o
+
+"person",(phonalign_499.msa/Japanese)
+Miyako	p	ɨ	t	u
+Kyoto.	h	i	t	o
+
+"person",(phonalign_499.msa/Japanese)
+Miyako...	p	ɨ	t	u
+Kagoshima	h	iː	t	o
+
+"bird",(phonalign_500.msa/Japanese)
+Kagoshima	t	o	-	iː
+Amami....	θ	u	r	i
+
+"bird",(phonalign_500.msa/Japanese)
+Shuri..	t	u	-	i	-	-
+Hachijō	t	o	r	i	m	e
+
+"bird",(phonalign_500.msa/Japanese)
+Kagoshima	t	o	-	iː	-	-
+Hachijō..	t	o	r	i	m	e
+
+"bird",(phonalign_500.msa/Japanese)
+Kagoshima	t	o	iː
+Miyako...	t	u	i
+
+"bird",(phonalign_500.msa/Japanese)
+Hachijō	t	o	r	i	m	e
+Amami..	θ	u	r	i	-	-
+
+"bird",(phonalign_500.msa/Japanese)
+Kōchi....	t	o	r	i
+Kagoshima	t	o	-	iː
+
+"bird",(phonalign_500.msa/Japanese)
+Kyoto.	t	o	r	i
+Miyako	t	u	-	i
+
+"bird",(phonalign_500.msa/Japanese)
+Kōchi	t	o	r	i
+Amami	θ	u	r	i
+
+"bird",(phonalign_500.msa/Japanese)
+Shuri	t	u	-	i
+Amami	θ	u	r	i
+
+"bird",(phonalign_500.msa/Japanese)
+Sado...	t	o	r	i	-	-
+Hachijō	t	o	r	i	m	e
+
+"dog",(phonalign_501.msa/Japanese)
+Oki..	-	e	n	o
+Amami	ʔ	i	ɴ	-
+
+"dog",(phonalign_501.msa/Japanese)
+Kagoshima	i	ɴ	-
+Oki......	e	n	o
+
+"dog",(phonalign_501.msa/Japanese)
+Sado.	-	i	n	u
+Shuri	ʔ	i	ɴ	-
+
+"dog",(phonalign_501.msa/Japanese)
+Miyako	i	n	-
+Oki...	e	n	o
+
+"dog",(phonalign_501.msa/Japanese)
+Kyoto	i	n	u
+Oki..	e	n	o
+
+"dog",(phonalign_501.msa/Japanese)
+Kōchi....	i	n	u
+Kagoshima	i	ɴ	-
+
+"dog",(phonalign_501.msa/Japanese)
+Miyako	-	i	n
+Shuri.	ʔ	i	ɴ
+
+"dog",(phonalign_501.msa/Japanese)
+Kagoshima	i	ɴ
+Miyako...	i	n
+
+"dog",(phonalign_501.msa/Japanese)
+Kōchi.	i	n	u
+Miyako	i	n	-
+
+"dog",(phonalign_501.msa/Japanese)
+Kagoshima	-	i	ɴ
+Amami....	ʔ	i	ɴ
+
+"louse",(phonalign_502.msa/Japanese)
+Shuri..	s	i	r	a	ɴ	-
+Hachijō	ɕ	a	ɴ	-	m	e
+
+"louse",(phonalign_502.msa/Japanese)
+Miyako	sː	a	-	-	m
+Amami.	s	i	r	a	ɴ
+
+"louse",(phonalign_502.msa/Japanese)
+Hachijō	ɕ	a	ɴ	-	m	e
+Sado...	s	i	r	a	m	i
+
+"louse",(phonalign_502.msa/Japanese)
+Miyako	sː	a	-	-	m	-
+Sado..	s	i	r	a	m	i
+
+"louse",(phonalign_502.msa/Japanese)
+Miyako	sː	a	-	-	m	-
+Oki...	s	i	r	a	m	e
+
+"louse",(phonalign_502.msa/Japanese)
+Miyako...	sː	a	-	-	m	-
+Kagoshima	s	i	t	a	m	e
+
+"louse",(phonalign_502.msa/Japanese)
+Hachijō..	ɕ	a	ɴ	-	m	e
+Kagoshima	s	i	t	a	m	e
+
+"louse",(phonalign_502.msa/Japanese)
+Oki....	s	i	r	a	m	e
+Hachijō	ɕ	a	ɴ	-	m	e
+
+"louse",(phonalign_502.msa/Japanese)
+Miyako.	sː	a	-	m	-
+Hachijō	ɕ	a	ɴ	m	e
+
+"louse",(phonalign_502.msa/Japanese)
+Shuri....	s	i	r	a	ɴ	-
+Kagoshima	s	i	t	a	m	e
+
+"leaf",(phonalign_503.msa/Japanese)
+Shuri	h	w	aː
+Oki..	-	ɸ	a
+
+"leaf",(phonalign_503.msa/Japanese)
+Miyako	-	-	p	aː
+Tokyo.	h	a	pː	a
+
+"leaf",(phonalign_503.msa/Japanese)
+Miyako	-	p	aː
+Amami.	h	w	a
+
+"leaf",(phonalign_503.msa/Japanese)
+Tokyo	h	a	pː	a
+Kyoto	h	-	-	aː
+
+"leaf",(phonalign_503.msa/Japanese)
+Kagoshima	h	-	-	ai
+Tokyo....	h	a	pː	a
+
+"leaf",(phonalign_503.msa/Japanese)
+Tokyo	h	a	pː	a
+Shuri	h	-	w	aː
+
+"leaf",(phonalign_503.msa/Japanese)
+Tokyo	h	a	pː	a
+Oki..	-	-	ɸ	a
+
+"leaf",(phonalign_503.msa/Japanese)
+Hachijō	h	-	a
+Oki....	-	ɸ	a
+
+"leaf",(phonalign_503.msa/Japanese)
+Amami	h	w	a
+Oki..	-	ɸ	a
+
+"leaf",(phonalign_503.msa/Japanese)
+Miyako	-	p	aː
+Kyoto.	h	-	aː
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Hachijō	a	b	u	r	a	n	i	k	u
+Miyako.	a	vː	a	-	-	-	-	-	-
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Miyako...	a	vː	a	-	-	-	-
+Kagoshima	a	b	u	r	a	m	i
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Miyako	a	vː	a	-	-
+Kōchi.	a	b	u	r	a
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Hachijō	a	b	u	r	a	n	i	k	u
+Kyoto..	a	b	u	r	a	-	-	-	-
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Sado.....	a	b	u	r	a	n	i	k	u
+Kagoshima	a	b	u	r	a	m	i	-	-
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Tokyo	a	b	u	r	a	m	i
+Kyoto	a	b	u	r	a	-	-
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Kagoshima	a	b	u	r	a	m	i
+Tokyo....	a	b	u	r	a	m	i
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Kyoto	a	b	u	r	a
+Oki..	a	b	u	r	a
+
+"grease (fat)",(phonalign_504.msa/Japanese)
+Sado...	a	b	u	r	a	n	i	k	u
+Hachijō	a	b	u	r	a	n	i	k	u
+
+"mouth",(phonalign_505.msa/Japanese)
+Miyako	f	u	ʦ	ɨ
+Sado..	k	u	ʨ	i
+
+"mouth",(phonalign_505.msa/Japanese)
+Kagoshima	k	u	-	i
+Miyako...	f	u	ʦ	ɨ
+
+"mouth",(phonalign_505.msa/Japanese)
+Kōchi.	k	u	t	i
+Miyako	f	u	ʦ	ɨ
+
+"mouth",(phonalign_505.msa/Japanese)
+Kagoshima	k	u	-	i
+Tokyo....	k	u	ʨ	i
+
+"mouth",(phonalign_505.msa/Japanese)
+Kōchi	k	u	t	i
+Amami	k	u	ʨ	i
+
+"mouth",(phonalign_505.msa/Japanese)
+Kagoshima	k	u	-	i
+Kōchi....	k	u	t	i
+
+"mouth",(phonalign_505.msa/Japanese)
+Sado.	k	u	ʨ	i
+Kyoto	k	u	ʨ	i
