@@ -19,7 +19,7 @@ class Phon:
 	"""
 
 	NON_TRAIN_MODULES = ['one-hot', 'phoible', 'phoible-pc', 'phoible-sub']
-	TRAIN_MODULES = ['phon2vec']
+	TRAIN_MODULES = ['phon2vec', 'neural-net']
 
 	MODULES = NON_TRAIN_MODULES + TRAIN_MODULES
 

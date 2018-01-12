@@ -1,0 +1,126 @@
+import operator
+import pickle
+import warnings
+
+from keras.layers import Dense, Embedding, Flatten, Input
+from keras.models import Model
+from keras.utils import to_categorical
+
+
+
+"""
+Default path to store the trained embeddings/vector representations.
+"""
+DEFAULT_MODEL_PATH = 'models/neural_net'
+
+
+"""
+Mapping from IPA tokens to their respective vector representations obtained in
+train(); inited in load().
+"""
+VECTORS = None
+
+
+
+def prepare_training_data(dataset_path):
+	"""
+	"""
+	with open(dataset_path, encoding='utf-8') as f:
+		words = [line.strip().split() for line in f]
+
+	tokens = sorted(set([token for word in words for token in word]))
+	assert '<' not in tokens and '>' not in tokens
+
+	tokens_to_ix = {token: index+1 for index, token in enumerate(tokens)}
+	tokens_to_ix['<'], tokens_to_ix['>'] = 0, 0
+
+	inputs, outputs_left, outputs_right = [], [], []
+
+	for count, word in enumerate(words):
+		for index, token in enumerate(word):
+			token_left = word[index-1] if index > 0 else '<'
+			token_right = word[index+1] if index < len(word)-1 else '>'
+
+			outputs_left.append(tokens_to_ix[token_left])
+			inputs.append(tokens_to_ix[token])
+			outputs_right.append(tokens_to_ix[token_right])
+
+	return tokens, inputs, outputs_left, outputs_right
+
+
+
+def make_model(vocab_size):
+	"""
+	"""
+	main_input = Input(shape=(1,))
+	x = Embedding(
+			input_dim=vocab_size, output_dim=10, input_length=1,
+			name='embedding')(main_input)
+	x = Flatten()(x)
+	x = Dense(
+			32, activation='relu', name='dense_common')(x)
+
+	out_left = Dense(
+					vocab_size, activation='softmax', name='dense_left')(x)
+	out_right = Dense(
+					vocab_size, activation='softmax', name='dense_right')(x)
+
+	model = Model(inputs=[main_input], outputs=[out_left, out_right])
+	model.compile(
+			optimizer='sgd',
+			loss='categorical_crossentropy',
+			metrics=['accuracy'])
+
+	return model
+
+
+
+def train(dataset_path, output_path=DEFAULT_MODEL_PATH):
+	"""
+	Train phoneme embeddings using keras.
+	"""
+	tokens, x, y_left, y_right = prepare_training_data(dataset_path)
+	vocab_size = len(tokens) + 1
+
+	y_left = to_categorical(y_left, num_classes=vocab_size)
+	y_right = to_categorical(y_right, num_classes=vocab_size)
+
+	model = make_model(vocab_size)
+	model.fit(x, [y_left, y_right], epochs=1, batch_size=235)
+
+	weights = model.get_layer('embedding').get_weights()[0]
+
+	vectors = {token: weights[index+1] for index, token in enumerate(tokens)}
+	vectors[''] = weights[0]
+
+	with open(output_path, 'wb') as f:
+		pickle.dump(vectors, f, protocol=3)
+
+
+
+def load(model_path=DEFAULT_MODEL_PATH):
+	"""
+	"""
+	global VECTORS
+
+	with open(model_path, 'rb') as f:
+		VECTORS = pickle.load(f)
+
+
+
+def calc_delta(phon_a, phon_b):
+	"""
+	"""
+	if phon_a in VECTORS:
+		vec_a = VECTORS[phon_a]
+	else:
+		warnings.warn('neural-net: cannot recognise {}'.format(phon_a))
+		vec_a = VECTORS['']
+
+	if phon_b in VECTORS:
+		vec_b = VECTORS[phon_b]
+	else:
+		warnings.warn('neural-net: cannot recognise {}'.format(phon_b))
+		vec_b = VECTORS['']
+
+	return - sum(map(operator.mul, vec_a, vec_b))
