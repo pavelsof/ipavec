@@ -9,7 +9,8 @@ from keras.utils import to_categorical
 
 
 """
-Default path to store the trained embeddings/vector representations.
+Default path where to store to and load from the trained embeddings/vector
+representations of IPA tokens.
 """
 DEFAULT_MODEL_PATH = 'models/neural_net'
 
@@ -24,6 +25,10 @@ VECTORS = None
 
 def prepare_training_data(dataset_path):
 	"""
+	Read a dataset of tokenised IPA strings and return (1) the sorted list of
+	all tokens, (2) the list of all tokens, as ints, (3, 4) the lists of the
+	preceding and succeeding tokens, as ints. The ints are 0 for non-tokens
+	(words' start/end), and positive ints for the ordered tokens.
 	"""
 	with open(dataset_path, encoding='utf-8') as f:
 		words = [line.strip().split() for line in f]
@@ -51,19 +56,23 @@ def prepare_training_data(dataset_path):
 
 def make_model(vocab_size):
 	"""
+	Create and compile (but do not train) a Keras model that can be trained to
+	predict IPA tokens' left and right neighbours. The vocab_size arg should be
+	the total number of distinct tokens, including the non-token (0).
 	"""
 	main_input = Input(shape=(1,))
 	x = Embedding(
-			input_dim=vocab_size, output_dim=10, input_length=1,
+			input_dim=vocab_size, output_dim=64, input_length=1,
 			name='embedding')(main_input)
 	x = Flatten()(x)
 	x = Dense(
-			32, activation='relu', name='dense_common')(x)
+			128, kernel_initializer='he_uniform',
+			activation='relu', name='dense_common')(x)
 
 	out_left = Dense(
-					vocab_size, activation='softmax', name='dense_left')(x)
+					vocab_size, activation='softmax', name='left')(x)
 	out_right = Dense(
-					vocab_size, activation='softmax', name='dense_right')(x)
+					vocab_size, activation='softmax', name='right')(x)
 
 	model = Model(inputs=[main_input], outputs=[out_left, out_right])
 	model.compile(
@@ -77,7 +86,8 @@ def make_model(vocab_size):
 
 def train(dataset_path, output_path=DEFAULT_MODEL_PATH):
 	"""
-	Train phoneme embeddings using keras.
+	Train IPA token embeddings on a dataset and pickle the obtained vector
+	representations.
 	"""
 	tokens, x, y_left, y_right = prepare_training_data(dataset_path)
 	vocab_size = len(tokens) + 1
@@ -86,7 +96,7 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH):
 	y_right = to_categorical(y_right, num_classes=vocab_size)
 
 	model = make_model(vocab_size)
-	model.fit(x, [y_left, y_right], epochs=1, batch_size=235)
+	model.fit(x, [y_left, y_right], epochs=5, batch_size=235)
 
 	weights = model.get_layer('embedding').get_weights()[0]
 
@@ -100,6 +110,8 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH):
 
 def load(model_path=DEFAULT_MODEL_PATH):
 	"""
+	Load a model; this should be a pickled dict mapping IPA tokens to vector
+	representations.
 	"""
 	global VECTORS
 
@@ -110,6 +122,8 @@ def load(model_path=DEFAULT_MODEL_PATH):
 
 def calc_delta(phon_a, phon_b):
 	"""
+	Calculate the delta between two phonemes/IPA tokens, i.e. the cosine
+	distance between their vector representations.
 	"""
 	if phon_a in VECTORS:
 		vec_a = VECTORS[phon_a]
