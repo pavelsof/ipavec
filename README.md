@@ -46,3 +46,9 @@ scripts/run+eval.fish data/bdpa/covington.psa
 | covington |  60,61% |  82,42% |     85,37% |   77,24% |
 | bulgarian |  60,54% |  80,54% |     78,79% |   78,10% |
 | global    |  44,76% |  58,28% |     55,82% |   56,32% |
+
+|           |     sca |
+|-----------|---------|
+| covington |  90,24% |
+| bulgarian |  89,34% |
+| global    |  72,09% |
