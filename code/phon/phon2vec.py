@@ -1,6 +1,7 @@
 import warnings
 
 from gensim.models import Word2Vec
+from ipatok.ipa import is_letter
 
 
 
@@ -52,6 +53,25 @@ def load(model_path=DEFAULT_MODEL_PATH):
 
 
 
+def clean_phon(phon):
+	"""
+	If the phoneme is not known to the model, return something that is.
+	"""
+	if phon in model.wv:
+		return phon
+
+	if phon == '':
+		return '\0'
+
+	alt = ''.join([char for char in phon if is_letter(char, False)])
+	if alt in model.wv:
+		return alt
+
+	warnings.warn('phon2vec: cannot recognise {}'.format(phon))
+	return '\0'
+
+
+
 def calc_delta(phon_a, phon_b):
 	"""
 	Calculate the delta between two phonemes, i.e. the distance between their
@@ -59,12 +79,4 @@ def calc_delta(phon_a, phon_b):
 
 	If model, the module-level var, is not inited, raise an exception.
 	"""
-	if phon_a not in model.wv:
-		warnings.warn('phon2vec: cannot recognise {}'.format(phon_a))
-		phon_a = '\0'
-
-	if phon_b not in model.wv:
-		warnings.warn('phon2vec: cannot recognise {}'.format(phon_b))
-		phon_b = '\0'
-
-	return model.wv.distance(phon_a, phon_b)
+	return model.wv.distance(clean_phon(phon_a), clean_phon(phon_b))
