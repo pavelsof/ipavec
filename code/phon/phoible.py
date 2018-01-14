@@ -10,7 +10,8 @@ import warnings
 """
 Path to the PHOIBLE IPA features dataset.
 """
-DATA_PATH = os.path.join(os.path.dirname(__file__), 'phoible.tsv')
+DATA_PATH = os.path.join(
+				os.path.dirname(__file__), '../../data/phoible/phoible.tsv')
 
 
 """
