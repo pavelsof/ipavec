@@ -2,6 +2,8 @@ import operator
 import pickle
 import warnings
 
+from ipatok.ipa import is_letter, is_tie_bar
+
 from keras.layers import Dense, Embedding, Flatten, Input
 from keras.models import Model
 from keras.utils import to_categorical
@@ -17,9 +19,20 @@ DEFAULT_MODEL_PATH = 'models/neural_net'
 
 """
 Mapping from IPA tokens to their respective vector representations obtained in
-train(); inited in load().
+train(); inited in load() and used in get_vector() and calc_delta().
 """
 VECTORS = None
+
+
+
+def normalise_token(token):
+	"""
+	Remove tie bars (e.g. t͡ʃ → tʃ) and diacritics marking non-syllabic vowels
+	(e.g. aɪ̯ → aɪ) from a token. This ensures a single (arbitrarily chosen)
+	"normal" form of tokens with such symbols.
+	"""
+	return ''.join([char for char in token
+					if not is_tie_bar(char) and char != '◌̯'[1]])
 
 
 
@@ -31,7 +44,8 @@ def prepare_training_data(dataset_path):
 	(words' start/end), and positive ints for the ordered tokens.
 	"""
 	with open(dataset_path, encoding='utf-8') as f:
-		words = [line.strip().split() for line in f]
+		words = [[normalise_token(token) for token in line.strip().split()]
+				for line in f]
 
 	tokens = sorted(set([token for word in words for token in word]))
 	assert '<' not in tokens and '>' not in tokens
@@ -120,21 +134,31 @@ def load(model_path=DEFAULT_MODEL_PATH):
 
 
 
+def get_vector(token):
+	"""
+	Return the vector representation (an entry from VECTORS) of an IPA token.
+	Raise an exception if VECTORS is not yet set.
+	"""
+	token = normalise_token(token)
+
+	try:
+		return VECTORS[token]
+	except KeyError:
+		pass
+
+	alt_token = ''.join([char for char in token if is_letter(char, False)])
+
+	try:
+		return VECTORS[alt_token]
+	except KeyError:
+		warnings.warn('neural-net: cannot recognise {}'.format(token))
+		return VECTORS['']
+
+
+
 def calc_delta(phon_a, phon_b):
 	"""
 	Calculate the delta between two phonemes/IPA tokens, i.e. the cosine
 	distance between their vector representations.
 	"""
-	if phon_a in VECTORS:
-		vec_a = VECTORS[phon_a]
-	else:
-		warnings.warn('neural-net: cannot recognise {}'.format(phon_a))
-		vec_a = VECTORS['']
-
-	if phon_b in VECTORS:
-		vec_b = VECTORS[phon_b]
-	else:
-		warnings.warn('neural-net: cannot recognise {}'.format(phon_b))
-		vec_b = VECTORS['']
-
-	return - sum(map(operator.mul, vec_a, vec_b))
+	return - sum(map(operator.mul, get_vector(phon_a), get_vector(phon_b)))
