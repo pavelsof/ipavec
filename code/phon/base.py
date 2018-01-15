@@ -18,7 +18,7 @@ class Phon:
 		print(cost_func('j', 'ʒ'))
 	"""
 
-	NON_TRAIN_MODULES = ['one-hot', 'phoible', 'phoible-pc', 'phoible-sub']
+	NON_TRAIN_MODULES = ['one-hot', 'phoible', 'phoible-pc']
 	TRAIN_MODULES = ['phon2vec', 'neural-net']
 
 	MODULES = NON_TRAIN_MODULES + TRAIN_MODULES
