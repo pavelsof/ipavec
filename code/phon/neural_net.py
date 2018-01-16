@@ -98,7 +98,7 @@ def make_model(vocab_size):
 
 
 
-def train(dataset_path, output_path=DEFAULT_MODEL_PATH):
+def train(dataset_path, output_path=DEFAULT_MODEL_PATH, epochs=5, batch_size=32):
 	"""
 	Train IPA token embeddings on a dataset and pickle the obtained vector
 	representations.
@@ -110,7 +110,7 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH):
 	y_right = to_categorical(y_right, num_classes=vocab_size)
 
 	model = make_model(vocab_size)
-	model.fit(x, [y_left, y_right], epochs=5, batch_size=235)
+	model.fit(x, [y_left, y_right], epochs=epochs, batch_size=batch_size)
 
 	weights = model.get_layer('embedding').get_weights()[0]
 
