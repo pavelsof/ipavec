@@ -6,7 +6,8 @@ from ipatok.ipa import is_letter, is_tie_bar
 
 from keras.layers import Dense, Embedding, Flatten, Input
 from keras.models import Model
-from keras.utils import to_categorical
+
+import numpy as np
 
 
 
@@ -36,12 +37,15 @@ def normalise_token(token):
 
 
 
-def prepare_training_data(dataset_path):
+def prepare_training_data(dataset_path, large_context=False):
 	"""
 	Read a dataset of tokenised IPA strings and return (1) the sorted list of
 	all tokens, (2) the list of all tokens, as ints, (3, 4) the lists of the
 	preceding and succeeding tokens, as ints. The ints are 0 for non-tokens
 	(words' start/end), and positive ints for the ordered tokens.
+
+	If the large_context flag is set, also return the lists for the tokens at
+	distance two.
 	"""
 	with open(dataset_path, encoding='utf-8') as f:
 		words = [[normalise_token(token) for token in line.strip().split()]
@@ -53,22 +57,34 @@ def prepare_training_data(dataset_path):
 	tokens_to_ix = {token: index+1 for index, token in enumerate(tokens)}
 	tokens_to_ix['<'], tokens_to_ix['>'] = 0, 0
 
-	inputs, outputs_left, outputs_right = [], [], []
+	ix, ix_prev, ix_next = [], [], []
+	if large_context:
+		ix_prev2, ix_next2 = [], []
 
 	for count, word in enumerate(words):
 		for index, token in enumerate(word):
-			token_left = word[index-1] if index > 0 else '<'
-			token_right = word[index+1] if index < len(word)-1 else '>'
+			token_prev = word[index-1] if index > 0 else '<'
+			token_next = word[index+1] if index < len(word)-1 else '>'
 
-			outputs_left.append(tokens_to_ix[token_left])
-			inputs.append(tokens_to_ix[token])
-			outputs_right.append(tokens_to_ix[token_right])
+			ix_prev.append(tokens_to_ix[token_prev])
+			ix.append(tokens_to_ix[token])
+			ix_next.append(tokens_to_ix[token_next])
 
-	return tokens, inputs, outputs_left, outputs_right
+			if large_context:
+				token_prev2 = word[index-2] if index > 1 else '<'
+				token_next2 = word[index+2] if index < len(word)-2 else '>'
+
+				ix_prev2.append(tokens_to_ix[token_prev2])
+				ix_next2.append(tokens_to_ix[token_next2])
+
+	if large_context:
+		return tokens, ix, ix_prev, ix_next, ix_prev2, ix_next2
+	else:
+		return tokens, ix, ix_prev, ix_next
 
 
 
-def make_model(vocab_size):
+def make_model(vocab_size, large_context=False):
 	"""
 	Create and compile (but do not train) a Keras model that can be trained to
 	predict IPA tokens' left and right neighbours. The vocab_size arg should be
@@ -83,53 +99,63 @@ def make_model(vocab_size):
 			128, kernel_initializer='he_uniform',
 			activation='relu', name='dense_common')(x)
 
-	out_left = Dense(
-					vocab_size, activation='softmax', name='left')(x)
-	out_right = Dense(
-					vocab_size, activation='softmax', name='right')(x)
+	out_prev = Dense(
+					vocab_size, activation='softmax', name='prev')(x)
+	out_next = Dense(
+					vocab_size, activation='softmax', name='next')(x)
+	outputs = [out_prev, out_next]
 
-	model = Model(inputs=[main_input], outputs=[out_left, out_right])
+	if large_context:
+		out_prev2 = Dense(
+						vocab_size, activation='softmax', name='prev2')(x)
+		out_next2 = Dense(
+						vocab_size, activation='softmax', name='next2')(x)
+		outputs = [out_prev2] + outputs + [out_next2]
+
+	model = Model(inputs=[main_input], outputs=outputs)
 	model.compile(
 			optimizer='sgd',
-			loss='categorical_crossentropy',
+			loss='sparse_categorical_crossentropy',
 			metrics=['accuracy'])
 
 	return model
 
 
 
-def train(dataset_path, output_path=DEFAULT_MODEL_PATH, epochs=5, batch_size=32):
+def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
+			large_context=False, epochs=5, batch_size=32):
 	"""
 	Train IPA token embeddings on a dataset and pickle the obtained vector
 	representations.
 	"""
-	tokens, x, y_left, y_right = prepare_training_data(dataset_path)
-	vocab_size = len(tokens) + 1
+	tokens, x, *y = prepare_training_data(dataset_path, large_context)
+	y = [np.array(ix) for ix in y]
 
-	y_left = to_categorical(y_left, num_classes=vocab_size)
-	y_right = to_categorical(y_right, num_classes=vocab_size)
-
-	model = make_model(vocab_size)
-	model.fit(x, [y_left, y_right], epochs=epochs, batch_size=batch_size)
+	model = make_model(len(tokens)+1, large_context)
+	model.fit(
+		x, y,
+		epochs=epochs, batch_size=batch_size,
+		verbose=2 if large_context else 1)
 
 	weights = model.get_layer('embedding').get_weights()[0]
 
 	vectors = {token: weights[index+1] for index, token in enumerate(tokens)}
 	vectors[''] = weights[0]
+	return model
 
 	with open(output_path, 'wb') as f:
 		pickle.dump(vectors, f, protocol=3)
 
 
 
-def load(model_path=DEFAULT_MODEL_PATH):
+def load(model=DEFAULT_MODEL_PATH):
 	"""
 	Load a model; this should be a pickled dict mapping IPA tokens to vector
 	representations.
 	"""
 	global VECTORS
 
-	with open(model_path, 'rb') as f:
+	with open(model, 'rb') as f:
 		VECTORS = pickle.load(f)
 
 
