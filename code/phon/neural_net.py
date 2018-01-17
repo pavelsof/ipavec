@@ -1,4 +1,3 @@
-import operator
 import pickle
 import warnings
 
@@ -8,6 +7,8 @@ from keras.layers import Dense, Embedding, Flatten, Input
 from keras.models import Model
 
 import numpy as np
+
+from scipy.spatial.distance import cosine
 
 
 
@@ -186,4 +187,4 @@ def calc_delta(phon_a, phon_b):
 	Calculate the delta between two phonemes/IPA tokens, i.e. the cosine
 	distance between their vector representations.
 	"""
-	return - sum(map(operator.mul, get_vector(phon_a), get_vector(phon_b)))
+	return cosine(get_vector(phon_a), get_vector(phon_b))
