@@ -59,5 +59,13 @@ scripts/run+eval.fish data/bdpa/covington.psa
 |           |     sca |
 |-----------|---------|
 | covington |  90,24% |
+| andean    |  99,67% |
 | bulgarian |  89,34% |
-| global    |  72,09% |
+| dutch     |  42,20% |
+| french    |  80,90% |
+| germanic  |  83,48% |
+| japanese  |  82,19% |
+| norwegian |  91,77% |
+| ob-ugrian |  86,04% |
+| romance   |  95,62% |
+| slavic    |  94,15% |
