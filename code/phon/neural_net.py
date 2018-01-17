@@ -187,4 +187,7 @@ def calc_delta(phon_a, phon_b):
 	Calculate the delta between two phonemes/IPA tokens, i.e. the cosine
 	distance between their vector representations.
 	"""
-	return cosine(get_vector(phon_a), get_vector(phon_b))
+	if phon_a == '' or phon_b == '':
+		return 1
+	else:
+		return cosine(get_vector(phon_a), get_vector(phon_b))
