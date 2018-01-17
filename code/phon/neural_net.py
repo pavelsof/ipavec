@@ -141,7 +141,6 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
 
 	vectors = {token: weights[index+1] for index, token in enumerate(tokens)}
 	vectors[''] = weights[0]
-	return model
 
 	with open(output_path, 'wb') as f:
 		pickle.dump(vectors, f, protocol=3)
