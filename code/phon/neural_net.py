@@ -3,7 +3,7 @@ import warnings
 
 from ipatok.ipa import is_letter, is_tie_bar
 
-from keras.layers import Dense, Embedding, Flatten, Input
+from keras.layers import Dense, Dropout, Embedding, Flatten, Input
 from keras.models import Model
 
 import numpy as np
@@ -99,6 +99,7 @@ def make_model(vocab_size, large_context=False):
 	x = Dense(
 			128, kernel_initializer='he_uniform',
 			activation='relu', name='dense_common')(x)
+	x = Dropout(0.25, seed=42)(x)
 
 	out_prev = Dense(
 					vocab_size, activation='softmax', name='prev')(x)
