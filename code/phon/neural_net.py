@@ -124,11 +124,13 @@ def make_model(vocab_size, large_context=False):
 
 
 def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
-			large_context=False, epochs=5, batch_size=32):
+			large_context=False, epochs=5, batch_size=32, seed=42):
 	"""
 	Train IPA token embeddings on a dataset and pickle the obtained vector
 	representations.
 	"""
+	np.random.seed(seed)
+
 	tokens, x, *y = prepare_training_data(dataset_path, large_context)
 	y = [np.array(ix) for ix in y]
 
