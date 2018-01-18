@@ -178,7 +178,7 @@ def get_vector(token):
 		return VECTORS[alt_token]
 	except KeyError:
 		warnings.warn('neural-net: cannot recognise {}'.format(token))
-		return VECTORS['']
+		raise
 
 
 
@@ -189,5 +189,10 @@ def calc_delta(phon_a, phon_b):
 	"""
 	if phon_a == '' or phon_b == '':
 		return 1
-	else:
-		return cosine(get_vector(phon_a), get_vector(phon_b))
+
+	try:
+		vec_a, vec_b = get_vector(phon_a), get_vector(phon_b)
+	except KeyError:
+		return 1
+
+	return cosine(vec_a, vec_b)
