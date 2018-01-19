@@ -2,6 +2,7 @@ import pickle
 import warnings
 
 from ipatok.ipa import is_letter, is_tie_bar
+from ipatok import tokenise
 
 from keras.layers import Dense, Dropout, Embedding, Flatten, Input
 from keras.models import Model
@@ -175,10 +176,26 @@ def get_vector(token):
 	except KeyError:
 		pass
 
-	alt_token = ''.join([char for char in token if is_letter(char, False)])
+	letters = ''.join([char for char in token if is_letter(char, False)])
+
+	if len(letters) > 1:
+		sub_tokens = []
+
+		for index, sub_token in enumerate(tokenise(token)):
+			if sub_token in VECTORS:
+				sub_tokens.append(sub_token)
+			elif letters[index] in VECTORS:
+				sub_tokens.append(sub_token)
+			else:
+				break
+		else:  # no break
+			# warnings.warn('neural-net: {} → {}'.format(
+			# 							token, ' '.join(sub_tokens)))
+			sub_vectors = [VECTORS[sub_token] for sub_token in sub_tokens]
+			return sum(sub_vectors) / len(sub_vectors)
 
 	try:
-		return VECTORS[alt_token]
+		return VECTORS[letters]
 	except KeyError:
 		warnings.warn('neural-net: cannot recognise {}'.format(token))
 		raise
