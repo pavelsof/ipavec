@@ -4,6 +4,10 @@
 /output/*
 /papers/*
 
+# latex temps and output
+/paper/*
+!/paper/thesis.tex
+
 # python temps
 *.py[cod]
 
