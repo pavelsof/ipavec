@@ -1,9 +1,9 @@
-\documentclass{article}
+\documentclass[a4paper]{report}
 
 
 \begin{document}
 
-\title{Comparison of IPA alignment algorithms}
+\title{IPA alignment}
 \author{Pavel Sofroniev}
 \maketitle
 
@@ -11,14 +11,43 @@
 	This paper compares various algorithms for aligning IPA sequences in the context of computational historical linguistics.
 \end{abstract}
 
-\section{Introduction}
 
-\section{Background}
+\chapter{Introduction}
 
-\section{Methodology}
 
-\section{Results}
+\chapter{Background}
 
-\section{Conclusion}
+
+\chapter{Methodology}
+
+\section{Vectors}
+
+This section describes the different methods of obtaining phoneme vector representations that have been used in the paper.
+
+\subsection{One-hot encoding}
+
+Under one-hot encoding, given a vocabulary of N distinct phonemes, each phoneme would be represented as a distinct binary vector of size N,
+such that exactly one of its dimensions has value 1 and all its other dimensions have value 0.
+In such a vector space, all vectors have length 1 and any two non-identical vectors are orthogonal.
+
+One-hot encoding is a simple method, both conceptually and computationally, but it cannot be very useful for producing distances measures
+because under its model each phoneme is equidistant from all the others.
+For the purposes of this study one-hot vector representations are used as a baseline for comparing other methods.
+
+
+\subsection{PHOIBLE features}
+
+
+\subsection{phon2vec}
+
+
+\subsection{Neural network embeddings}
+
+
+\chapter{Results}
+
+
+\chapter{Conclusion}
+
 
 \end{document}
