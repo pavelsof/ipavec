@@ -6,6 +6,7 @@
 
 # latex temps and output
 /paper/*
+!/paper/references.bib
 !/paper/thesis.tex
 
 # python temps

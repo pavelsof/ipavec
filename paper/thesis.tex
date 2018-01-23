@@ -1,6 +1,11 @@
 \documentclass[a4paper]{report}
 
 
+\usepackage[round]{natbib}
+\renewcommand{\bibname}{References}
+\bibliographystyle{abbrvnat}
+
+
 \begin{document}
 
 \title{IPA alignment}
@@ -30,12 +35,23 @@ Under one-hot encoding, given a vocabulary of N distinct phonemes, each phoneme 
 such that exactly one of its dimensions has value 1 and all its other dimensions have value 0.
 In such a vector space, all vectors have length 1 and any two non-identical vectors are orthogonal.
 
-One-hot encoding is a simple method, both conceptually and computationally, but it cannot be very useful for producing distances measures
+One-hot encoding is a simple method, both conceptually and computationally, but it cannot be very useful for producing distance measures
 because under its model each phoneme is equidistant from all the others.
 For the purposes of this study one-hot vector representations are used as a baseline for comparing other methods.
 
 
 \subsection{PHOIBLE features}
+
+PHOIBLE Online is an ongoing project aiming to compile a comprehensive tertiary database of the world languages' phonological inventories.
+At the time of writing the database contains phonological inventories for 1672 distinct languages and makes use of 2160 distinct IPA segments \citep{2014_Moran_al}.
+
+As part of the project, the developers are also maintaining a table of phonological features,
+effectively mapping each IPA segment encountered in the database to a unique ternary feature vector
+(feature values indicate either the presence, absence, or non-applicability of the respective feature).
+The feature table includes 39 distinct features and is based on research by \citet{2009_Bruce} and \citet{2011_Moisik_al}.
+
+The PHOIBLE feature vectors comprise phoneme representations grounded in phonology and linguistics theory
+that could be readily used for a variety of computational endeavours.
 
 
 \subsection{phon2vec}
@@ -44,10 +60,13 @@ For the purposes of this study one-hot vector representations are used as a base
 \subsection{Neural network embeddings}
 
 
-\chapter{Results}
+\chapter{Evaluation}
 
 
 \chapter{Conclusion}
+
+
+\bibliography{references}
 
 
 \end{document}
