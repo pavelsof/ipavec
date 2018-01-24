@@ -1,5 +1,6 @@
 \documentclass[a4paper]{report}
 
+\usepackage{fontspec}
 
 \usepackage[round]{natbib}
 \renewcommand{\bibname}{References}
@@ -43,9 +44,9 @@ For the purposes of this study one-hot vector representations are used as a base
 \subsection{PHOIBLE features}
 
 PHOIBLE Online is an ongoing project aiming to compile a comprehensive tertiary database of the world languages' phonological inventories.
-At the time of writing the database contains phonological inventories for 1672 distinct languages and makes use of 2160 distinct IPA segments \citep{2014_Moran_al}.
+At the time of writing the database contains phonological inventories for 1672 distinct languages making use of 2160 distinct IPA segments \citep{2014_Moran_al}.
 
-As part of the project, the developers are also maintaining a table of phonological features,
+As part of the project the developers are also maintaining a table of phonological features,
 effectively mapping each IPA segment encountered in the database to a unique ternary feature vector
 (feature values indicate either the presence, absence, or non-applicability of the respective feature).
 The feature table includes 39 distinct features and is based on research by \citet{2009_Bruce} and \citet{2011_Moisik_al}.
@@ -56,8 +57,21 @@ that could be readily used for a variety of computational endeavours.
 
 \subsection{phon2vec}
 
+Word2vec comprises two closely related model architectures for computing vector representations of words, first introduced by \citet{2013_Mikolov_al}.
+As this study concerns phonemes rather than words, we call the method phon2vec.
+
+Unlike the vectors obtained from one-hot encodings or PHOIBLE's feature matrix, phon2vec vectors are the output of the model being trained on data.
+The training data that we use is the set of all transcriptions from the NorthEuraLex,
+a comprehensive lexicostatistical database that provides IPA-encoded lexical data for languages of, primarily but not exclusively, Northern Eurasia \citep{2017_Dellert_Jäger}.
+At the time of writing the database covers 1016 concepts from 107 languages, resulting in 121614 IPA transcriptions.
+The latter are tokenised using ipatok, which is covered somewhere else.
+
+The word2vec/phon2vec model is a parametric one, and the resulting vector representations can vary widely depending on the parameters' values.
+
 
 \subsection{Neural network embeddings}
+
+
 
 
 \chapter{Evaluation}
