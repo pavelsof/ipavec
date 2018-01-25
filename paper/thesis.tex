@@ -1,7 +1,9 @@
 \documentclass[a4paper]{report}
 
+% do not ignore non-ascii chars
 \usepackage{fontspec}
 
+% use harvard-style referencing
 \usepackage[round]{natbib}
 \renewcommand{\bibname}{References}
 \bibliographystyle{abbrvnat}
@@ -9,19 +11,38 @@
 
 \begin{document}
 
-\title{IPA alignment}
+\title{IPA alignment using vector representations}
 \author{Pavel Sofroniev}
 \maketitle
 
 \begin{abstract}
-	This paper compares various algorithms for aligning IPA sequences in the context of computational historical linguistics.
+	This paper compares various methods of aligning IPA-encoded sound sequences using vector representations of phonemes.
 \end{abstract}
 
 
 \chapter{Introduction}
 
+Most of the computational methods developed in the field of historical linguistics involve the task of aligning sound sequences,
+either on its own or as a necessary step in a larger application.
+In its essence, sequence alignment is a way to arrange two or more sequences together
+in order to identify sub-sequences which are similar according to certain pre-defined criteria.
+Usually in the context of historical linguistics these are sequences of phonological or phonetic segments comprising transcriptions of words;
+and the similarity of given segments is subsequently used to infer either the cognacy of these words or rules of sound correspondences.
 
-\chapter{Background}
+The standard algorithm for pairwise (i.e. aligning two sequences at a time) alignment
+was originally developed by \citet{1970_Needleman_Wunsch} for aligning amino acid sequences.
+Given a function that assigns scores to pairs of sequence elements,
+the Needleman-Wunsch algorithm is guaranteed to find the alignment(s) that minimises/maximises the overall score.
+There exist a number of variants of the basic algorithm, and many of these have been adapted for the purposes of computational linguistics;
+however, the output always depends to a great extent on the scoring function.
+Some of these variants have been developed for aligning more than two sequences at once,
+e.g. the T-Coffee algorithm by \citet{2000_Notredame_al}, but in this paper we focus on pairwise alignment only.
+
+Unlike in bioinformatics, which deals primarily with sequences composed out of small sets of well-defined units,
+in historical linguistics encoding of sequences posed for alignment is not a solved problem.
+Even though in general the standard way to encode sound sequences is IPA, the International Phonetic Alphabet,
+for the purposes of alignment the overwhelming diversity of sound segments impedes the creation of a useful scoring function.
+That is why most of the computational methods resort to reducing the set of sound segments in one way or another.
 
 
 \chapter{Methodology}
