@@ -12,7 +12,8 @@
 \begin{document}
 
 \title{IPA alignment using vector representations}
-\author{Pavel Sofroniev}
+\author{Pavel Sofroniev, Çağri Çöltekin (advisor)}
+\date{January 2018}
 \maketitle
 
 \begin{abstract}
@@ -43,6 +44,43 @@ in historical linguistics encoding of sequences posed for alignment is not a sol
 Even though in general the standard way to encode sound sequences is IPA, the International Phonetic Alphabet,
 for the purposes of alignment the overwhelming diversity of sound segments impedes the creation of a useful scoring function.
 That is why most of the computational methods resort to reducing the set of sound segments in one way or another.
+
+
+\section{Early methods}
+
+An early method for sound sequence alignment in the literature is the one proposed by \citet{1996_Covington},
+which was subsequently improved and extended in \citet{1998_Covington}.
+Although the method does not take advantage of any standard sequence alignment algorithm and instead performs branch-and-bound search,
+it does use a scoring function.
+This function assigns hand-crafted values depending entirely on whether the segments are consonants, vowels, or glides.
+Due to this simple classification, the method could be adapted to work with IPA sequences (the author uses an undocumented encoding);
+however, the better performance of more complex class-based methods have shown that such coarse three-way classification is not sufficient.
+
+ALINE, first introduced by \citet{2000_Kondrak} and further elaborated in \citet{2002_Kondrak} and \citet{2003_Kondrak},
+employs a complex scoring function that is built around multi-valued (e.g. manner of articulation) and binary (e.g. nasality) phonetic features,
+each with its relative weight, as well as some additional parameters (e.g. relative weight of vowels).
+While some of these numerical values have been determined based on observations from the field of articulatory phonetics,
+others have been established by trial and error.
+
+
+\section{ASJP}
+
+The Automated Similarity Judgement Program (ASJP) is an actively developed database aiming to provide
+the translations of a set of 40 basic concepts into all the world's languages.
+At the time of writing the database covers 294548 words from 7221 languages \citep{2016_Wichmann_al}.
+The words are encoded using a uniform transcription consisting of 34 consonants and 7 vowels,
+originally introduced by \citet{2008_Brown_al} as ASJPcode but now commonly known as ASJP.
+This restricted set of encoding symbols results in much of the phonetic information being lost,
+but the authors argue that such information might not be that valuable for certain applications.
+The simplified encoding also allows for a greater reach of the database as many of the world's languages lack sufficiently detailed phonetic record.
+
+\citet{2013_Jäger} uses the ASJP database to calculate the Partial Mutual Information (PMI) scores between each pair of ASJP segments.
+
+
+\section{Other methods}
+
+
+\section{Phoneme vectorisation}
 
 
 \chapter{Methodology}
