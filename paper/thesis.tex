@@ -34,7 +34,8 @@ The standard algorithm for pairwise (i.e. aligning two sequences at a time) alig
 was originally developed by \citet{1970_Needleman_Wunsch} for aligning amino acid sequences.
 Given a function that assigns scores to pairs of sequence elements,
 the Needleman-Wunsch algorithm is guaranteed to find the alignment(s) that minimises/maximises the overall score.
-There exist a number of variants of the basic algorithm, and many of these have been adapted for the purposes of computational linguistics;
+There exist a number of variants of the basic algorithm, e.g. \citet{1981_Smith_Waterman},
+and many of these have been adapted for the purposes of computational linguistics;
 however, the output always depends to a great extent on the scoring function.
 Some of these variants have been developed for aligning more than two sequences at once,
 e.g. the T-Coffee algorithm by \citet{2000_Notredame_al}, but in this paper we focus on pairwise alignment only.
@@ -48,11 +49,11 @@ That is why most of the computational methods resort to reducing the set of soun
 
 \section{Early methods}
 
-An early method for sound sequence alignment in the literature is the one proposed by \citet{1996_Covington},
+An early method for sound sequence alignment reported in the literature is the one proposed by \citet{1996_Covington},
 which was subsequently improved and extended in \citet{1998_Covington}.
 Although the method does not take advantage of any standard sequence alignment algorithm and instead performs branch-and-bound search,
 it does use a scoring function.
-This function assigns hand-crafted values depending entirely on whether the segments are consonants, vowels, or glides.
+This function assigns hand-crafted values depending on whether the segments are consonants, vowels, or glides.
 Due to this simple classification, the method could be adapted to work with IPA sequences (the author uses an undocumented encoding);
 however, the better performance of more complex class-based methods have shown that such coarse three-way classification is not sufficient.
 
@@ -74,13 +75,23 @@ This restricted set of encoding symbols results in much of the phonetic informat
 but the authors argue that such information might not be that valuable for certain applications.
 The simplified encoding also allows for a greater reach of the database as many of the world's languages lack sufficiently detailed phonetic record.
 
-\citet{2013_Jäger} uses the ASJP database to calculate the Partial Mutual Information (PMI) scores between each pair of ASJP segments.
+\citet{2013_Jäger} uses the ASJP database to calculate the partial mutual information (PMI) scores\,---\,a logarithmic measure
+for sound similarity based on occurrence and co-occurrence of the sound segments in data\,---\,for each pair of ASJP segments.
+These PMI scores are successfully employed for inferring phylogenetic trees through determining language distances from PMI-based sequence alignment.
+Unlike the aforementioned methods, this one obtains its scoring function in a data-driven manner, an approach also embraced in our paper.
+
+PMI-based scoring has been used on IPA-encoded datasets as well, by converting the sequences to ASJP as a pre-processing step.
+As an example, \citet{2016_Jäger_Sofroniev} use this approach to train a support vector machine (SVM) for cognate classification.
 
 
 \section{Other methods}
 
+The sound-class-based phonetic alignment (SCA) method developed by \citet{2012_List} employs a set of 28 sound classes.
+It operates on IPA sequences by converting the segments into their respective sound classes, aligning the sound class tokens, and then converting these back into IPA.
+The scoring function is hand-crafted to reflect the perceived probabilities of sound change transforming a segment of one class into a segment of another.
 
-\section{Phoneme vectorisation}
+
+\section{The case for vectorisation}
 
 
 \chapter{Methodology}
