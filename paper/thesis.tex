@@ -41,7 +41,7 @@ Some of these variants have been developed for aligning more than two sequences 
 e.g. the T-Coffee algorithm by \citet{2000_Notredame_al}, but in this paper we focus on pairwise alignment only.
 
 Unlike in bioinformatics, which deals primarily with sequences composed out of small sets of well-defined units,
-in historical linguistics encoding of sequences posed for alignment is not a solved problem.
+in historical linguistics the encoding of sequences posed for alignment is not a solved problem.
 Even though in general the standard way to encode sound sequences is IPA, the International Phonetic Alphabet,
 for the purposes of alignment the overwhelming diversity of sound segments impedes the creation of a useful scoring function.
 That is why most of the computational methods resort to reducing the set of sound segments in one way or another.
@@ -93,21 +93,39 @@ The scoring function is hand-crafted to reflect the perceived probabilities of s
 
 \section{The case for vectorisation}
 
+The concise overview of the last three sections demonstrates that modern sound sequence alignment methods tend to operate on small sets of segments;
+IPA-encoded data is handled by translating it into the respective reduced alphabet.
+While this constitutes a valid approach to tackle the problem of deriving a scoring function for the rich set of IPA segments,
+in this paper we experiment with an alternative approach: vectorisation.
+The goal is to obtain representations of IPA segments in a vector space
+in which the cosine similarity between segments' vectors would reflect the segments' similarity and, hence, probability of shared ancestry.
+
+Our inspiration for experimenting with vector representations (also known as embeddings)
+is drawn from the success of such methods in other fields of computational linguistics:
+e.g. \citet{2013_Mikolov_al} affirm that vector representations of words exhibit useful semantic and syntactic properties;
+and \citet{2014_Chen_Manning} use word embeddings for transition-based parsing.
+More closely related to our topic,
+\citet{2018_Silfverberg_al} obtain vector representations of orthographic segments for Finnish, Spanish and Turkish
+from recurrent neural networks trained to perform an inflection task.
+
 
 \chapter{Methodology}
 
+Our source code is licensed under GNU GPLv3 and publicly available at TBA.
+
+
 \section{Vectors}
 
-This section describes the different methods of obtaining phoneme vector representations that have been used in the paper.
+This section describes the different methods of obtaining vector representations that we have experimented with.
 
 \subsection{One-hot encoding}
 
-Under one-hot encoding, given a vocabulary of N distinct phonemes, each phoneme would be represented as a distinct binary vector of size N,
+Under one-hot encoding, given a vocabulary of N distinct segments, each segment would be represented as a distinct binary vector of size N,
 such that exactly one of its dimensions has value 1 and all its other dimensions have value 0.
 In such a vector space, all vectors have length 1 and any two non-identical vectors are orthogonal.
 
 One-hot encoding is a simple method, both conceptually and computationally, but it cannot be very useful for producing distance measures
-because under its model each phoneme is equidistant from all the others.
+because under its model each segment is equidistant from all the others.
 For the purposes of this study one-hot vector representations are used as a baseline for comparing other methods.
 
 
@@ -121,14 +139,14 @@ effectively mapping each IPA segment encountered in the database to a unique ter
 (feature values indicate either the presence, absence, or non-applicability of the respective feature).
 The feature table includes 39 distinct features and is based on research by \citet{2009_Bruce} and \citet{2011_Moisik_al}.
 
-The PHOIBLE feature vectors comprise phoneme representations grounded in phonology and linguistics theory
+The PHOIBLE feature vectors comprise IPA segment representations grounded in phonology and linguistics theory
 that could be readily used for a variety of computational endeavours.
 
 
 \subsection{phon2vec}
 
 Word2vec comprises two closely related model architectures for computing vector representations of words, first introduced by \citet{2013_Mikolov_al}.
-As this study concerns phonemes rather than words, we call the method phon2vec.
+As this study concerns IPA segments rather than words, we call the method phon2vec.
 
 Unlike the vectors obtained from one-hot encodings or PHOIBLE's feature matrix, phon2vec vectors are the output of the model being trained on data.
 The training data that we use is the set of all transcriptions from the NorthEuraLex,
