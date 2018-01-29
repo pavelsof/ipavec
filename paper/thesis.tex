@@ -44,10 +44,28 @@ Unlike in bioinformatics, which deals primarily with sequences composed out of s
 in historical linguistics the encoding of sequences posed for alignment is not a solved problem.
 Even though in general the standard way to encode sound sequences is IPA, the International Phonetic Alphabet,
 for the purposes of alignment the overwhelming diversity of sound segments impedes the creation of a useful scoring function.
-That is why most of the computational methods resort to reducing the set of sound segments in one way or another.
+That is why modern sound sequence alignment methods tend to operate on small sets of segments;
+IPA-encoded data is handled by translating it into the respective reduced alphabet.
+While this constitutes a valid approach to tackle the problem of deriving a scoring function for the rich set of IPA segments,
+in this paper we experiment with an alternative approach: vectorisation.
+The goal is to obtain representations of IPA segments in a vector space
+in which the cosine similarity between segments' vectors would reflect the segments' similarity and, hence, probability of shared ancestry.
+
+Our inspiration for experimenting with vector representations (also known as embeddings)
+is drawn from the success of such methods in other fields of computational linguistics:
+e.g. \citet{2013_Mikolov_al} affirm that vector representations of words exhibit useful semantic and syntactic properties;
+and \citet{2014_Chen_Manning} use word embeddings for transition-based parsing.
+More closely related to our topic,
+\citet{2018_Silfverberg_al} obtain vector representations of orthographic segments for Finnish, Spanish and Turkish
+from recurrent neural networks trained to perform an inflection task.
 
 
-\section{Early methods}
+\section{Background}
+
+This section provides a concise overview of sound sequence alignment methods reported in the computational historical linguistics literature.
+
+
+\subsection{Early methods}
 
 An early method for sound sequence alignment reported in the literature is the one proposed by \citet{1996_Covington},
 which was subsequently improved and extended in \citet{1998_Covington}.
@@ -64,7 +82,7 @@ While some of these numerical values have been determined based on observations 
 others have been established by trial and error.
 
 
-\section{ASJP}
+\subsection{ASJP}
 
 The Automated Similarity Judgement Program (ASJP) is an actively developed database aiming to provide
 the translations of a set of 40 basic concepts into all the world's languages.
@@ -84,29 +102,11 @@ PMI-based scoring has been used on IPA-encoded datasets as well, by converting t
 As an example, \citet{2016_Jäger_Sofroniev} use this approach to train a support vector machine (SVM) for cognate classification.
 
 
-\section{Other methods}
+\subsection{Other methods}
 
 The sound-class-based phonetic alignment (SCA) method developed by \citet{2012_List} employs a set of 28 sound classes.
 It operates on IPA sequences by converting the segments into their respective sound classes, aligning the sound class tokens, and then converting these back into IPA.
 The scoring function is hand-crafted to reflect the perceived probabilities of sound change transforming a segment of one class into a segment of another.
-
-
-\section{The case for vectorisation}
-
-The concise overview of the last three sections demonstrates that modern sound sequence alignment methods tend to operate on small sets of segments;
-IPA-encoded data is handled by translating it into the respective reduced alphabet.
-While this constitutes a valid approach to tackle the problem of deriving a scoring function for the rich set of IPA segments,
-in this paper we experiment with an alternative approach: vectorisation.
-The goal is to obtain representations of IPA segments in a vector space
-in which the cosine similarity between segments' vectors would reflect the segments' similarity and, hence, probability of shared ancestry.
-
-Our inspiration for experimenting with vector representations (also known as embeddings)
-is drawn from the success of such methods in other fields of computational linguistics:
-e.g. \citet{2013_Mikolov_al} affirm that vector representations of words exhibit useful semantic and syntactic properties;
-and \citet{2014_Chen_Manning} use word embeddings for transition-based parsing.
-More closely related to our topic,
-\citet{2018_Silfverberg_al} obtain vector representations of orthographic segments for Finnish, Spanish and Turkish
-from recurrent neural networks trained to perform an inflection task.
 
 
 \chapter{Methodology}
@@ -157,12 +157,22 @@ The latter are tokenised using ipatok, which is covered somewhere else.
 The word2vec/phon2vec model is a parametric one, and the resulting vector representations can vary widely depending on the parameters' values.
 
 
-\subsection{Neural network embeddings}
+\subsection{Neural network embeddings I}
+
+\subsection{Neural network embeddings II}
 
 
 
 
-\chapter{Evaluation}
+\chapter{Experiments}
+
+\section{Data}
+
+\subsection{NorthEuraLex}
+
+\subsection{BDPA}
+
+\section{Results}
 
 
 \chapter{Conclusion}
