@@ -6,7 +6,6 @@ import pickle
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ipatok.ipa import is_vowel
 from sklearn.decomposition import PCA
 
 
@@ -22,11 +21,12 @@ def plot_vowels(model_path):
 	tokens = sorted(model.keys())
 	vectors = np.array([model[token] for token in tokens])
 
-	pca = PCA(n_components=2)
+	pca = PCA(n_components=2, random_state=42)
 	vectors = pca.fit_transform(vectors)
 
-	vowels = [token for token in tokens if len(token) == 1 and is_vowel(token)]
-	vectors = np.array([vectors[i] for i, t in enumerate(tokens) if t in vowels])
+	vowels = ['i', 'y', 'u', 'ɯ', 'e', 'ø', 'ɤ', 'o', 'ə', 'ɛ', 'ʌ', 'ɔ']
+	vectors = np.array([
+			vectors[i] for i, token in enumerate(tokens) if token in vowels])
 
 	plt.axes().set_aspect('equal')  # force the diagram to be square
 	plt.scatter(vectors[:,0], vectors[:,1], marker='.')
