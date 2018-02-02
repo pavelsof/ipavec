@@ -4,7 +4,7 @@ import os.path
 import string
 import tempfile
 
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from hypothesis.strategies import composite, lists, sets, text
 from hypothesis import assume, given
@@ -16,6 +16,7 @@ from code.data import (
 
 
 BASE_DIR = os.path.join(os.path.dirname(__file__), '../..')
+TUJIA_DATASET_PATH = os.path.join(BASE_DIR, 'data/svmcc/tujia.tsv')
 COVINGTON_DATASET_PATH = os.path.join(BASE_DIR, 'data/bdpa/covington.psa')
 
 
@@ -31,7 +32,9 @@ def words(draw):
 	assume(all(['\0' not in s for s in concepts]))
 
 	num_words = len(langs) * len(concepts)
-	ipa = draw(lists(text(alphabet=string.ascii_lowercase, max_size=5),
+	alphabet = string.ascii_lowercase.replace('g', '')
+
+	ipa = draw(lists(text(alphabet=alphabet, max_size=5),
 					min_size=num_words, max_size=num_words))
 
 	counter = itertools.count()
@@ -59,6 +62,18 @@ class WordsDatasetTestCase(TestCase):
 			WordsDataset(path)
 
 		self.assertTrue(str(cm.exception).startswith('Could not find column'))
+
+	@skip
+	def test_with_ob_ugrian(self):
+		dataset = WordsDataset(TUJIA_DATASET_PATH)
+
+		self.assertEqual(dataset.get_langs(), [
+			'Boluo_Tujia', 'Dianfang_Tujia', 'Duogu_Tujia',
+			'Tanxi_Tujia', 'Tasha_Tujia'])
+
+		self.assertEqual(len(dataset.words), 498)
+		self.assertEqual(dataset.words[0], Word('Tasha_Tujia', 'I', ('ŋ', 'a', '²⁴')))
+		self.assertEqual(dataset.words[-1], Word('Tanxi_Tujia', 'yellow', ('ħ', 'ʉ', '³³')))
 
 	@given(words())
 	def test_write_and_load_words(self, words):
