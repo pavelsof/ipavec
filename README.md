@@ -45,6 +45,7 @@ scripts/run+eval.fish data/bdpa/covington.psa
 |-----------|---------|---------|------------|----------|---------|
 | covington |  60,61% |  82,42% |     85,37% |   80,18% |  82,52% |
 | andean    |  85,66% |  87,31% |     82,31% |   96,12% |  99,34% |
+| bai       |  52,25% |  62,77% |      0,23% |   61,25% |  74,72% |
 | bulgarian |  60,54% |  80,54% |     78,79% |   77,98% |  82,55% |
 | dutch     |  14,16% |  25,65% |     24,53% |   23,10% |  32,50% |
 | french    |  42,94% |  62,92% |     61,31% |   63,27% |  74,30% |
@@ -53,6 +54,7 @@ scripts/run+eval.fish data/bdpa/covington.psa
 | norwegian |  59.39% |  78.87% |     75.80% |   73.69% |  83,53% |
 | ob-ugrian |  59.58% |  77.87% |     76.20% |   68.92% |  78,04% |
 | romance   |  40.48% |  71.28% |     71.04% |   58.59% |  76,37% |
+| sinitic   |  27,34% |  28,57% |      0,00% |   30,75% |  72,46% |
 | slavic    |  76.96% |  90.73% |     86.17% |   84.04% |  89,89% |
 | global    |  44,76% |  58,28% |     55,82% |   56,32% |  63,89% |
 
@@ -60,6 +62,7 @@ scripts/run+eval.fish data/bdpa/covington.psa
 |-----------|---------|
 | covington |  90,24% |
 | andean    |  99,67% |
+| bai       |  77,97% |
 | bulgarian |  89,34% |
 | dutch     |  42,20% |
 | french    |  80,90% |
@@ -68,4 +71,5 @@ scripts/run+eval.fish data/bdpa/covington.psa
 | norwegian |  91,77% |
 | ob-ugrian |  86,04% |
 | romance   |  95,62% |
+| sinitic   |  63,16% |
 | slavic    |  94,15% |

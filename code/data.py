@@ -2,9 +2,9 @@ import collections
 import csv
 import itertools
 
-from ipatok.ipa import is_letter, is_tie_bar, is_diacritic, is_length
+from ipatok.ipa import is_letter, is_tie_bar, is_diacritic, is_length, is_tone
 from ipatok.ipa import replace_substitutes
-from ipatok.tokens import normalise, tokenise
+from ipatok.tokens import normalise, tokenise, replace_digits_with_chao
 
 from code.utils import open_for_reading, open_for_writing
 
@@ -55,6 +55,7 @@ class Dataset:
 		This method leverages ipatok functions that are not in the package's
 		public API.
 		"""
+		token = replace_digits_with_chao(token)
 		token = replace_substitutes(normalise(token))
 
 		return ''.join([
@@ -62,7 +63,8 @@ class Dataset:
 				if is_letter(char, strict=False) \
 					or is_tie_bar(char) \
 					or is_diacritic(char, strict=False) \
-					or is_length(char) ])
+					or is_length(char) \
+					or is_tone(char) ])
 
 
 	def get_langs(self):
@@ -139,7 +141,7 @@ class WordsDataset(Dataset):
 				self.sanitise_token(token) for token in string.split()])
 
 		string = string.strip().split(',')[0].strip()
-		string = string.replace('_', ' ').replace('-', '')
+		string = replace_digits_with_chao(string)
 
 		return tuple(tokenise(string, replace=True, diphtongs=True))
 

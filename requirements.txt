@@ -21,7 +21,7 @@ html5lib==0.9999999
 hypothesis==3.38.5
 idna==2.6
 ipalint==0.0.0
-ipatok==0.1.2
+ipatok==0.2.0
 isodate==0.6.0
 jmespath==0.9.3
 Keras==2.1.2
