@@ -6,6 +6,8 @@ from ipatok import tokenise
 
 from keras.layers import Dense, Embedding, Input, LSTM
 from keras.models import Model
+from keras.preprocessing.sequence import pad_sequences
+from keras.utils import to_categorical
 
 import numpy as np
 
@@ -33,27 +35,25 @@ def prepare_training_data(dataset_path):
 	"""
 	Read a dataset of pairs of tokenised IPA strings and return (1) the sorted
 	list of all tokens, (2, 3) the two columns of the dataset as lists of lists
-	of ints. The ints are 0/1 for word start/end and bigger ints for the
-	ordered IPA tokens. Word start/end is only indicated in the second list.
+	of ints (with 0, 1, and 2 reserved for padding and word start/end, token
+	indices start from 3).
 	"""
 	col_a, col_b = [], []
 	with open(dataset_path, encoding='utf-8') as f:
 		for line in map(lambda x: x.strip().split('\t'), f):
-			col_a.append([normalise_token(token) for token in line[0]])
-			col_b.append([normalise_token(token) for token in line[1]])
+			col_a.append([normalise_token(token) for token in line[0].split()])
+			col_b.append([normalise_token(token) for token in line[1].split()])
 
 	tokens = set([token for word in col_a for token in word]) \
 			| set([token for word in col_b for token in word])
 	tokens = sorted(tokens)
-	assert '<' not in tokens and '>' not in tokens
 
-	tokens_to_ix = {token: index+2 for index, token in enumerate(tokens)}
-	tokens_to_ix['<'], tokens_to_ix['>'] = 0, 1
+	tokens_to_ix = {token: index+3 for index, token in enumerate(tokens)}
 
 	ix_a, ix_b = [], []
 	for word_a, word_b in zip(col_a, col_b):
 		ix_a.append([tokens_to_ix[token] for token in word_a])
-		ix_b.append([0] + [tokens_to_ix[token] for token in word_b] + [1])
+		ix_b.append([tokens_to_ix[token] for token in word_b])
 
 	return tokens, ix_a, ix_b
 
@@ -63,19 +63,22 @@ def make_model(vocab_size):
 	"""
 	Create and compile (but do not train) a sequence-to-sequence Keras model
 	that attempts to translate synonymous words across languages. vocab_size
-	should be the total number of distinct tokens, including the non-token (0).
+	should be the total number of distinct tokens, including for padding (0)
+	and word start (1) and end (2).
 	"""
-	embed = Embedding(input_dim=vocab_size, output_dim=64, name='embedding')
+	embed = Embedding(
+				input_dim=vocab_size, output_dim=256,
+				mask_zero=True, name='embedding')
 
-	encoder_input = Input(shape=(None,))
+	encoder_input = Input(shape=(None,), name='encoder_input')
 	encoder = LSTM(256, return_state=True, name='encoder')
 	_, state_h, state_c = encoder(embed(encoder_input))
 
-	decoder_input = Input(shape=(None,))
+	decoder_input = Input(shape=(None,), name='decoder_input')
 	decoder = LSTM(256, return_sequences=True, name='decoder')
 	x = embed(decoder_input)
 	x = decoder(x, initial_state=[state_h, state_c])
-	output = Dense(vocab_size, activation='softmax')(x)
+	output = Dense(vocab_size, activation='softmax', name='dense')(x)
 
 	model = Model(inputs=[encoder_input, decoder_input], outputs=output)
 	model.compile(
@@ -96,13 +99,21 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
 	np.random.seed(seed)
 
 	tokens, ix_a, ix_b = prepare_training_data(dataset_path)
-	y = [word[1:] + [1] for word in ix_b]
+	vocab_size = len(tokens) + 3
 
-	model = make_model(len(tokens))
-	model.fit([ix_a, ix_b], y, epochs=epochs, batch_size=batch_size)
+	encoder_x = pad_sequences(ix_a, padding='post')
+	decoder_x = pad_sequences([[1] + row for row in ix_b], padding='post')
+	decoder_y = pad_sequences(
+					[to_categorical(row + [2], vocab_size) for row in ix_b],
+					padding='post')
+
+	model = make_model(vocab_size)
+	model.fit(
+			[encoder_x, decoder_x], decoder_y,
+			epochs=epochs, batch_size=batch_size)
 
 	weights = model.get_layer('embedding').get_weights()[0]
-	vectors = {token: weights[index+2] for index, token in enumerate(tokens)}
+	vectors = {token: weights[index+3] for index, token in enumerate(tokens)}
 
 	with open(output_path, 'wb') as f:
 		pickle.dump(vectors, f, protocol=3)
