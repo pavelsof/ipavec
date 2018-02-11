@@ -59,16 +59,45 @@ def prepare_training_data(dataset_path):
 
 
 
-def make_model(vocab_size):
+def prepare_initial_weights(model_path, tokens):
+	"""
+	Prepare initial weights for LSTM model embedding layer. model_path should
+	point to a pickled dict mapping IPA tokens to vectors (usually the output
+	of training a context model). tokens should comprise the vocabulary being
+	embedded.
+
+	The first three rows of the returned matrix are zeroes, reserved for the
+	padding and word boundaries non-tokens.
+	"""
+	weights = np.zeros((len(tokens)+3, 64))
+
+	with open(model_path, 'rb') as f:
+		model = pickle.load(f)
+
+	for index, token in enumerate(tokens, 3):
+		if token in model:
+			weights[index] = model[token]
+
+	return weights
+
+
+
+def make_model(vocab_size, initial_weights=None):
 	"""
 	Create and compile (but do not train) a sequence-to-sequence Keras model
 	that attempts to translate synonymous words across languages. vocab_size
 	should be the total number of distinct tokens, including for padding (0)
-	and word start (1) and end (2).
+	and word start (1) and end (2). The second arg allows setting the initial
+	weights of the embedding layer.
 	"""
-	embed = Embedding(
-				input_dim=vocab_size, output_dim=256,
-				mask_zero=True, name='embedding')
+	if initial_weights is not None:
+		embed = Embedding(
+					input_dim=vocab_size, output_dim=64, mask_zero=True,
+					weights=[initial_weights], name='embedding')
+	else:
+		embed = Embedding(
+					input_dim=vocab_size, output_dim=64, mask_zero=True,
+					name='embedding')
 
 	encoder_input = Input(shape=(None,), name='encoder_input')
 	encoder = LSTM(256, return_state=True, name='encoder')
@@ -91,7 +120,7 @@ def make_model(vocab_size):
 
 
 def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
-											epochs=5, batch_size=32, seed=42):
+							from_model=None, epochs=5, batch_size=32, seed=42):
 	"""
 	Train IPA token embeddings using an LSTM-powered sequence-to-sequence model
 	and pickle the obtained vector representations.
@@ -107,7 +136,12 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
 					[to_categorical(row + [2], vocab_size) for row in ix_b],
 					padding='post')
 
-	model = make_model(vocab_size)
+	if from_model:
+		initial_weights = prepare_initial_weights(from_model, tokens)
+	else:
+		initial_weights = None
+
+	model = make_model(vocab_size, initial_weights)
 	model.fit(
 			[encoder_x, decoder_x], decoder_y,
 			epochs=epochs, batch_size=batch_size)
