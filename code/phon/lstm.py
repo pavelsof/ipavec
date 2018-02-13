@@ -1,9 +1,11 @@
+import os
 import pickle
 import warnings
 
 from ipatok.ipa import is_letter
 from ipatok import tokenise
 
+from keras.callbacks import TensorBoard
 from keras.layers import Dense, Embedding, Input, LSTM
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
@@ -119,8 +121,34 @@ def make_model(vocab_size, initial_weights=None):
 
 
 
-def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
-							from_model=None, epochs=5, batch_size=32, seed=42):
+def make_callbacks(tokens, tensorboard_dir):
+	"""
+	Init and return (in a list) a TensorBoard Keras callback instance to be
+	used for visualising the token embeddings.
+	"""
+	try:
+		os.makedirs(tensorboard_dir, exist_ok=True)
+	except OSError as err:
+		raise ValueError('tensorboard_dir is not writable: {}'.format(str(err)))
+
+	metadata_path = os.path.join(os.path.abspath(tensorboard_dir), 'metadata')
+
+	with open(metadata_path, 'w', encoding='utf-8') as f:
+		f.write('\n'.join(['<MASK>', '<START>', '<END>'] + tokens))
+
+	tensorboard = TensorBoard(
+					log_dir=tensorboard_dir,
+					write_images=True,
+					embeddings_freq=1,
+					embeddings_layer_names=['embedding'],
+					embeddings_metadata=metadata_path)
+
+	return [tensorboard]
+
+
+
+def train(dataset_path, output_path=DEFAULT_MODEL_PATH, from_model=None,
+		tensorboard_dir='meta/tensorboard', epochs=5, batch_size=32, seed=42):
 	"""
 	Train IPA token embeddings using an LSTM-powered sequence-to-sequence model
 	and pickle the obtained vector representations.
@@ -142,9 +170,11 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
 		initial_weights = None
 
 	model = make_model(vocab_size, initial_weights)
+	callbacks = make_callbacks(tokens, tensorboard_dir)
+
 	model.fit(
 			[encoder_x, decoder_x], decoder_y,
-			epochs=epochs, batch_size=batch_size)
+			epochs=epochs, batch_size=batch_size, callbacks=callbacks)
 
 	weights = model.get_layer('embedding').get_weights()[0]
 	vectors = {token: weights[index+3] for index, token in enumerate(tokens)}
