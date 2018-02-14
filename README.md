@@ -41,7 +41,7 @@ scripts/run+eval.fish data/bdpa/covington.psa
 
 ## results
 
-|           | one-hot | phoible | phoible-pc | phon2vec | context | lstm    |
+|           | one-hot | phoible | phoible-pc | phon2vec | nn      | rnn     |
 |-----------|---------|---------|------------|----------|---------|---------|
 | covington |  60,61% |  82,42% |     85,37% |   80,18% |  82,52% |  81,30% |
 | andean    |  85,66% |  87,31% |     82,31% |   96,12% |  99,34% |  99,17% |

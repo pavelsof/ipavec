@@ -16,7 +16,7 @@ from scipy.spatial.distance import cosine
 import tensorflow
 
 from code.data import AlignmentsDataset
-from code.phon.context import normalise_token
+from code.phon.nn import normalise_token
 
 
 

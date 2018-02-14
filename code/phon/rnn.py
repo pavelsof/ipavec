@@ -18,14 +18,14 @@ from scipy.spatial.distance import cosine
 
 import tensorflow
 
-from code.phon.context import normalise_token
+from code.phon.nn import normalise_token
 
 
 
 """
 Path to store to and load from the trained embeddings by default.
 """
-DEFAULT_MODEL_PATH = 'models/lstm'
+DEFAULT_MODEL_PATH = 'models/rnn'
 
 
 """
@@ -66,7 +66,7 @@ def prepare_training_data(dataset_path):
 
 def prepare_initial_weights(model_path, tokens):
 	"""
-	Prepare initial weights for LSTM model embedding layer. model_path should
+	Prepare initial weights for RNN model embedding layer. model_path should
 	point to a pickled dict mapping IPA tokens to vectors (usually the output
 	of training a context model). tokens should comprise the vocabulary being
 	embedded.
@@ -153,7 +153,7 @@ def make_callbacks(tokens, tensorboard_dir):
 def train(dataset_path, output_path=DEFAULT_MODEL_PATH, from_model=None,
 		tensorboard_dir='meta/tensorboard', epochs=5, batch_size=32, seed=42):
 	"""
-	Train IPA token embeddings using an LSTM-powered sequence-to-sequence model
+	Train IPA token embeddings using an RNN-powered sequence-to-sequence model
 	and pickle the obtained vector representations.
 	"""
 	random.seed(seed)
@@ -226,7 +226,7 @@ def get_vector(token):
 			else:
 				break
 		else:  # no break
-			# warnings.warn('lstm: {} → {}'.format(
+			# warnings.warn('rnn: {} → {}'.format(
 			# 							token, ' '.join(sub_tokens)))
 			sub_vectors = [VECTORS[sub_token] for sub_token in sub_tokens]
 			return sum(sub_vectors) / len(sub_vectors)
@@ -234,7 +234,7 @@ def get_vector(token):
 	try:
 		return VECTORS[letters]
 	except KeyError:
-		warnings.warn('lstm: cannot recognise {}'.format(token))
+		warnings.warn('rnn: cannot recognise {}'.format(token))
 		raise
 
 
