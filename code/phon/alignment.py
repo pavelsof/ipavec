@@ -1,4 +1,5 @@
 import pickle
+import random
 import warnings
 
 from ipatok.ipa import is_letter
@@ -11,6 +12,8 @@ from keras.models import Model
 import numpy as np
 
 from scipy.spatial.distance import cosine
+
+import tensorflow
 
 from code.data import AlignmentsDataset
 from code.phon.context import normalise_token
@@ -105,7 +108,9 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH,
 	"""
 	Train IPA token embeddings on a dataset and pickle them.
 	"""
+	random.seed(seed)
 	np.random.seed(seed)
+	tensorflow.set_random_seed(seed)
 
 	tokens, ix_a, ix_b, y = prepare_training_data(dataset_path)
 

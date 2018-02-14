@@ -1,5 +1,6 @@
 import os
 import pickle
+import random
 import warnings
 
 from ipatok.ipa import is_letter
@@ -14,6 +15,8 @@ from keras.utils import to_categorical
 import numpy as np
 
 from scipy.spatial.distance import cosine
+
+import tensorflow
 
 from code.phon.context import normalise_token
 
@@ -153,7 +156,9 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH, from_model=None,
 	Train IPA token embeddings using an LSTM-powered sequence-to-sequence model
 	and pickle the obtained vector representations.
 	"""
+	random.seed(seed)
 	np.random.seed(seed)
+	tensorflow.set_random_seed(seed)
 
 	tokens, ix_a, ix_b = prepare_training_data(dataset_path)
 	vocab_size = len(tokens) + 3
