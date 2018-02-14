@@ -7,7 +7,7 @@ from ipatok.ipa import is_letter
 from ipatok import tokenise
 
 from keras.callbacks import TensorBoard
-from keras.layers import Dense, Embedding, Input, LSTM
+from keras.layers import Dense, Embedding, Input, SimpleRNN
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
@@ -105,13 +105,13 @@ def make_model(vocab_size, initial_weights=None):
 					name='embedding')
 
 	encoder_input = Input(shape=(None,), name='encoder_input')
-	encoder = LSTM(256, return_state=True, name='encoder')
-	_, state_h, state_c = encoder(embed(encoder_input))
+	encoder = SimpleRNN(128, return_state=True, name='encoder')
+	_, state = encoder(embed(encoder_input))
 
 	decoder_input = Input(shape=(None,), name='decoder_input')
-	decoder = LSTM(256, return_sequences=True, name='decoder')
+	decoder = SimpleRNN(128, return_sequences=True, name='decoder')
 	x = embed(decoder_input)
-	x = decoder(x, initial_state=[state_h, state_c])
+	x = decoder(x, initial_state=state)
 	output = Dense(vocab_size, activation='softmax', name='dense')(x)
 
 	model = Model(inputs=[encoder_input, decoder_input], outputs=output)
