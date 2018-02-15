@@ -132,9 +132,9 @@ def make_callbacks(tokens, tensorboard_dir):
 	try:
 		os.makedirs(tensorboard_dir, exist_ok=True)
 	except OSError as err:
-		raise ValueError('tensorboard_dir is not writable: {}'.format(str(err)))
+		raise ValueError('tensorboard_dir is not writable: {!s}'.format(err))
 
-	metadata_path = os.path.join(os.path.abspath(tensorboard_dir), 'metadata')
+	metadata_path = os.path.join(tensorboard_dir, 'metadata')
 
 	with open(metadata_path, 'w', encoding='utf-8') as f:
 		f.write('\n'.join(['<MASK>', '<START>', '<END>'] + tokens))
@@ -144,14 +144,14 @@ def make_callbacks(tokens, tensorboard_dir):
 					write_images=True,
 					embeddings_freq=1,
 					embeddings_layer_names=['embedding'],
-					embeddings_metadata=metadata_path)
+					embeddings_metadata='metadata')
 
 	return [tensorboard]
 
 
 
 def train(dataset_path, output_path=DEFAULT_MODEL_PATH, from_model=None,
-		tensorboard_dir='meta/tensorboard', epochs=5, batch_size=32, seed=42):
+					tensorboard_dir=None, epochs=5, batch_size=32, seed=42):
 	"""
 	Train IPA token embeddings using an RNN-powered sequence-to-sequence model
 	and pickle the obtained vector representations.
@@ -174,9 +174,12 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH, from_model=None,
 	else:
 		initial_weights = None
 
-	model = make_model(vocab_size, initial_weights)
+	if tensorboard_dir is None:
+		tensorboard_dir = 'meta/board-rnn-{!s}-{!s}'.format(epochs, batch_size)
+
 	callbacks = make_callbacks(tokens, tensorboard_dir)
 
+	model = make_model(vocab_size, initial_weights)
 	model.fit(
 			[encoder_x, decoder_x], decoder_y,
 			epochs=epochs, batch_size=batch_size, callbacks=callbacks)
