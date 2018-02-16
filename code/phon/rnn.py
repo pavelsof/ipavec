@@ -187,6 +187,14 @@ def train(dataset_path, output_path=DEFAULT_MODEL_PATH, from_model=None,
 	weights = model.get_layer('embedding').get_weights()[0]
 	vectors = {token: weights[index+3] for index, token in enumerate(tokens)}
 
+	if from_model:
+		with open(from_model, 'rb') as f:
+			base_vectors = pickle.load(f)
+
+		for token, vector in base_vectors.items():
+			if token not in vectors:
+				vectors[token] = vector
+
 	with open(output_path, 'wb') as f:
 		pickle.dump(vectors, f, protocol=3)
 
