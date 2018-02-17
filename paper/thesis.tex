@@ -75,7 +75,7 @@ This function assigns hand-crafted values depending on whether the segments are 
 Due to this simple classification, the method could be adapted to work with IPA sequences (the author uses an undocumented encoding);
 however, the better performance of more complex class-based methods have shown that such coarse three-way classification is not sufficient.
 
-ALINE, first introduced by \citet{2000_Kondrak} and further elaborated in \citet{2002_Kondrak} and \citet{2003_Kondrak},
+ALINE, first introduced by \citet{2000_Kondrak} and further elaborated in \citet{2002_Kondrak_Hirst} and \citet{2003_Kondrak},
 employs a complex scoring function that is built around multi-valued (e.g. manner of articulation) and binary (e.g. nasality) phonetic features,
 each with its relative weight, as well as some additional parameters (e.g. relative weight of vowels).
 While some of these numerical values have been determined based on observations from the field of articulatory phonetics,
@@ -157,22 +157,30 @@ The latter are tokenised using ipatok, which is covered somewhere else.
 The word2vec/phon2vec model is a parametric one, and the resulting vector representations can vary widely depending on the parameters' values.
 
 
-\subsection{Context embeddings}
+\subsection{NN embeddings}
 
-\subsection{Alignment embeddings}
+\subsection{RNN embeddings}
 
 
 
 
 \chapter{Experiments}
 
-\section{Data}
+In order to evaluate the performance of the methods put forward in the last chapter,
+we use the Benchmark Database for Phonetic Alignments (BDPA) compiled by \citet{2014_List_Prokić}.
+The database contains 7126 aligned pairs of IPA sequences collected from 12 source datasets,
+covering languages from the Aymaran, Indo-European, Japonic, Quechuan, Sino-Tibetan, and Uralic language families.
+The database also features the small set of 82 selected pairs used by \citet{1996_Covington} to evaluate his method, encoded in IPA.
 
-\subsection{NorthEuraLex}
+Our methods are also compared against SCA, the current state-of-the-art method for aligning IPA sequences developed by \citet{2012_List},
+which is briefly described in the introductory chapter.
 
-\subsection{BDPA}
-
-\section{Results}
+In order to quantify the methods' performance, we employ a simple evaluation scheme which is also used in \citet{2002_Kondrak_Hirst}:
+each correct alignment yields 1 point;
+if n alternative alignments are produced for a particular pair and the correct one is among these the score is 1/n points;
+partially correct alignment do not score points.
+The percentage scores are obtained by dividing the points by the total number of pairs.
+Pairs for which BDPA includes more than one correct alignment are excluded.
 
 
 \chapter{Conclusion}
