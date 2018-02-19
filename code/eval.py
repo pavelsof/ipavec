@@ -36,8 +36,11 @@ def evaluate(dataset_true, dataset_pred):
 
 		for (word_a, word_b), al_pred_set in d_pred.items():
 			al_true_set = d_true[(word_a, word_b)]
+
 			if len(al_true_set) > 1:
 				warnings.warn('More than 1 true alignment for {}:{}'.format(word_a, word_b))
+				continue
+
 			al_true = al_true_set.pop()
 
 			pair_score = sum([1 if al_pred.corr == al_true.corr else 0
@@ -53,7 +56,6 @@ def evaluate(dataset_true, dataset_pred):
 						(word_a, word_b, Alignment(al_true.corr, 'correct'))])
 
 			score += pair_score
-
-		total_pred += len(d_pred)
+			total_pred += 1
 
 	return Evaluation(mistakes, correct_pred, total_pred, score)
