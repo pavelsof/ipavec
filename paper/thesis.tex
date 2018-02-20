@@ -11,6 +11,9 @@
 % needed for URLs
 \usepackage[hidelinks]{hyperref}
 
+% beautiful tables
+\usepackage{booktabs}
+
 
 \begin{document}
 
@@ -89,7 +92,7 @@ others have been established by trial and error.
 
 The Automated Similarity Judgement Program (ASJP) is an actively developed database aiming to provide
 the translations of a set of 40 basic concepts into all the world's languages.
-At the time of writing the database covers 294548 words from 7221 languages \citep{2016_Wichmann_al}.
+At the time of writing the database covers 294\,548 words from 7221 languages \citep{2016_Wichmann_al}.
 The words are encoded using a uniform transcription consisting of 34 consonants and 7 vowels,
 originally introduced by \citet{2008_Brown_al} as ASJPcode but now commonly known as ASJP.
 This restricted set of encoding symbols results in much of the phonetic information being lost,
@@ -184,15 +187,50 @@ Pairs for which BDPA includes more than one correct alignment are excluded.
 
 \section{Training data}
 
-Our training data is sourced from the NorthEuraLex, a comprehensive lexicostatistical database
+Our training data is sourced from NorthEuraLex, a comprehensive lexicostatistical database
 that provides IPA-encoded lexical data for languages of, primarily but not exclusively, Northern Eurasia \citep{2017_Dellert_Jäger}.
-At the time of writing the database covers 1016 concepts from 107 languages, resulting in 121614 IPA transcriptions.
+At the time of writing the database covers 1016 concepts from 107 languages, resulting in 121\,614 IPA transcriptions.
 The latter are tokenised using ipatok, an open source Python package for tokenising IPA strings developed by us.\footnote{\url{https://pypi.python.org/pypi/ipatok}}
 Phon2vec and NN are trained on the set of all tokenised transcriptions.
 As NorthEuraLex does not include cognacy information, RNN is trained on the set of tokenised transcriptions of the word pairs constituting probable cognates\,---\,pairs
 in which the words belong to different languages, are linked to the same concept, and have normalised Levenshtein distance lower than 0,5.
 Admittedly, this threshold value is chosen somewhat arbitrarily;
 we have also experimented with thresholds of 0,4 and 0,6, but setting the cutoff at 0,5 yields better-performing embeddings.
+
+
+\section{Results}
+
+The percentage-score evaluation of the output of running our proposed methods and SCA on the BDPA datasets is summarised in Table~\ref{tab:results}.
+
+\begin{table}[h]
+	\centering\small
+	\begin{tabular}{l *{6}{c}}
+		\toprule
+		& one-hot & phoible & phon2vec & nn & nn\,+\,rnn & sca \\
+		\midrule
+		Andean		&	86,47 &	87,93 &	97,52 &	99,32 &	99,49 & 99,66 \\
+		Bai			&	51,89 &	62,21 &	60,90 &	74,34 &	75,15 & 77,64 \\
+		Bulgarian	&	60,54 &	80,54 &	77,98 &	82,55 &	86,70 & 89,34 \\
+		Dutch		&	14,16 &	25,65 &	26,00 &	32,50 &	32,50 & 42,20 \\
+		French		&	42,94 &	62,92 &	68,94 &	74,30 &	77,04 & 80,90 \\
+		Germanic	&	39,82 &	51,81 &	54.51 &	71,78 &	72,50 & 83,45 \\
+		Japanese	&	53.56 &	65.04 &	73.74 &	62,71 &	71,08 & 82,19 \\
+		Norwegian	&	59.24 &	78.74 &	73.54 &	83,43 &	88,99 & 91,72 \\
+		Ob-Ugrian	&	59.58 &	77.87 &	73.35 &	78,04 &	82,55 & 86,04 \\
+		Romance		&	40.48 &	71.28 &	63.16 &	76,37 &	77,55 & 95,62 \\
+		Sinitic		&	27,06 &	28,02 &	30,42 &	70,93 &	72,59 & 61,11 \\
+		Slavic		&	76.96 &	90.73 &	84.22 &	89,89 &	96,81 & 94,15 \\
+		\addlinespace
+		Global		&	44,76 &	58,28 &	56,32 &	63,89 &	78,45 & 83,12 \\
+		Covington	&	60,61 &	82,42 &	80,18 &	82,52 &	82,52 & 90,24 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Scores, as percentage of total alignment pairs}
+	\label{tab:results}
+\end{table}
+
+
+\section{Discussion}
 
 
 \chapter{Conclusion}
