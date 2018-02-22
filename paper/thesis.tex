@@ -14,6 +14,9 @@
 % beautiful tables
 \usepackage{booktabs}
 
+% set the font size of captions
+\usepackage[font=small]{caption}
+
 
 \begin{document}
 
@@ -170,9 +173,33 @@ The word2vec/phon2vec model is a parametric one, and the resulting vector repres
 
 In order to evaluate the performance of the methods put forward in the last chapter,
 we use the Benchmark Database for Phonetic Alignments (BDPA) compiled by \citet{2014_List_Prokić}.
-The database contains 7126 aligned pairs of IPA sequences collected from 12 source datasets,
-covering languages from the Aymaran, Indo-European, Japonic, Quechuan, Sino-Tibetan, and Uralic language families.
+The database contains 7198 aligned pairs of IPA sequences collected from 12 source datasets,
+covering languages and dialects from 6 language families (cf.~Table~\ref{tab:bdpa}).
 The database also features the small set of 82 selected pairs used by \citet{1996_Covington} to evaluate his method, encoded in IPA.
+
+\begin{table}[h]
+	\centering\small
+	\begin{tabular}{l r r l l}
+		\toprule
+		& pairs & langs & family & source \\
+		\midrule
+		Andean		& 619	& 20	& Aymaran, Quechuan	& \citet{2006_Heggarty} \\
+		Bai			& 889	& 17	& Sino-Tibetan		& \citet{2006_Wang}, \citet{2007_Allen} \\
+		Bulgarian	& 1519	& 196	& Indo-European		& \citet{2009_Prokić_al} \\
+		Dutch		& 500	& 62	& Indo-European		& \citet{2005_Schutter_al} \\
+		French		& 712	& 62	& Indo-European		& \citet{1925_Gauchat_al} \\
+		Germanic	& 1110	& 45	& Indo-European		& \citet{2009_Renfrew_Heggarty} \\
+		Japanese	& 219	& 10	& Japonic			& \citet{1973_Shirō} \\
+		Norwegian	& 501	& 51	& Indo-European		& \citet{2011_Almberg_Skarbø} \\
+		Ob-Ugrian	& 444	& 21	& Uralic			& \citet{2011_Zhivlov} \\
+		Romance		& 297	& 8		& Indo-European		& \citet{2009_Renfrew_Heggarty} \\
+		Sinitic		& 200	& 38	& Sino-Tibetan		& \citet{2004_Hóu} \\
+		Slavic		& 188	& 5		& Indo-European		& \citet{2008_Derksen} \\
+		\bottomrule
+	\end{tabular}
+	\caption{The BDPA datasets: numbers of pairs and languages, family affiliations as per \citet{2018_Hammarström_al}, and sources}
+	\label{tab:bdpa}
+\end{table}
 
 Our methods are also compared against SCA, the current state-of-the-art method for aligning IPA sequences developed by \citet{2012_List},
 which is briefly described in the introductory chapter.
@@ -236,7 +263,11 @@ The first point we would like to draw attention to is that the one-hot encoding 
 This is expected because, unlike the other methods, one-hot encoding cannot represent variability in the degree of phonetic similarity between IPA segments.
 Viewing the one-hot encoding scores as a baseline, we conclude that the other methods' distance measures do indeed contribute to the task of sequence alignment.
 
-Not included in Table~\ref{tab:results} are the scores for the PHOIBLE-PC method,
+The PHOIBLE feature vector are roughly on par with the phon2vec embeddings,
+yield better results than the nn embeddings on two of the datasets (Japanese and Slavic), and are outperformed by the rnn\,+\,nn embeddings.
+The better scores achieved by the data-induced embeddings can be explained by the binary nature of PHOIBLE's vectors and the smaller number of features.
+
+Not included in Table~\ref{tab:results} are the scores of the PHOIBLE-PC method,
 which are instead contrasted with the scores of the base PHOIBLE method in Table~\ref{tab:phoible}.
 The PCA-reduced vectors perform consistently worse than their non-reduced counterparts, albeit with relatively small difference.
 Thus our hypothesis that applying PCA on the PHOIBLE vector space would improve the results is proven false.
@@ -261,9 +292,11 @@ Thus our hypothesis that applying PCA on the PHOIBLE vector space would improve 
 		Slavic		&	90,73 &	86,17 \\
 		\bottomrule
 	\end{tabular}
-	\caption{Scores: PHOIBLE vs PHOIBLE-PC}
+	\caption{Scores: PHOIBLE vs. PHOIBLE-PC}
 	\label{tab:phoible}
 \end{table}
+
+Of the data-driven methods, phon2vec yields the lowest scores, being outperformed by both neural network models in all datasets except Japanese.
 
 
 \chapter{Conclusion}
