@@ -20,7 +20,7 @@ def run_sca(dataset_path, output_path):
 	Read the word pairs from a psa dataset, align them using the SCA algorithm,
 	and write an output psa dataset.
 	"""
-	dataset = AlignmentsDataset(dataset_path)
+	dataset = AlignmentsDataset(dataset_path, keep_digits=True)
 	output = ['{} (SCA alignment)'.format(dataset.header)]
 
 	for word_a, word_b, alignment in dataset.data:
