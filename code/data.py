@@ -45,17 +45,21 @@ class Dataset:
 	"""
 
 	@staticmethod
-	def sanitise_token(token):
+	def sanitise_token(token, keep_digits=False):
 		"""
 		Sanitise a string by (1) ensuring its chars' normal form comply to the
 		IPA spec; (2) replacing common substitutes with their IPA equivalents;
 		(3) excluding chars that are not IPA letters, diacritics, tie bars, or
 		length markers.
 
+		If keep_digits is set to True, do not replace digits with Chao letters.
+
 		This method leverages ipatok functions that are not in the package's
 		public API.
 		"""
-		token = replace_digits_with_chao(token)
+		if not keep_digits:
+			token = replace_digits_with_chao(token)
+
 		token = replace_substitutes(normalise(token))
 
 		return ''.join([
@@ -64,7 +68,7 @@ class Dataset:
 					or is_tie_bar(char) \
 					or is_diacritic(char, strict=False) \
 					or is_length(char) \
-					or is_tone(char) ])
+					or is_tone(char, strict=False) or char in '¹²³⁴⁵'])
 
 
 	def get_langs(self):
@@ -252,7 +256,7 @@ class AlignmentsDataset(Dataset):
 	[1]: http://alignments.lingpy.org/faq.php#formats
 	"""
 
-	def __init__(self, path):
+	def __init__(self, path, keep_digits=False):
 		"""
 		Init the instance's props, including self.data, a [] of (Word, Word,
 		Alignment) tuples (where the first Word is always < the second one).
@@ -260,6 +264,7 @@ class AlignmentsDataset(Dataset):
 		Raise a DatasetError if the data cannot be loaded.
 		"""
 		self.path = path
+		self.keep_digits = keep_digits
 
 		self.header = ''
 		self.data = []
@@ -294,7 +299,7 @@ class AlignmentsDataset(Dataset):
 		lang = lang.strip('.')
 
 		align = tuple([
-			self.sanitise_token(token) if token != '' else ''
+			self.sanitise_token(token, self.keep_digits) if token != '' else ''
 			for token in align.split('\t')])
 
 		ipa = tuple([token for token in align if token])
