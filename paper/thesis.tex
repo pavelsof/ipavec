@@ -236,7 +236,7 @@ The percentage-score evaluation of the output of running our proposed methods an
 		& one-hot & phoible & phon2vec & nn & nn\,+\,rnn & sca \\
 		\midrule
 		Andean		&	86,47 &	87,93 &	97,52 &	99,32 &	99,49 & 99,66 \\
-		Bai			&	51,89 &	62,21 &	60,90 &	74,34 &	75,15 & 77,64 \\
+		Bai			&	51,89 &	62,21 &	60,90 &	74,34 &	75,15 & 83,20 \\
 		Bulgarian	&	60,54 &	80,54 &	77,98 &	82,55 &	86,70 & 89,34 \\
 		Dutch		&	14,16 &	25,65 &	26,00 &	32,50 &	32,50 & 42,20 \\
 		French		&	42,94 &	62,92 &	68,94 &	74,30 &	77,04 & 80,90 \\
@@ -245,10 +245,10 @@ The percentage-score evaluation of the output of running our proposed methods an
 		Norwegian	&	59,24 &	78,74 &	73,54 &	83,43 &	88,99 & 91,72 \\
 		Ob-Ugrian	&	59,58 &	77,87 &	73,35 &	78,04 &	82,55 & 86,04 \\
 		Romance		&	40,48 &	71,28 &	63,16 &	76,37 &	77,55 & 95,62 \\
-		Sinitic		&	27,06 &	28,02 &	30,42 &	70,93 &	72,59 & 61,11 \\
+		Sinitic		&	27,06 &	28,02 &	30,42 &	70,93 &	72,59 & 98,89 \\
 		Slavic		&	76,96 &	90,73 &	84,22 &	89,89 &	96,81 & 94,15 \\
 		\addlinespace
-		Global		&	44,76 &	58,28 &	56,32 &	63,89 &	78,45 & 83,12 \\
+		Global		&	44,76 &	58,28 &	56,32 &	63,89 &	78,45 & 84,75 \\
 		Covington	&	60,61 &	82,42 &	80,18 &	82,52 &	82,52 & 90,24 \\
 		\bottomrule
 	\end{tabular}
@@ -297,6 +297,33 @@ Thus our hypothesis that applying PCA on the PHOIBLE vector space would improve 
 \end{table}
 
 Of the data-driven methods, phon2vec yields the lowest scores, being outperformed by both neural network models in all datasets except Japanese.
+Given that both the phon2vec and the nn embeddings are trained on the same data,
+we believe that the consistent difference is due to the fact that the phon2vec model ignores the order of IPA segments.
+The results reported in Table~\ref{tab:results} are obtained using
+the CBOW architecture with negative sampling, window size of 1, and embedding size of 15\,---\,comprising
+the best-performing set of hyperparameters we have experimented with.
+
+The nn\,+\,rnn model yields higher scores than the nn model that it builds upon,
+indicating that the embeddings of the former capture useful information that the embeddings of the feedforward network do not\,---\,the
+difference between the two models ranges from none for the Dutch dataset to almost 7 percent points for the Slavic dataset.
+Table~\ref{tab:networks} summarises the best-performing sets of hyperparameters.
+
+\begin{table}[h]
+	\centering\small
+	\begin{tabular}{l *{2}{r}}
+		\toprule
+		& nn & rnn \\
+		\midrule
+		embedding size & 64 & 64 \\
+		dense layer size & 128 & - \\
+		rnn layer size & - & 128 \\
+		epochs & 10 & 5 \\
+		batch size & 128 & 128 \\
+		\bottomrule
+	\end{tabular}
+	\caption{The neural network hyperparameters}
+	\label{tab:networks}
+\end{table}
 
 
 \chapter{Conclusion}
