@@ -218,8 +218,9 @@ Our training data is sourced from NorthEuraLex, a comprehensive lexicostatistica
 that provides IPA-encoded lexical data for languages of, primarily but not exclusively, Northern Eurasia \citep{2017_Dellert_Jäger}.
 At the time of writing the database covers 1016 concepts from 107 languages, resulting in 121\,614 IPA transcriptions.
 The latter are tokenised using ipatok, an open source Python package for tokenising IPA strings developed by us.\footnote{\url{https://pypi.python.org/pypi/ipatok}}
-Phon2vec and NN are trained on the set of all tokenised transcriptions.
-As NorthEuraLex does not include cognacy information, RNN is trained on the set of tokenised transcriptions of the word pairs constituting probable cognates\,---\,pairs
+The phon2vec and NN embeddings are trained on the set of all tokenised transcriptions.
+As NorthEuraLex does not include cognacy information,
+the RNN embeddings are trained on the set of tokenised transcriptions of the word pairs constituting probable cognates\,---\,pairs
 in which the words belong to different languages, are linked to the same concept, and have normalised Levenshtein distance lower than 0,5.
 Admittedly, this threshold value is chosen somewhat arbitrarily;
 we have also experimented with thresholds of 0,4 and 0,6, but setting the cutoff at 0,5 yields better-performing embeddings.
@@ -264,8 +265,9 @@ This is expected because, unlike the other methods, one-hot encoding cannot repr
 Viewing the one-hot encoding scores as a baseline, we conclude that the other methods' distance measures do indeed contribute to the task of sequence alignment.
 
 The PHOIBLE feature vector are roughly on par with the phon2vec embeddings,
-yield better results than the nn embeddings on two of the datasets (Japanese and Slavic), and are outperformed by the rnn\,+\,nn embeddings.
-The better scores achieved by the data-induced embeddings can be explained by the binary nature of PHOIBLE's vectors and the smaller number of features.
+yield better results than the NN embeddings on two of the datasets (Japanese and Slavic), and are outperformed by the RNN\,+\,NN embeddings.
+The better scores achieved by SCA and the the data-induced embeddings can be explained by the binary nature of PHOIBLE's vectors and the smaller number of features.
+Furthermore, PHOIBLE does not provide feature vectors for all IPA segments encountered in the BDPA datasets.
 
 Not included in Table~\ref{tab:results} are the scores of the PHOIBLE-PC method,
 which are instead contrasted with the scores of the base PHOIBLE method in Table~\ref{tab:phoible}.
@@ -297,16 +299,16 @@ Thus our hypothesis that applying PCA on the PHOIBLE vector space would improve 
 \end{table}
 
 Of the data-driven methods, phon2vec yields the lowest scores, being outperformed by both neural network models in all datasets except Japanese.
-Given that both the phon2vec and the nn embeddings are trained on the same data,
+Given that both the phon2vec and the NN embeddings are trained on the same data,
 we believe that the consistent difference is due to the fact that the phon2vec model ignores the order of IPA segments.
 The results reported in Table~\ref{tab:results} are obtained using
 the CBOW architecture with negative sampling, window size of 1, and embedding size of 15\,---\,comprising
 the best-performing set of hyperparameters we have experimented with.
 
-The nn\,+\,rnn model yields higher scores than the nn model that it builds upon,
+The NN\,+\,RNN model yields higher scores than the NN model that it builds upon,
 indicating that the embeddings of the former capture useful information that the embeddings of the feedforward network do not\,---\,the
 difference between the two models ranges from none for the Dutch dataset to almost 7 percent points for the Slavic dataset.
-Table~\ref{tab:networks} summarises the best-performing sets of hyperparameters.
+Table~\ref{tab:networks} summarises the best-performing sets of hyperparameters we have experimented with.
 
 \begin{table}[h]
 	\centering\small
@@ -324,6 +326,13 @@ Table~\ref{tab:networks} summarises the best-performing sets of hyperparameters.
 	\caption{The neural network hyperparameters}
 	\label{tab:networks}
 \end{table}
+
+For all but the Slavic dataset, SCA yields higher scores than our best-performing NN\,+\,RNN embeddings.
+The score differences exhibit considerable variance\,---\,from less than 1 percent point for the Andean dataset up to 26 percent points for the Sinitic dataset.
+A possible explanation for this variance is the fact that not all IPA segments found in the benchmark datasets are found in the training data.
+For example, NorthEuraLex includes a single tonal language, Mandarin Chinese,
+and the NN model cannot produce meaningful embeddings for most of the tones encountered in the Sinitic and Bai datasets.
+Arguably, a larger training dataset featuring a richer set of IPA segments would produce better-performing embeddings.
 
 
 \chapter{Conclusion}
