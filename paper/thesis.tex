@@ -118,16 +118,14 @@ It operates on IPA sequences by converting the segments into their respective so
 The scoring function is hand-crafted to reflect the perceived probabilities of sound change transforming a segment of one class into a segment of another.
 
 
-\chapter{Methodology}
+\chapter{Methods}
 
-Our source code is licensed under GNU GPLv3 and publicly available at TBA.
+We consider 5 different methods for obtaining vector representations of IPA segments.
+The code implementation of these methods, as well as of the experiments described in the next chapter,
+is open sourced under the GNU GPLv3 license and publicly available online.\footnote{\url{https://github.com/pavelsof/ipavec}}
 
 
-\section{Vectors}
-
-This section describes the different methods of obtaining vector representations that we have experimented with.
-
-\subsection{One-hot encoding}
+\section{One-hot encoding}
 
 Under one-hot encoding, given a vocabulary of $N$ distinct segments, each segment would be represented as a distinct binary vector of size $N$,
 such that exactly one of its dimensions has value 1 and all its other dimensions have value 0.
@@ -138,7 +136,7 @@ because under its model each segment is equidistant from all the others.
 For the purposes of this study one-hot vector representations are used as a baseline for comparing other methods.
 
 
-\subsection{PHOIBLE features}
+\section{PHOIBLE feature vectors}
 
 PHOIBLE Online is an ongoing project aiming to compile a comprehensive tertiary database of the world languages' phonological inventories.
 At the time of writing the database contains phonological inventories for 1672 distinct languages making use of 2160 distinct IPA segments \citep{2014_Moran_al}.
@@ -152,7 +150,7 @@ The PHOIBLE feature vectors comprise IPA segment representations grounded in pho
 that could be readily used for a variety of computational endeavours.
 
 
-\subsection{phon2vec}
+\section{phon2vec embeddings}
 
 Word2vec comprises two closely related model architectures for computing vector representations of words, first introduced by \citet{2013_Mikolov_al}.
 As this study concerns IPA segments rather than words, we call the method phon2vec.
@@ -162,9 +160,9 @@ Unlike the vectors obtained from one-hot encodings or PHOIBLE's feature matrix, 
 The word2vec/phon2vec model is a parametric one, and the resulting vector representations can vary widely depending on the parameters' values.
 
 
-\subsection{NN embeddings}
+\section{NN embeddings}
 
-\subsection{RNN embeddings}
+\section{RNN embeddings}
 
 
 
