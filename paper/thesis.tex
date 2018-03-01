@@ -17,6 +17,14 @@
 % set the font size of captions
 \usepackage[font=small]{caption}
 
+% package for drawing graphs
+% source: http://www.texample.net/tikz/examples/simple-flow-chart/
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
+\tikzstyle{block} = [rectangle, draw, fill=teal!20, text centered, rounded corners, minimum height=0.9cm, node distance=1.6cm]
+\tikzstyle{line} = [draw, -latex']
+
 
 \begin{document}
 
@@ -123,6 +131,7 @@ The scoring function is hand-crafted to reflect the perceived probabilities of s
 We consider 5 different methods for obtaining vector representations of IPA segments.
 The code implementation of these methods, as well as of the experiments described in the next chapter,
 is open sourced under the GNU GPLv3 license and publicly available online.\footnote{\url{https://github.com/pavelsof/ipavec}}
+It is written using the Python programming language and a set of common dependencies, including NumPy, SciPy, Gensim, and Keras.
 
 
 \section{One-hot encoding}
@@ -162,8 +171,34 @@ The word2vec/phon2vec model is a parametric one, and the resulting vector repres
 
 \section{NN embeddings}
 
-\section{RNN embeddings}
+Our fourth method consists of using the embeddings of a neural network (NN) which is trained to predict an IPA segment's immediate neighbours.
+As it is the case with the phon2vec model, such a network requires a training dataset of IPA sequences.
+During training, each IPA segment of each sequence is embedded, processed by a regular dense layer,
+and used to predict the segment's one-hot encoded preceding and following segments through two softmax layers.
+The network's architecture is depicted in Figure~\ref{fig:nn}.
 
+\begin{figure}[h]
+	\centering\small
+
+	\begin{tikzpicture}
+		\node [block] (input) {input segment};
+		\node [block, below of=input] (embedding) {embedding layer};
+		\node [block, below of=embedding] (dense) {dense layer};
+		\node [block, below of=dense, left of=dense] (prev) {preceding segment};
+		\node [block, below of=dense, right of=dense] (next) {following segment};
+
+		\path [line] (input) -- (embedding);
+		\path [line] (embedding) -- (dense);
+		\path [line] (dense) -- (prev);
+		\path [line] (dense) -- (next);
+	\end{tikzpicture}
+
+	\caption{NN: layers}
+	\label{fig:nn}
+\end{figure}
+
+
+\section{RNN embeddings}
 
 
 
