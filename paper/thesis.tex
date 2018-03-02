@@ -30,7 +30,7 @@
 
 \title{IPA alignment using vector representations}
 \author{Pavel Sofroniev, Çağri Çöltekin (advisor)}
-\date{February 2018}
+\date{March 2018}
 \maketitle
 
 \begin{abstract}
@@ -131,7 +131,7 @@ The scoring function is hand-crafted to reflect the perceived probabilities of s
 We consider 5 different methods for obtaining vector representations of IPA segments.
 The code implementation of these methods, as well as of the experiments described in the next chapter,
 is open sourced under the GNU GPLv3 license and publicly available online.\footnote{\url{https://github.com/pavelsof/ipavec}}
-It is written using the Python programming language and a set of common dependencies, including NumPy, SciPy, Gensim, and Keras.
+It is written using the Python programming language and a set of common dependencies, including NumPy, SciPy, scikit-learn, Gensim, and Keras.
 
 
 \section{One-hot encoding}
@@ -200,6 +200,41 @@ The network's architecture is depicted in Figure~\ref{fig:nn}.
 
 \section{RNN embeddings}
 
+Our last method consists of using the embeddings of a recursive neural network (RNN).
+Given a pair of sequences, the network recursively encodes the first sequence into a vector which is then recursively decoded into an output sequence.
+The backward propagation of the mismatches between the output sequence and the pair's second sequence affects the whole network.
+Introduced by \citet{2014_Cho_al}, networks of such architecture are typically employed for machine translation,
+but our network is trained on pairs of IPA sequences comprising bilingual pairs of words linked to the same meaning.
+As both encoded and decoded data are of the same form, the embedding layer is shared.
+The network's architecture is depicted in Figure~\ref{fig:rnn}.
+
+\begin{figure}[h]
+	\centering\small
+
+	\begin{tikzpicture}
+		\node [block] (encoder) {encoder};
+		\node [block, right of=encoder, node distance=3cm] (state) {internal state};
+		\node [block, right of=state, node distance=3cm] (decoder) {decoder};
+		\node [block, right of=decoder, node distance=2cm] (output) {output};
+		\node [block, below of=state] (embedding) {embedding layer};
+		\node [block, below of=embedding, left of=embedding] (encoder-input) {encoder input};
+		\node [block, below of=embedding, right of=embedding] (decoder-input) {decoder input};
+
+		\path [line] (encoder-input) -- (embedding);
+		\path [line] (decoder-input) -- (embedding);
+		\path [line] (embedding) -- (encoder);
+		\path [line] (embedding) -- (decoder);
+		\path [line] (encoder) -- (state);
+		\path [line] (state) -- (decoder);
+		\path [line] (decoder) -- (output);
+	\end{tikzpicture}
+
+	\caption{RNN: layers}
+	\label{fig:rnn}
+\end{figure}
+
+We use the NN embeddings as initial weights of the RNN embedding layer, as this consistently improves the resulting vector representations;
+thus we refer to the latter as NN\,+\,RNN embeddings.
 
 
 \chapter{Experiments}
