@@ -184,12 +184,16 @@ expecting that this would decrease the influence of rare features; we refer to t
 
 \section{phon2vec embeddings}
 
-Word2vec comprises two closely related model architectures for computing vector representations of words, first introduced by \citet{2013_Mikolov_al}.
-As this study concerns IPA segments rather than words, we call the method phon2vec.
+The first data-driven method we consider is word2vec, first introduced by \citet{2013_Mikolov_al}.
+It comprises two closely related model architectures for computing vector representations of words:
+the continuous bag-of-words model (CBOW) which tries to predict a word based on its context of neighbouring words,
+and the continuous skip-gram model which, given a word, tries to predict words from its context.
+The resulting embeddings also depend on a few other parameters,
+e.g. the number of neighbouring words that constitute a word's context, or the number of negative samples for each positive sample.
 
-Unlike the vectors obtained from one-hot encodings or PHOIBLE's feature matrix, phon2vec vectors are the output of the model being trained on data.
-
-The word2vec/phon2vec model is a parametric one, and the resulting vector representations can vary widely depending on the parameters' values.
+As our study concerns IPA segments rather than words, we refer to the method as phon2vec.
+Our embeddings are trained on a dataset of tokenised IPA sequences,
+with the model effectively treating the IPA segments as words and the sequences as sentences.
 
 
 \section{NN embeddings}
@@ -392,9 +396,9 @@ Thus our hypothesis that applying PCA on the PHOIBLE vector space would improve 
 Of the data-driven methods, phon2vec yields the lowest scores, being outperformed by both neural network models in all datasets except Japanese.
 Given that both the phon2vec and the NN embeddings are trained on the same data,
 we believe that the consistent difference is due to the fact that the phon2vec model ignores the order of IPA segments.
-The results reported in Table~\ref{tab:results} are obtained using
-the CBOW architecture with negative sampling, window size of 1, and embedding size of 15\,---\,comprising
-the best-performing set of hyperparameters we have experimented with.
+The results reported in Table~\ref{tab:results} are obtained using the CBOW architecture
+with negative sampling of one negative sample per positive sample, context size of 2 (one segment in each direction),
+and embedding size of 15 dimensions\,---\,comprising the best-performing set of parameters we have experimented with.
 
 The NN\,+\,RNN model yields higher scores than the NN model that it builds upon,
 indicating that the embeddings of the former capture useful information that the embeddings of the feedforward network do not\,---\,the
