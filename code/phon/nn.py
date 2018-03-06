@@ -20,7 +20,7 @@ import tensorflow
 Default path where to store to and load from the trained embeddings/vector
 representations of IPA tokens.
 """
-DEFAULT_MODEL_PATH = 'models/net'
+DEFAULT_MODEL_PATH = 'models/nn'
 
 
 """
