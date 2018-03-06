@@ -52,7 +52,7 @@ python run.py data/bdpa/slavic.psa --vectors phoible --output output/slavic-phoi
 python eval.py data/bdpa/slavic.psa output/slavic-phoible.psa | less
 ```
 
-## phon2vec
+### phon2vec
 
 ```bash
 python train.py phon2vec data/northeuralex/ipa --output models/phon2vec
@@ -60,7 +60,7 @@ python run.py data/bdpa/slavic.psa --vectors phon2vec --output output/slavic-pho
 python eval.py data/bdpa/slavic.psa output/slavic-phon2vec.psa | less
 ```
 
-## nn+rnn
+### nn+rnn
 
 ```bash
 python train.py nn data/northeuralex/ipa --extra epochs=10,batch_size=128
