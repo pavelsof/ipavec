@@ -2,9 +2,9 @@
 
 This is the home of my bachelor thesis, **IPA alignment using vector
 representations**, which presents several different methods for obtaining
-embeddings of IPA segments in vector space for the purposes of IPA sequence
-alignment. The repo contains the code implementation, the training and
-evaluation data, as well as the thesis paper.
+embeddings of IPA segments in vector space for the purposes of aligning
+IPA-encoded sound sequences. The repo contains the code implementation, the
+training and evaluation data, and the thesis paper.
 
 
 ## setup

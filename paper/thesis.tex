@@ -29,12 +29,20 @@
 \begin{document}
 
 \title{IPA alignment using vector representations}
-\author{Pavel Sofroniev, Çağri Çöltekin (advisor)}
+\author{
+	Pavel Sofroniev \\ \normalsize{author} \\ \normalsize\url{pavel.sofroniev@student.uni-tuebingen.de}\medskip
+	\and
+	Çağri Çöltekin \\ \normalsize{advisor} \\ \normalsize\url{ccoltekin@sfs.uni-tuebingen.de}\bigskip
+}
 \date{March 2018}
 \maketitle
 
 \begin{abstract}
-	This paper compares various methods of aligning IPA-encoded sound sequences using vector representations of phonemes.
+	This paper explores an alternative approach to pairwise alignment of IPA-encoded sound sequences in the context of computational historical linguistics:
+	employing the cosine distance between representations of IPA segments in vector space as the scoring function in the standard sequence alignment algorithm.
+	We implement and evaluate several different methods for obtaining such IPA embeddings, including three data-driven methods.
+	The performance of our neural network embeddings, albeit failing short of being on par with that of the current state-of-the-art method,
+	suggests the need for further experiments.
 \end{abstract}
 
 
@@ -455,7 +463,7 @@ and we believe that they could be significantly improved by using larger and mor
 This constitutes one direction for future experiments;
 another possibility is to train and use embeddings specific to a particular language family or macro-area.
 Further investigation is also needed with respect to comparing and evaluating the methods,
-especially in the context of a larger application, such as cognacy identification and phylogenetic inference.
+especially in the context of a larger application, such as cognacy identification or phylogenetic inference.
 
 
 \bibliography{references}
