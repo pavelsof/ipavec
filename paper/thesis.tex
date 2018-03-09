@@ -55,7 +55,7 @@ in order to identify sub-sequences which are similar according to certain pre-de
 Usually in the context of historical linguistics these are sequences of phonological or phonetic segments comprising transcriptions of words;
 and the similarity of given segments is subsequently used to infer either the cognacy of these words or rules of sound correspondences.
 
-The standard algorithm for pairwise (i.e. aligning two sequences at a time) alignment
+The currently standard algorithm for pairwise (i.e. aligning two sequences at a time) alignment
 was originally developed by \citet{1970_Needleman_Wunsch} for aligning amino acid sequences.
 Given a function that assigns scores to pairs of sequence elements,
 the Needleman-Wunsch algorithm is guaranteed to find the alignment(s) that minimises/maximises the overall score.
@@ -149,8 +149,9 @@ such that exactly one of its dimensions has value 1 and all its other dimensions
 In such a vector space, all vectors have length 1 and any two non-identical vectors are orthogonal.
 
 One-hot encoding is a simple method, both conceptually and computationally, but it cannot be very useful for producing distance measures
-because under its model each segment is equidistant from all the others.
-For the purposes of this study one-hot vector representations are used as a baseline for comparing other methods.
+because under its model each segment is equidistant from all the others;
+i.e. the method is equivalent to treating each IPA segment as a basic symbol with no connection to any other IPA segment.
+For the purposes of our study one-hot vector representations are used as a baseline for comparing other methods.
 
 
 \section{PHOIBLE feature vectors}
@@ -196,7 +197,7 @@ The first data-driven method we consider is word2vec, first introduced by \citet
 It comprises two closely related model architectures for computing vector representations of words:
 the continuous bag-of-words model (CBOW) which tries to predict a word based on its context of neighbouring words,
 and the continuous skip-gram model which, given a word, tries to predict words from its context.
-The resulting embeddings also depend on a few other parameters,
+The resulting embeddings also depend on a few other hyperparameters,
 e.g. the number of neighbouring words that constitute a word's context, or the number of negative samples for each positive sample.
 
 As our study concerns IPA segments rather than words, we refer to the method as phon2vec.
@@ -315,7 +316,10 @@ The percentage scores are obtained by dividing the points by the total number of
 Pairs for which BDPA includes more than one correct alignment are excluded.
 
 
-\section{Training data}
+\section{Training}
+
+Obtaining vector representations with the phon2vec and neural network methods involves
+settings the models' hyperparameters and training on a dataset of IPA sequences (or pairs thereof).
 
 Our training data is sourced from NorthEuraLex, a comprehensive lexicostatistical database
 that provides IPA-encoded lexical data for languages of, primarily but not exclusively, Northern Eurasia \citep{2017_Dellert_Jäger}.
@@ -327,6 +331,44 @@ the RNN embeddings are trained on the set of tokenised transcriptions of the wor
 in which the words belong to different languages, are linked to the same concept, and have normalised Levenshtein distance lower than 0,5.
 Admittedly, this threshold value is chosen somewhat arbitrarily;
 we have also experimented with thresholds of 0,4 and 0,6, but setting the cutoff at 0,5 yields better-performing embeddings.
+
+For each of the methods, we have run the respective model with the Cartesian product of common values for each hyperparameter,
+practically performing a crude search of the hyperparameter space.
+Tables \ref{tab:phon2vec} and \ref{tab:networks} summarise the best-performing combinations of values we have experimented with.
+
+\begin{table}[h]
+	\centering\small
+	\begin{tabular}{*{2}{l}}
+		\toprule
+		& phon2vec \\
+		\midrule
+		model architecture & CBOW \\
+		embedding size & 15 \\
+		context size & 2 (one segment in each direction) \\
+		negative samples & 1 per positive sample \\
+		epochs & 5 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Best-performing hyperparameters, phon2vec}
+	\label{tab:phon2vec}
+\end{table}
+
+\begin{table}[h]
+	\centering\small
+	\begin{tabular}{l *{2}{r}}
+		\toprule
+		& nn & rnn \\
+		\midrule
+		embedding size & 64 & 64 \\
+		dense layer size & 128 & - \\
+		rnn layer size & - & 128 \\
+		epochs & 10 & 5 \\
+		batch size & 128 & 128 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Best-performing hyperparameters, neural networks}
+	\label{tab:networks}
+\end{table}
 
 
 \section{Results}
@@ -405,45 +447,10 @@ Thus our hypothesis that applying PCA on the PHOIBLE vector space would improve 
 Of the data-driven methods, phon2vec yields the lowest scores, being outperformed by both neural network models in all datasets except Japanese.
 Given that both the phon2vec and the NN embeddings are trained on the same data,
 we believe that the consistent difference is due to the fact that the phon2vec model ignores the order of IPA segments.
-The results reported in Table~\ref{tab:results} are obtained using the parameters listed in Table~\ref{tab:phon2vec}
-which comprise the best-performing set of parameters we have experimented with.
-
-\begin{table}[h]
-	\centering\small
-	\begin{tabular}{*{2}{l}}
-		\toprule
-		model architecture & CBOW \\
-		embedding size & 15 \\
-		context size & 2 (one segment in each direction) \\
-		negative samples & 1 per positive sample \\
-		epochs & 5 \\
-		\bottomrule
-	\end{tabular}
-	\caption{Phon2vec: the best-performing parameters}
-	\label{tab:phon2vec}
-\end{table}
 
 The NN\,+\,RNN model yields higher scores than the NN model that it builds upon,
 indicating that the embeddings of the former capture useful information that the embeddings of the feedforward network do not\,---\,the
 difference between the two models ranges from none for the Dutch dataset to almost 7 percent points for the Slavic dataset.
-Table~\ref{tab:networks} summarises the best-performing sets of hyperparameters we have experimented with.
-
-\begin{table}[h]
-	\centering\small
-	\begin{tabular}{l *{2}{r}}
-		\toprule
-		& nn & rnn \\
-		\midrule
-		embedding size & 64 & 64 \\
-		dense layer size & 128 & - \\
-		rnn layer size & - & 128 \\
-		epochs & 10 & 5 \\
-		batch size & 128 & 128 \\
-		\bottomrule
-	\end{tabular}
-	\caption{Neural networks: the best-performing hyperparameters}
-	\label{tab:networks}
-\end{table}
 
 For all but the Slavic dataset, SCA yields higher scores than our best-performing NN\,+\,RNN embeddings.
 The score differences exhibit considerable variance\,---\,from less than 1 percent point for the Andean dataset up to 26 percent points for the Sinitic dataset.
