@@ -1,6 +1,5 @@
 import collections
 import itertools
-import warnings
 
 from code.data import Alignment
 
@@ -20,13 +19,11 @@ Evaluation = collections.namedtuple(
 def evaluate(dataset_true, dataset_pred):
 	"""
 	Evaluate predicted alignments (dataset_pred) against their gold-standard
-	counterparts (dataset_true). Return an Evaluation tuple.
-
-	The latter is expected to contain all word pairs of the former; otherwise,
-	a KeyError is raised.
+	counterparts (dataset_true). The latter is expected to contain all word
+	pairs of the former; otherwise, a KeyError is raised.
 	"""
-	total_pred = 0
-	correct_pred = 0
+	pairs_total = 0
+	pairs_correct = 0
 	score = 0
 	mistakes = []
 
@@ -36,26 +33,26 @@ def evaluate(dataset_true, dataset_pred):
 
 		for (word_a, word_b), al_pred_set in d_pred.items():
 			al_true_set = d_true[(word_a, word_b)]
+			al_true_corrs = set([al_true.corr for al_true in al_true_set])
 
-			if len(al_true_set) > 1:
-				warnings.warn('More than 1 true alignment for {}:{}'.format(word_a, word_b))
-				continue
+			comment = '{} – {}'.format(''.join(word_a.ipa), ''.join(word_b.ipa))
+			pair_score = 0
 
-			al_true = al_true_set.pop()
+			for al_pred in al_pred_set:
+				if al_pred.corr in al_true_corrs:
+					pair_score += 1
+				else:
+					for al_true in al_true_set:
+						mistakes.extend([
+							(word_a, word_b, Alignment(
+								al_pred.corr, '{}, predicted'.format(comment))),
+							(word_a, word_b, Alignment(
+								al_true.corr, '{}, correct'.format(comment)))])
 
-			pair_score = sum([1 if al_pred.corr == al_true.corr else 0
-									for al_pred in al_pred_set])
-			pair_score /= len(al_pred_set)
+			if pair_score == len(al_pred_set):
+				pairs_correct += 1
 
-			if pair_score == 1:
-				correct_pred += 1
-			else:
-				for al_pred in al_pred_set:
-					mistakes.extend([
-						(word_a, word_b, Alignment(al_pred.corr, 'predicted')),
-						(word_a, word_b, Alignment(al_true.corr, 'correct'))])
+			score += pair_score / len(al_pred_set)
+			pairs_total += 1
 
-			score += pair_score
-			total_pred += 1
-
-	return Evaluation(mistakes, correct_pred, total_pred, score)
+	return Evaluation(mistakes, pairs_correct, pairs_total, score)
