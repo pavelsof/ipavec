@@ -308,12 +308,13 @@ The database also features the small set of 82 selected pairs used by \citet{199
 Our methods are also compared against SCA, the current state-of-the-art method for aligning IPA sequences developed by \citet{2012_List},
 which is briefly described in the introductory chapter.
 
-In order to quantify the methods' performance, we employ an intuitive evaluation scheme which is also used in \citet{2002_Kondrak_Hirst}:
-each correct alignment yields 1 point;
-if $n$ alternative alignments are produced for a particular pair and the correct one is among these the score is $\frac{1}{n}$ points;
-partially correct alignment do not score points.
+In order to quantify the methods' performance, we employ an intuitive evaluation scheme similar to the one used in \citet{2002_Kondrak_Hirst}:
+if, for a given word pair, $m$ is the number of alternative gold-standard alignments
+and $n$ is the number of correctly predicted alignments, the score for that pair would be $\frac{n}{m}$.
+In the common word pair case of a single gold-standard alignment and a single predicted alignment,
+the latter would yield 1 point if it is correct and 0 points otherwise;
+partially correct alignment do not yield points.
 The percentage scores are obtained by dividing the points by the total number of pairs.
-Pairs for which BDPA includes more than one correct alignment are excluded.
 
 
 \section{Training}
