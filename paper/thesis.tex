@@ -137,7 +137,19 @@ The scoring function is hand-crafted to reflect the perceived probabilities of s
 \chapter{Methods}
 
 We consider 5 different methods for obtaining vector representations of IPA segments.
-The code implementation of these methods, as well as of the experiments described in the next chapter,
+With all methods, the representations are employed for computing the cosine distance between IPA segments (cf.~Figure~\ref{fig:cosine} below),
+which comprises the scoring function in an otherwise standard application of the Needleman-Wunsch algorithm.
+
+\begin{figure}[h]
+	\begin{displaymath}
+		f(u, v) = 1-\cos(\alpha) = 1-\frac{\displaystyle\sum_{i=1}^n u_i v_i}{\sqrt{\displaystyle\sum_{i=1}^n u_i^2}\sqrt{\displaystyle\sum_{i=1}^n v_i^2}}
+	\end{displaymath}
+
+	\caption{The scoring function; $u$ and $v$ are vector representations of two IPA segments; $\alpha$ is the angle between $u$ and $v$}
+	\label{fig:cosine}
+\end{figure}
+
+The code implementation of the complete methods, as well as of the experiments described in the next chapter,
 is open sourced under the GNU GPLv3 license and publicly available online.\footnote{\url{https://github.com/pavelsof/ipavec}}
 It is written using the Python programming language and a set of common dependencies, including NumPy, SciPy, scikit-learn, Gensim, and Keras.
 
