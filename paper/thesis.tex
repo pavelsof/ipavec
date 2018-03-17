@@ -250,12 +250,23 @@ The network's architecture is depicted in Figure~\ref{fig:nn}.
 	\label{fig:nn}
 \end{figure}
 
+The network's hyperparameters include the size of the embeddings layer, the size of the dense layer,
+the number of training epochs, the batch size, the loss and optimisation functions.
+We use sparse categorical cross-entropy as the loss function and we experiment with common values of the other hyperparameters.
+We have also experimented with predicting a larger context by extending the number of predicted neighbours to two in each direction,
+but this fails to improve the resulting embeddings.
+
+A major difference between phon2vec and the neural network, which is also one of the reasons to propose the latter,
+is that phon2vec does not model the order of IPA segments, effectively treating the preceding and succeeding neighbours equivalently.
+That is why we expect the NN embeddings to perform better than their phon2vec counterparts.
+
 
 \section{RNN embeddings}
 
 Our last method consists of using the embeddings of a recursive neural network (RNN).
 Given a pair of sequences, the network recursively encodes the first sequence into a vector which is then recursively decoded into an output sequence.
-The backward propagation of the mismatches between the output sequence and the pair's second sequence affects the whole network.
+The backward propagation of the mismatches between the output sequence
+and the pair's second sequence, represented as a vector of one-hot vectors, affects the whole network.
 Introduced by \citet{2014_Cho_al}, networks of such architecture are typically employed for machine translation,
 but our network is trained on pairs of IPA sequences comprising bilingual pairs of words linked to the same meaning.
 As both encoded and decoded data are of the same form, the embedding layer is shared.
@@ -286,8 +297,11 @@ The network's architecture is depicted in Figure~\ref{fig:rnn}.
 	\label{fig:rnn}
 \end{figure}
 
-We use the NN embeddings as initial weights of the RNN embedding layer, as this consistently improves the resulting vector representations;
-thus we refer to the latter as NN\,+\,RNN embeddings.
+The network's hyperparameters include the size of the embeddings layer, the size of the encoder and decoder recurrent layers,
+the number of training epochs, the batch size, the loss and optimisation functions.
+We use categorical cross-entropy as the loss function and we experiment with common values of the other hyperparameters.
+We have also experimented with using the NN embeddings as initial weights of the RNN embedding layer;
+this consistently improves the resulting vector representations\,---\,which we refer to as NN\,+\,RNN embeddings.
 
 
 \chapter{Experiments}
@@ -352,39 +366,40 @@ we have also experimented with thresholds of 0,4 and 0,6, but setting the cutoff
 
 For each of the methods, we have run the respective model with the Cartesian product of common values for each hyperparameter,
 practically performing a crude search of the hyperparameter space.
-Tables \ref{tab:phon2vec} and \ref{tab:networks} summarise the best-performing combinations of values we have experimented with.
+The values we have experimented with, as well as the best-performing combinations thereof, are summarised in Tables \ref{tab:phon2vec} and \ref{tab:networks}.
 
 \begin{table}[h]
 	\centering\small
-	\begin{tabular}{*{2}{l}}
+	\begin{tabular}{*{3}{l}}
 		\toprule
-		& phon2vec \\
+		& phon2vec & experimental values \\
 		\midrule
-		model architecture & CBOW \\
-		embedding size & 15 \\
-		context size & 2 (one segment in each direction) \\
-		negative samples & 1 per positive sample \\
-		epochs & 5 \\
+		model architecture & CBOW & CBOW, skip-gram \\
+		embedding size & 15 & 5, 15, 30 \\
+		context size & 2 (one segment in each direction) & 0, 2, 4 \\
+		negative samples & 1 per positive sample & 0, 1, 2 \\
+		epochs & 5 & 5, 10, 20 \\
 		\bottomrule
 	\end{tabular}
-	\caption{Best-performing hyperparameters, phon2vec}
+	\caption{Hyperparameter values, phon2vec}
 	\label{tab:phon2vec}
 \end{table}
 
 \begin{table}[h]
 	\centering\small
-	\begin{tabular}{l *{2}{r}}
+	\begin{tabular}{*{4}{l}}
 		\toprule
-		& nn & rnn \\
+		& nn & rnn & experimental values \\
 		\midrule
-		embedding size & 64 & 64 \\
-		dense layer size & 128 & - \\
-		rnn layer size & - & 128 \\
-		epochs & 10 & 5 \\
-		batch size & 128 & 128 \\
+		embedding size & 64 & 64 & 32, 64 \\
+		dense layer size & 128 & - & 64, 128 \\
+		rnn layer size & - & 128 & 64, 128 \\
+		epochs & 10 & 5 & 5, 10, 20 \\
+		batch size & 128 & 128 & 32, 64, 128 \\
+		optimisation & sgd & rmsprop & cf.~Keras' optimisation functions \\
 		\bottomrule
 	\end{tabular}
-	\caption{Best-performing hyperparameters, neural networks}
+	\caption{Hyperparameter values, neural networks}
 	\label{tab:networks}
 \end{table}
 
