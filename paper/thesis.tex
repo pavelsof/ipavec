@@ -360,9 +360,9 @@ The latter are tokenised using ipatok, an open source Python package for tokenis
 The phon2vec and NN embeddings are trained on the set of all tokenised transcriptions.
 As NorthEuraLex does not include cognacy information,
 the RNN embeddings are trained on the set of tokenised transcriptions of the word pairs constituting probable cognates\,---\,pairs
-in which the words belong to different languages, are linked to the same concept, and have normalised Levenshtein distance lower than 0,5.
+in which the words belong to different languages, are linked to the same concept, and have normalised Levenshtein distance lower than 0.5.
 Admittedly, this threshold value is chosen somewhat arbitrarily;
-we have also experimented with thresholds of 0,4 and 0,6, but setting the cutoff at 0,5 yields better-performing embeddings.
+we have also experimented with thresholds of 0.4 and 0.6, but setting the cutoff at 0.5 yields better-performing embeddings.
 
 For each of the methods, we have run the respective model with the Cartesian product of common values for each hyperparameter,
 practically performing a crude search of the hyperparameter space.
@@ -414,21 +414,21 @@ The percentage-score evaluation of the output of running our proposed methods an
 		\toprule
 		& one-hot & phoible & phon2vec & nn & nn\,+\,rnn & sca \\
 		\midrule
-		Andean		&	85,66 &	87,31 &	97,25 &	99,34 &	99,50 & 99,67 \\
-		Bai			&	52,55 &	62,77 &	61,25 &	74,72 &	75,52 & 83,45 \\
-		Bulgarian	&	60,54 &	80,54 &	77,98 &	82,55 &	86,70 & 89,34 \\
-		Dutch		&	14,16 &	25,65 &	26,00 &	32,50 &	32,50 & 42,20 \\
-		French		&	42,94 &	62,92 &	68,94 &	74,30 &	77,04 & 80,90 \\
-		Germanic	&	39,93 &	51,78 &	54,59 &	71,83 &	72,55 & 83,48 \\
-		Japanese	&	53,56 &	65,04 &	73,74 &	62,71 &	71,08 & 82,19 \\
-		Norwegian	&	59,39 &	78,87 &	73,69 &	83,53 &	89,06 & 91,77 \\
-		Ob-Ugrian	&	59,58 &	77,87 &	73,35 &	78,04 &	82,55 & 86,04 \\
-		Romance		&	40,48 &	71,28 &	63,16 &	76,37 &	77,55 & 95,62 \\
-		Sinitic		&	27,34 &	28,57 &	30,75 &	72,46 &	74,04 & 98,95 \\
-		Slavic		&	76,96 &	90,73 &	84,22 &	89,89 &	96,81 & 94,15 \\
+		Andean		&	85.66 &	87.31 &	97.25 &	99.34 &	99.50 & 99.67 \\
+		Bai			&	52.55 &	62.77 &	61.25 &	74.72 &	75.52 & 83.45 \\
+		Bulgarian	&	60.54 &	80.54 &	77.98 &	82.55 &	86.70 & 89.34 \\
+		Dutch		&	14.16 &	25.65 &	26.00 &	32.50 &	32.50 & 42.20 \\
+		French		&	42.94 &	62.92 &	68.94 &	74.30 &	77.04 & 80.90 \\
+		Germanic	&	39.93 &	51.78 &	54.59 &	71.83 &	72.55 & 83.48 \\
+		Japanese	&	53.56 &	65.04 &	73.74 &	62.71 &	71.08 & 82.19 \\
+		Norwegian	&	59.39 &	78.87 &	73.69 &	83.53 &	89.06 & 91.77 \\
+		Ob-Ugrian	&	59.58 &	77.87 &	73.35 &	78.04 &	82.55 & 86.04 \\
+		Romance		&	40.48 &	71.28 &	63.16 &	76.37 &	77.55 & 95.62 \\
+		Sinitic		&	27.34 &	28.57 &	30.75 &	72.46 &	74.04 & 98.95 \\
+		Slavic		&	76.96 &	90.73 &	84.22 &	89.89 &	96.81 & 94.15 \\
 		\addlinespace
-		Global		&	51,83 &	66,64 &	66,99 &	75,88 &	78,45 & 84,84 \\
-		Covington	&	60,61 &	82,42 &	80,18 &	82,52 &	82,52 & 90,24 \\
+		Global		&	51.83 &	66.64 &	66.99 &	75.88 &	78.45 & 84.84 \\
+		Covington	&	60.61 &	82.42 &	80.18 &	82.52 &	82.52 & 90.24 \\
 		\bottomrule
 	\end{tabular}
 	\caption{Scores, as percentage of total alignment pairs}
@@ -459,18 +459,18 @@ Thus our hypothesis that applying PCA on the PHOIBLE vector space would improve 
 		\toprule
 		& phoible & phoible-pc \\
 		\midrule
-		Andean		&	87,31 &	82,31 \\
-		Bai			&	62,77 &	00,23 \\
-		Bulgarian	&	80,54 &	78,79 \\
-		Dutch		&	25,65 &	24,53 \\
-		French		&	62,92 &	61,31 \\
-		Germanic	&	51,78 &	45,89 \\
-		Japanese	&	65,04 &	62,56 \\
-		Norwegian	&	78,87 &	75,80 \\
-		Ob-Ugrian	&	77,87 &	76,20 \\
-		Romance		&	71,28 &	71,04 \\
-		Sinitic		&	28,57 &	00,00 \\
-		Slavic		&	90,73 &	86,17 \\
+		Andean		&	87.31 &	82.31 \\
+		Bai			&	62.77 &	00.23 \\
+		Bulgarian	&	80.54 &	78.79 \\
+		Dutch		&	25.65 &	24.53 \\
+		French		&	62.92 &	61.31 \\
+		Germanic	&	51.78 &	45.89 \\
+		Japanese	&	65.04 &	62.56 \\
+		Norwegian	&	78.87 &	75.80 \\
+		Ob-Ugrian	&	77.87 &	76.20 \\
+		Romance		&	71.28 &	71.04 \\
+		Sinitic		&	28.57 &	00.00 \\
+		Slavic		&	90.73 &	86.17 \\
 		\bottomrule
 	\end{tabular}
 	\caption{Scores: PHOIBLE vs. PHOIBLE-PC}
