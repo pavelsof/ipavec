@@ -98,7 +98,7 @@ Although the method does not take advantage of any standard sequence alignment a
 it does use a scoring function.
 This function assigns hand-crafted values depending on whether the segments are consonants, vowels, or glides.
 Due to this simple classification, the method could be adapted to work with IPA sequences (the author uses an undocumented encoding);
-however, the better performance of more complex class-based methods have shown that such coarse three-way classification is not sufficient.
+however, its poor performance in comparison to more complex methods demonstrates that such coarse three-way classification is not sufficient.
 
 ALINE, first introduced by \citet{2000_Kondrak} and further elaborated in \citet{2002_Kondrak_Hirst} and \citet{2003_Kondrak},
 employs a complex scoring function that is built around multi-valued (e.g. manner of articulation) and binary (e.g. nasality) phonetic features,
@@ -113,7 +113,7 @@ The Automated Similarity Judgement Program (ASJP) is an actively developed datab
 the translations of a set of 40 basic concepts into all the world's languages.
 At the time of writing the database covers 294\,548 words from 7221 languages \citep{2016_Wichmann_al}.
 The words are encoded using a uniform transcription consisting of 34 consonants and 7 vowels,
-originally introduced by \citet{2008_Brown_al} as ASJPcode but now commonly known as ASJP.
+introduced by \citet{2008_Brown_al} and further specified by \citet{2013_Brown_al} as ASJPcode, but more commonly referred to as ASJP.
 This restricted set of encoding symbols results in much of the phonetic information being lost,
 but the authors argue that such information might not be that valuable for certain applications.
 The simplified encoding also allows for a greater reach of the database as many of the world's languages lack sufficiently detailed phonetic record.
@@ -137,7 +137,7 @@ The scoring function is hand-crafted to reflect the perceived probabilities of s
 \chapter{Methods}
 
 We consider 5 different methods for obtaining vector representations of IPA segments.
-With all methods, the representations are employed for computing the cosine distance between IPA segments (cf.~Figure~\ref{fig:cosine} below),
+With all methods, the representations are employed for computing the cosine distance between IPA segments (cf.~Figure~\ref{fig:cosine}),
 which comprises the scoring function in an otherwise standard application of the Needleman-Wunsch algorithm.
 
 \begin{figure}[h]
@@ -210,7 +210,7 @@ expecting that this would decrease the influence of rare features; we refer to t
 
 \section{phon2vec embeddings}
 
-The first data-driven method we consider is word2vec, first introduced by \citet{2013_Mikolov_al}.
+The first data-driven method we consider is word2vec, developed by \citet{2013_Mikolov_al}.
 It comprises two closely related model architectures for computing vector representations of words:
 the continuous bag-of-words model (CBOW) which tries to predict a word based on its context of neighbouring words,
 and the continuous skip-gram model which, given a word, tries to predict words from its context.
