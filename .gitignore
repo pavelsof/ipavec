@@ -8,6 +8,7 @@
 /paper/*
 !/paper/references.bib
 !/paper/thesis.tex
+!/paper/thesis.pdf
 
 # python temps
 *.py[cod]
