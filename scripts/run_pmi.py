@@ -5,7 +5,7 @@ import functools
 import os.path
 import sys
 
-from asjp import ipa2asjp, asjp2ipa
+from asjp import ipa2asjp
 
 import numpy as np
 
@@ -57,15 +57,27 @@ def get_align_func(scores, gap_penalties):
 	and returns the respective set of Alignment tuples.
 	"""
 	def cost_func(a, b):
-		if a == '': return gap_penalties[0]
-		if b == '': return gap_penalties[1]
+		if a == '': return -gap_penalties[0]
+		if b == '': return -gap_penalties[1]
 
 		if len(a) > 1: a = a[:1]
 		if len(b) > 1: b = b[:1]
 
-		return scores[(a, b)]
+		return -scores[(a, b)]
 
 	return functools.partial(simple_align, cost_func=cost_func)
+
+
+def convert_alignment(ipa_a, ipa_b, asjp_corr):
+	"""
+	Convert an alignment of ASJP sequences (as a sequence of ASJP token pairs)
+	into the respective alignment of IPA sequences.
+	"""
+	ipa_a, ipa_b = iter(ipa_a), iter(ipa_b)
+
+	return tuple([
+		(next(ipa_a) if a else '-', next(ipa_b) if b else '-')
+		for a, b in asjp_corr])
 
 
 def run(align_func, dataset_path, output_path):
@@ -76,10 +88,16 @@ def run(align_func, dataset_path, output_path):
 	dataset = AlignmentsDataset(dataset_path)
 	output = ['{} (PMI alignment)'.format(dataset.header)]
 
-	for word_a, word_b, alignment in dataset.data:
+	for word_a, word_b, original_al in dataset.data:
 		asjp_a = ipa2asjp(word_a.ipa)
 		asjp_b = ipa2asjp(word_b.ipa)
-		alignments = align_func(asjp_a, asjp_b)
+		for asjp_al in align_func(asjp_a, asjp_b):
+			ipa_corr = convert_alignment(word_a.ipa, word_b.ipa, asjp_al.corr)
+			output.extend([
+				original_al.comment,
+				'\t'.join([word_a.lang] + [pair[0] for pair in ipa_corr]),
+				'\t'.join([word_b.lang] + [pair[1] for pair in ipa_corr]),
+				''])
 
 	with open_for_writing(output_path) as f:
 		f.write('\n'.join(output))
