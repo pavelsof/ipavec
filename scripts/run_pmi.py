@@ -84,13 +84,25 @@ def run(align_func, dataset_path, output_path):
 	"""
 	Read the word pairs from a psa dataset, align them using the given func,
 	and write an output psa dataset.
+
+	If there is a word that cannot be converted to ASJP, an obviously wrong
+	alignment is output.
 	"""
 	dataset = AlignmentsDataset(dataset_path)
 	output = ['{} (PMI alignment)'.format(dataset.header)]
 
 	for word_a, word_b, original_al in dataset.data:
-		asjp_a = ipa2asjp(word_a.ipa)
-		asjp_b = ipa2asjp(word_b.ipa)
+		try:
+			asjp_a = ipa2asjp(word_a.ipa)
+			asjp_b = ipa2asjp(word_b.ipa)
+		except ValueError:
+			output.extend([
+				original_al.comment,
+				'\t'.join([word_a.lang, '-'] + list(word_a.ipa)),
+				'\t'.join([word_b.lang, '-'] + list(word_b.ipa)),
+				''])
+			continue
+
 		for asjp_al in align_func(asjp_a, asjp_b):
 			ipa_corr = convert_alignment(word_a.ipa, word_b.ipa, asjp_al.corr)
 			output.extend([
