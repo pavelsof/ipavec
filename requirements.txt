@@ -1,5 +1,5 @@
 appdirs==1.4.3
-asjp==0.0.1
+asjp==0.0.2
 attrs==17.3.0
 bleach==1.5.0
 boto==2.48.0
