@@ -1,7 +1,7 @@
 appdirs==1.4.3
 asjp==0.0.2
 attrs==17.3.0
-bleach==1.5.0
+bleach==3.1.2
 boto==2.48.0
 boto3==1.5.9
 botocore==1.8.23
